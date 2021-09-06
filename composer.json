@@ -1,0 +1,16 @@
+{
+    "name": "abmsourav/wp_qb",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "AbmSourav",
+            "email": "keramotul.islam@gmail.com"
+        }
+    ],
+    "require": {},
+	"autoload": {
+		"psr-4": {
+			"WPQB\\": "src/"
+		}
+	}
+}
