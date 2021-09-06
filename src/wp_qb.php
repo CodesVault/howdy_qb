@@ -11,7 +11,7 @@ namespace WPQB\QueryBuilder;
 
 use WPQB\QueryBuilder\Add\Insert;
 use WPQB\QueryBuilder\Get\Select;
-
+use WPQB\QueryBuilder\Renovate\Update;
 
 class WPQuery {
 
@@ -37,13 +37,21 @@ class WPQuery {
 	/**
 	 * INSERT statement of mySql query.
 	 * 
-	 * @param string $column
-	 * @param bool $distinct
-	 * 
 	 * @return \WPQB\QueryBuilder\Add\Insert
 	 */
 	public static function insert() {
 		return new Insert(static::connect());
+	}
+
+	/**
+	 * UPDATE statement of mySql query.
+	 * 
+	 * @param string $table_name
+	 * 
+	 * @return \WPQB\QueryBuilder\Renovate\Update
+	 */
+	public static function update($table_name) {
+		return new Update(static::connect(), $table_name);
 	}
 
 	/**

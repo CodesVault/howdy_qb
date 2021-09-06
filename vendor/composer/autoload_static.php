@@ -23,6 +23,7 @@ class ComposerStaticInit9402e753fb79119fca9b33cb87252c39
     public static $classMap = array (
         'WPQB\\QueryBuilder\\Add\\Insert' => __DIR__ . '/../..' . '/src/insert.php',
         'WPQB\\QueryBuilder\\Get\\Select' => __DIR__ . '/../..' . '/src/select.php',
+        'WPQB\\QueryBuilder\\Renovate\\Update' => __DIR__ . '/../..' . '/src/update.php',
         'WPQB\\QueryBuilder\\WPQuery' => __DIR__ . '/../..' . '/src/wp_qb.php',
     );
 

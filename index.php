@@ -22,15 +22,22 @@ $query = WPQuery::select("posts.post_title")
 			
 // print_r($query);
 
-$insert = WPQuery::insert()
-			->into("postmeta")
-			->column("post_id, meta_key, meta_value")
-			->select("options.option_id, options.option_name, options.option_value", true)
-			->from("options as options")
-			->where("options.option_name = %s")
-			->add( ['start_of_week'] );
+// $insert = WPQuery::insert()
+// 			->into("postmeta")
+// 			->column("post_id, meta_key, meta_value")
+// 			->select("options.option_id, options.option_name, options.option_value", true)
+// 			->from("options as options")
+// 			->where("options.option_name = %s")
+// 			->add( ['start_of_week'] );
 
 // print_r($insert);
 // echo "<pre>";
 // print_r(WPQuery::schema('postmeta'));
 // echo "</pre>";
+
+$update = WPQuery::update("postmeta")
+			->set("meta_value = %s")
+			->where("meta_key = %s")
+			->renovate([ 22, 'start_of_week' ]);
+
+print_r($update);

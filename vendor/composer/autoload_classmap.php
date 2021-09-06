@@ -8,5 +8,6 @@ $baseDir = dirname($vendorDir);
 return array(
     'WPQB\\QueryBuilder\\Add\\Insert' => $baseDir . '/src/insert.php',
     'WPQB\\QueryBuilder\\Get\\Select' => $baseDir . '/src/select.php',
+    'WPQB\\QueryBuilder\\Renovate\\Update' => $baseDir . '/src/update.php',
     'WPQB\\QueryBuilder\\WPQuery' => $baseDir . '/src/wp_qb.php',
 );
