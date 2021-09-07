@@ -17,10 +17,12 @@ class Select {
 
 	function __construct($wpdb, $column = "*", $distinct = false) {
 		static::$db = $wpdb;
-		$this->select($column, $distinct);
+		$this->init($column, $distinct);
 	}
 
-	private function select($column = "*", $distinct = false) {
+	public function init($column = "*", $distinct = false) {
+		if ( ! is_string( $column ) || ! is_bool( $distinct ) ) throw new \Exception('Not a valid query.');
+
 		if ( $distinct ) {
 			static::$query_string = "SELECT DISTINCT {$column}";
 			return static::$query_string;
@@ -29,7 +31,20 @@ class Select {
 		return static::$query_string;
 	}
 
+	public function select($column = "*", $distinct = false) {
+		if ( ! $column || ! is_string( $column ) ) throw new \Exception('Not a valid query.');
+
+		if ( $distinct ) {
+			static::$query_string = static::$query_string . " SELECT DISTINCT {$column}";
+			return $this;
+		}
+		static::$query_string = static::$query_string . " SELECT {$column}";
+		return $this;
+	}
+
 	public function from($table_name) {
+		if ( ! is_string( $table_name ) ) throw new \Exception('Not a valid query.');
+
 		$table = static::$db->prefix . $table_name;
 		$query = static::$query_string;
 		static::$query_string = "{$query} FROM {$table}";
@@ -38,12 +53,16 @@ class Select {
 	}
 
 	public function where($where) {
+		if ( ! is_string( $where ) ) throw new \Exception('Not a valid query.');
+
 		$query = static::$query_string;
 		static::$query_string = "{$query} WHERE {$where}";
 		return $this;
 	}
 
 	public function and($condition) {
+		if ( ! is_string( $condition ) ) throw new \Exception('Not a valid query.');
+
 		$query = static::$query_string;
 		static::$query_string = "{$query} AND {$condition}";
 		return $this;
@@ -55,15 +74,21 @@ class Select {
 		return $this;
 	}
 
-	public function between($between) {
+	public function between($start, $end) {
 		$query = static::$query_string;
-		static::$query_string = "{$query} between {$between}";
+		static::$query_string = "{$query} BETWEEN {$start} AND {$end}";
 		return $this;
 	}
 
 	public function or($condition) {
 		$query = static::$query_string;
 		static::$query_string = "{$query} OR {$condition}";
+		return $this;
+	}
+
+	public function not($condition) {
+		$query = static::$query_string;
+		static::$query_string = "{$query} NOT {$condition}";
 		return $this;
 	}
 
@@ -88,6 +113,8 @@ class Select {
 	}
 
 	public function offset($offset) {
+		if ( ! is_int( $offset ) ) throw new \Exception('Not a valid query.');
+
 		$query = static::$query_string;
 		static::$query_string = "{$query} OFFSET {$offset}";
 		return $this;
