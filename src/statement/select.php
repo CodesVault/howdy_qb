@@ -80,6 +80,8 @@ class Select {
 	}
 
 	public function limit($limit) {
+		if ( ! is_int( $limit ) ) throw new \Exception('Not a valid query.');
+
 		$query = static::$query_string;
 		static::$query_string = "{$query} LIMIT {$limit}";
 		return $this;

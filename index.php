@@ -35,9 +35,9 @@ $query = WPQuery::select("posts.post_title")
 // print_r(WPQuery::schema('postmeta'));
 // echo "</pre>";
 
-$update = WPQuery::update("postmeta")
-			->set("meta_value = %s")
-			->where("meta_key = %s")
-			->renovate([ 22, 'start_of_week' ]);
+// $update = WPQuery::update("postmeta")
+// 			->set("meta_value = %s")
+// 			->where("meta_key = %s")
+// 			->renovate([ 24, 'start_of_week' ]);
 
-print_r($update);
+// print_r($update);
