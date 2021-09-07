@@ -9,9 +9,11 @@
  */
 namespace WPQB\QueryBuilder;
 
-use WPQB\QueryBuilder\Add\Insert;
 use WPQB\QueryBuilder\Get\Select;
+use WPQB\QueryBuilder\Add\Insert;
 use WPQB\QueryBuilder\Renovate\Update;
+use WPQB\QueryBuilder\Remove\Delete;
+
 
 class WPQuery {
 
@@ -52,6 +54,17 @@ class WPQuery {
 	 */
 	public static function update($table_name) {
 		return new Update(static::connect(), $table_name);
+	}
+
+	/**
+	 * DELETE statement of mySql query.
+	 * 
+	 * @param string $table_name
+	 * 
+	 * @return \WPQB\QueryBuilder\Remove\Delete
+	 */
+	public static function delete() {
+		return new Delete(static::connect());
 	}
 
 	/**

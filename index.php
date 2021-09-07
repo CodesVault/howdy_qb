@@ -15,12 +15,21 @@ use WPQB\QueryBuilder\WPQuery;
 
 require plugin_dir_path( __FILE__ ) . "vendor/autoload.php";
 
-$query = WPQuery::select("posts.post_title")
-			->from("posts as posts")
-			->limit(4)
-			->get();
-			
+// $query = WPQuery::select("posts.post_title")
+// 			->from("posts as posts")
+// 			->limit(4)
+// 			->get();
 // print_r($query);
+
+$select = WPQuery::select("posts.post_type", true)
+			->from("posts as posts")
+			->join("term_relationships as term_rel")
+				->on("posts.ID = term_rel.object_id")
+			->where("term_rel.term_taxonomy_id")
+				->in(6)
+			->and("posts.post_status = %s")
+			->get([ 'publish' ]);
+print_r($select);
 
 // $insert = WPQuery::insert()
 // 			->into("postmeta")
@@ -41,3 +50,10 @@ $query = WPQuery::select("posts.post_title")
 // 			->renovate([ 24, 'start_of_week' ]);
 
 // print_r($update);
+
+$delete = WPQuery::delete()
+			->from("postmeta as postmeta")
+			->where("postmeta.meta_key = %s")
+			->remove([ 'start_of_week' ]);
+
+// print_r($delete);

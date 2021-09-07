@@ -120,10 +120,19 @@ class Select {
 		return $this;
 	}
 
-	public function join($table_name) {
+	public function join($table_name, $type = "inner") {
+		$join_type = $type;
+		if ( $type === "inner" ) {
+			$join_type = strtoupper($type);
+		} elseif ( $type === "left" ) {
+			$join_type = strtoupper($type);
+		} elseif ( $type === "right" ) {
+			$join_type = strtoupper($type);
+		}
+
 		$query = static::$query_string;
 		$prefix = static::$db->prefix;
-		static::$query_string = "{$query} JOIN {$prefix}{$table_name}";
+		static::$query_string = "{$query} {$join_type} JOIN {$prefix}{$table_name}";
 		return $this;
 	}
 
@@ -133,7 +142,7 @@ class Select {
 		return $this;
 	}
 
-	private function query($query, $args = []) {
+	protected function query($query, $args = []) {
 		$db = static::$db;
 		return $db->get_results( $db->prepare( $query, $args ) );
 	}

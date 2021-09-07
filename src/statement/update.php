@@ -37,11 +37,6 @@ class Update extends Select {
 		return $this;
 	}
 
-	private function query($query, $args = []) {
-		$db = static::$db;
-		return $db->query( $db->prepare( $query, $args ) );
-	}
-
 	public function renovate($args = []) {
 		if ( ! static::$query_string ) throw new \Exception('No query found.');
 

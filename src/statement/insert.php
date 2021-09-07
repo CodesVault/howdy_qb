@@ -48,22 +48,6 @@ class Insert extends Select {
 		return $this;
 	}
 
-	// public function select($column = "*", $distinct = false) {
-	// 	if ( ! $column || ! is_string( $column ) ) throw new \Exception('Not a valid query.');
-
-	// 	if ( $distinct ) {
-	// 		static::$query_string = static::$query_string . " SELECT DISTINCT {$column}";
-	// 		return $this;
-	// 	}
-	// 	static::$query_string = static::$query_string . " SELECT {$column}";
-	// 	return $this;
-	// }
-
-	private function query($query, $args = []) {
-		$db = static::$db;
-		return $db->query( $db->prepare( $query, $args ) );
-	}
-
 	public function add($args = []) {
 		if ( ! static::$query_string ) throw new \Exception('No query found.');
 
