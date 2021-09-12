@@ -21,25 +21,25 @@ require plugin_dir_path( __FILE__ ) . "vendor/autoload.php";
 // 			->get();
 // print_r($query);
 
-$select = WPQuery::select("posts.post_type", true)
-			->from("posts as posts")
-			->join("term_relationships as term_rel")
-				->on("posts.ID = term_rel.object_id")
-			->where("term_rel.term_taxonomy_id")
-				->in(6)
-			->and("posts.post_status = %s")
-			->get([ 'publish' ]);
-print_r($select);
+// $select = WPQuery::select("posts.post_type", true)
+// 			->from("posts as posts")
+// 			->join("term_relationships as term_rel")
+// 				->on("posts.ID = term_rel.object_id")
+// 			->where("term_rel.term_taxonomy_id")
+// 				->in(6)
+// 			->and("posts.post_status = %s")
+// 			->get([ 'publish' ]);
+// print_r($select);
 
 // $insert = WPQuery::insert()
 // 			->into("postmeta")
 // 			->column("post_id, meta_key, meta_value")
 // 			->select("options.option_id, options.option_name, options.option_value", true)
 // 			->from("options as options")
-// 			->where("options.option_name = %s")
+// 				->where("options.option_name = %s")
 // 			->add( ['start_of_week'] );
-
 // print_r($insert);
+
 // echo "<pre>";
 // print_r(WPQuery::schema('postmeta'));
 // echo "</pre>";
@@ -48,12 +48,10 @@ print_r($select);
 // 			->set("meta_value = %s")
 // 			->where("meta_key = %s")
 // 			->renovate([ 24, 'start_of_week' ]);
-
 // print_r($update);
 
-$delete = WPQuery::delete()
-			->from("postmeta as postmeta")
-			->where("postmeta.meta_key = %s")
-			->remove([ 'start_of_week' ]);
-
+// $delete = WPQuery::delete()
+// 			->from("postmeta as postmeta")
+// 			->where("postmeta.meta_key = %s")
+// 			->remove([ 'start_of_week' ]);
 // print_r($delete);
