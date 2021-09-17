@@ -11,6 +11,7 @@ namespace WPQB\QueryBuilder;
 
 use WPQB\QueryBuilder\Get\Select;
 use WPQB\QueryBuilder\Add\Insert;
+use WPQB\QueryBuilder\Make\Create;
 use WPQB\QueryBuilder\Renovate\Update;
 use WPQB\QueryBuilder\Remove\Delete;
 
@@ -67,6 +68,18 @@ class WPQuery {
 	 */
 	public static function delete(callable $query) {
 		$db = new Delete(static::connect());
+		return call_user_func( $query, $db );
+	}
+
+	/**
+	 * Create statement of mySql query.
+	 * 
+	 * @param calllable $query {@see callback()}
+	 * 
+	 * @return mixed
+	 */
+	public static function create(callable $query) {
+		$db = new Create(static::connect());
 		return call_user_func( $query, $db );
 	}
 
