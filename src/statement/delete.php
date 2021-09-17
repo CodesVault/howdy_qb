@@ -9,10 +9,10 @@
  */
 namespace WPQB\QueryBuilder\Remove;
 
-use WPQB\QueryBuilder\Get\Select;
+use WPQB\QueryBuilder\BluPrint;
 
 
-class Delete extends Select {
+class Delete extends BluPrint {
 
 	protected static $db;
 	protected static $query_string;

@@ -9,20 +9,23 @@
  */
 namespace WPQB\QueryBuilder\Renovate;
 
-use WPQB\QueryBuilder\Get\Select;
+use WPQB\QueryBuilder\BluPrint;
 
 
-class Update extends Select {
+class Update extends BluPrint {
 
 	protected static $db;
 	protected static $query_string;
 
-	function __construct($wpdb, $table_name) {
+	function __construct($wpdb) {
 		static::$db = $wpdb;
-		$this->update($table_name);
 	}
 
-	private function update($table_name) {
+	private function callback(Update $db) {
+		$db;
+	}
+
+	public function tableName($table_name) {
 		if ( ! $table_name || ! is_string( $table_name ) ) throw new \Exception('Not a valid query.');
 
 		$prefix = static::$db->prefix;

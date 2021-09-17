@@ -11,47 +11,56 @@
  * Text Domain:       wp-qb
  * Domain Path:       /languages
  */
+
+use WPQB\QueryBuilder\Add\Insert;
+use WPQB\QueryBuilder\Get\Select;
+use WPQB\QueryBuilder\Remove\Delete;
+use WPQB\QueryBuilder\Renovate\Update;
 use WPQB\QueryBuilder\WPQuery;
 
 require plugin_dir_path( __FILE__ ) . "vendor/autoload.php";
 
-// $query = WPQuery::select("posts.post_title")
-// 			->from("posts as posts")
-// 			->limit(4)
-// 			->get();
+
+// $query = WPQuery::select( function(Select $db) {
+// 	return $db->column("post_title", true)->from('posts')
+// 		->limit(4)
+// 		->get();
+// } );
 // print_r($query);
 
-// $select = WPQuery::select("posts.post_type", true)
-// 			->from("posts as posts")
-// 			->join("term_relationships as term_rel")
-// 				->on("posts.ID = term_rel.object_id")
-// 			->where("term_rel.term_taxonomy_id")
-// 				->in(6)
-// 			->and("posts.post_status = %s")
-// 			->get([ 'publish' ]);
+$select = WPQuery::select( function(Select $db) {
+	$db->column("posts.post_title", true)->from("posts as posts");
+	$db->join("term_relationships as term_rel")->on("posts.ID = term_rel.object_id");
+	$db->where("term_rel.term_taxonomy_id")->in(3, 6)->and("posts.post_status = %s");
+	return $db->get([ 'publish' ]);
+} );	
 // print_r($select);
 
-// $insert = WPQuery::insert()
-// 			->into("postmeta")
-// 			->column("post_id, meta_key, meta_value")
-// 			->select("options.option_id, options.option_name, options.option_value", true)
-// 			->from("options as options")
-// 				->where("options.option_name = %s")
-// 			->add( ['start_of_week'] );
+// $insert = WPQuery::insert( function(Insert $db) {
+// 	$db->into("postmeta")
+// 	->insertColumn("post_id, meta_key, meta_value")
+// 	->select("options.option_id, options.option_name, options.option_value", true)
+// 	->from("options as options")
+// 		->where("options.option_name = %s")
+// 	->add( ['start_of_week'] );
+// } );
 // print_r($insert);
 
 // echo "<pre>";
 // print_r(WPQuery::schema('postmeta'));
 // echo "</pre>";
 
-// $update = WPQuery::update("postmeta")
-// 			->set("meta_value = %s")
-// 			->where("meta_key = %s")
-// 			->renovate([ 24, 'start_of_week' ]);
+// $update = WPQuery::update( function(Update $db) {
+// 	return $db->tableName('postmeta')
+// 		->set("meta_value = %s")
+// 		->where("meta_key = %s")
+// 		->renovate([ 24, 'start_of_week' ]);
+// } );
 // print_r($update);
 
-// $delete = WPQuery::delete()
-// 			->from("postmeta as postmeta")
-// 			->where("postmeta.meta_key = %s")
-// 			->remove([ 'start_of_week' ]);
+// $delete = WPQuery::delete( function(Delete $db) {
+// 	return $db->from('postmeta as postmeta')
+// 		->where("postmeta.meta_key = %s")
+// 		->remove([ 'start_of_week' ]);
+// } );
 // print_r($delete);

@@ -9,16 +9,20 @@
  */
 namespace WPQB\QueryBuilder\Add;
 
-use WPQB\QueryBuilder\Get\Select;
+use WPQB\QueryBuilder\BluPrint;
 
 
-class Insert extends Select {
+class Insert extends BluPrint {
 
 	protected static $db;
 	protected static $query_string;
 
 	function __construct($wpdb) {
 		static::$db = $wpdb;
+	}
+
+	private function callback(Insert $db) {
+		return $db;
 	}
 
 	public function into($table_name) {
@@ -29,7 +33,7 @@ class Insert extends Select {
 		return $this;
 	}
 
-	public function column($col_name) {
+	public function insertColumn($col_name) {
 		if ( ! $col_name || ! is_string( $col_name ) ) throw new \Exception('Not a valid query.');
 
 		static::$query_string = static::$query_string . " (" . $col_name . ")";

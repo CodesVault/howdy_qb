@@ -16,7 +16,7 @@ use WPQB\QueryBuilder\Remove\Delete;
 
 
 class WPQuery {
-
+	
 	private static function connect() {
 		global $wpdb;
 		return $wpdb;
@@ -24,47 +24,50 @@ class WPQuery {
 
 	/**
 	 * SELECT statement of mySql query.
+	 *
+	 * @param calllable $query {@see callback()}
 	 * 
-	 * @param string $column
-	 * @param bool $distinct
-	 * 
-	 * @return \WPQB\QueryBuilder\Get\Select
+	 * @return mixed
 	 */
-	public static function select(string $column = '*', bool $distinct = false) {
-		if ( ! $column ) throw new \Exception('Not a valid query.');
-
-		return new Select(static::connect(), $column, $distinct);
+	public static function select(callable $query) {
+		$db = new Select(static::connect());
+		return call_user_func( $query, $db );
 	}
 
 	/**
 	 * INSERT statement of mySql query.
 	 * 
-	 * @return \WPQB\QueryBuilder\Add\Insert
+	 * @param calllable $query {@see callback()}
+	 * 
+	 * @return mixed
 	 */
-	public static function insert() {
-		return new Insert(static::connect());
+	public static function insert(callable $query) {
+		$db = new Insert(static::connect());
+		return call_user_func( $query, $db );
 	}
 
 	/**
 	 * UPDATE statement of mySql query.
 	 * 
-	 * @param string $table_name
+	 * @param calllable $query {@see callback()}
 	 * 
-	 * @return \WPQB\QueryBuilder\Renovate\Update
+	 * @return mixed
 	 */
-	public static function update($table_name) {
-		return new Update(static::connect(), $table_name);
+	public static function update(callable $query) {
+		$db = new Update(static::connect());
+		return call_user_func( $query, $db );
 	}
 
 	/**
 	 * DELETE statement of mySql query.
 	 * 
-	 * @param string $table_name
+	 * @param calllable $query {@see callback()}
 	 * 
-	 * @return \WPQB\QueryBuilder\Remove\Delete
+	 * @return mixed
 	 */
-	public static function delete() {
-		return new Delete(static::connect());
+	public static function delete(callable $query) {
+		$db = new Delete(static::connect());
+		return call_user_func( $query, $db );
 	}
 
 	/**
