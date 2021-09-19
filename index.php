@@ -14,6 +14,7 @@
 
 use WPQB\QueryBuilder\Add\Insert;
 use WPQB\QueryBuilder\Get\Select;
+use WPQB\QueryBuilder\Make\Create;
 use WPQB\QueryBuilder\Remove\Delete;
 use WPQB\QueryBuilder\Renovate\Update;
 use WPQB\QueryBuilder\WPQuery;
@@ -28,12 +29,12 @@ require plugin_dir_path( __FILE__ ) . "vendor/autoload.php";
 // } );
 // print_r($query);
 
-$select = WPQuery::select( function(Select $db) {
-	$db->column("posts.post_title", true)->from("posts as posts");
-	$db->join("term_relationships as term_rel")->on("posts.ID = term_rel.object_id");
-	$db->where("term_rel.term_taxonomy_id")->in(3, 6)->and("posts.post_status = %s");
-	return $db->get([ 'publish' ]);
-} );	
+// $select = WPQuery::select( function(Select $db) {
+// 	$db->column("posts.post_title", true)->from("posts as posts");
+// 	$db->join("term_relationships as term_rel")->on("posts.ID = term_rel.object_id");
+// 	$db->where("term_rel.term_taxonomy_id")->in(3, 6)->and("posts.post_status = %s");
+// 	return $db->get([ 'publish' ]);
+// } );	
 // print_r($select);
 
 // $insert = WPQuery::insert( function(Insert $db) {
@@ -64,3 +65,38 @@ $select = WPQuery::select( function(Select $db) {
 // 		->remove([ 'start_of_week' ]);
 // } );
 // print_r($delete);
+
+// $create = WPQuery::create( function(Create $db) {
+// 	return (
+// 		$db->table('test')
+// 		->increments("ID")->primary_key()
+// 		->varchar("name", 50)
+// 		->make()
+// 	);
+// } );
+// print_r($create);
+
+// $insert = WPQuery::insert( function(Insert $db) {
+// 	$db->into("test")
+// 	->insertColumn("name")
+// 	->value("%s")
+// 	->add([ "Sourav" ]);
+// } );
+// print_r($insert);
+
+// add_action('init', function() {
+	// global $wpdb;
+
+	// $charset_collate = $wpdb->get_charset_collate();
+	// // print_r($charset_collate);
+
+	// // print_r($wpdb->tables);
+
+	// $sql = "CREATE TABLE wp_tests ( 
+	// 	id bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	// 	name varchar(50)
+	// ) $charset_collate";
+
+	// require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+	// dbDelta( $sql );
+// });
