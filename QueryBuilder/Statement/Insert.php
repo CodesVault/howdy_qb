@@ -7,7 +7,7 @@
  * @package    wp_qb
  * @author     abmSourav 
  */
-namespace WPQB\QueryBuilder\Add;
+namespace WPQB\QueryBuilder\Statement;
 
 use WPQB\QueryBuilder\BluPrint;
 

@@ -12,22 +12,21 @@
  * Domain Path:       /languages
  */
 
-use WPQB\QueryBuilder\Add\Insert;
-use WPQB\QueryBuilder\Get\Select;
-use WPQB\QueryBuilder\Make\Create;
-use WPQB\QueryBuilder\Remove\Delete;
-use WPQB\QueryBuilder\Renovate\Update;
+use WPQB\QueryBuilder\Statement\Create;
+use WPQB\QueryBuilder\Statement\Delete;
+use WPQB\QueryBuilder\Statement\Insert;
+use WPQB\QueryBuilder\Statement\Select;
+use WPQB\QueryBuilder\Statement\Update;
 use WPQB\QueryBuilder\WPQuery;
 
 require plugin_dir_path( __FILE__ ) . "vendor/autoload.php";
 
-
-// $query = WPQuery::select( function(Select $db) {
-// 	return $db->column("post_title", true)->from('posts')
-// 		->limit(4)
-// 		->get();
-// } );
-// print_r($query);
+$query = WPQuery::select( function(Select $db) {
+	return $db->column("post_title", true)->from('posts', 'posts')
+		->limit(4)
+		->get();
+} );
+print_r($query);
 
 // $select = WPQuery::select( function(Select $db) {
 // 	$db->column("posts.post_title", true)->from("posts as posts");

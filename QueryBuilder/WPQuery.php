@@ -9,12 +9,11 @@
  */
 namespace WPQB\QueryBuilder;
 
-use WPQB\QueryBuilder\Get\Select;
-use WPQB\QueryBuilder\Add\Insert;
-use WPQB\QueryBuilder\Make\Create;
-use WPQB\QueryBuilder\Renovate\Update;
-use WPQB\QueryBuilder\Remove\Delete;
-
+use WPQB\QueryBuilder\Statement\Create;
+use WPQB\QueryBuilder\Statement\Delete;
+use WPQB\QueryBuilder\Statement\Insert;
+use WPQB\QueryBuilder\Statement\Select;
+use WPQB\QueryBuilder\Statement\Update;
 
 class WPQuery {
 	

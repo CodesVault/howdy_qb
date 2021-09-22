@@ -7,7 +7,7 @@
  * @package    wp_qb
  * @author     abmSourav 
  */
-namespace WPQB\QueryBuilder\Make;
+namespace WPQB\QueryBuilder\Statement;
 
 use WPQB\QueryBuilder\Schema;
 
