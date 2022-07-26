@@ -1,16 +1,17 @@
 {
-    "name": "abmsourav/wp_qb",
-    "license": "MIT",
+    "name": "sourav/wpq",
+    "autoload": {
+        "psr-4": {
+            "CodesVault\\WPqb\\": "src/"
+        }
+    },
     "authors": [
         {
             "name": "AbmSourav",
             "email": "keramotul.islam@gmail.com"
         }
     ],
-    "require": {},
-	"autoload": {
-		"psr-4": {
-			"WPQB\\QueryBuilder\\": "QueryBuilder/"
-		}
-	}
+    "require": {
+        "latitude/latitude": "^4.2"
+    }
 }
