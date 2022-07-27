@@ -17,9 +17,18 @@ class SqlGenerator
             unset( static::$sql['start'] );
         }
         foreach ( static::$sql as $value ) {
+            if ( isset( static::$sql['alias'] ) ) {
+                static::setAlias();
+            }
             $query .= $value . ' ';
         }
         return $query;
+    }
+
+    private static function setAlias()
+    {
+        static::$sql['table_name'] .= ' ' . static::$sql['alias'];
+        unset( static::$sql['alias'] );
     }
 
     private static function setDistinct()

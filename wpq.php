@@ -39,9 +39,12 @@ require_once __DIR__ . '/vendor/autoload.php';
 //         })
 //         ->get();
 
-$data = DB::select('ID', 'post_title')
+$data = DB::select('posts.ID', 'posts.post_title')
         ->from('posts')
-        ->whereIn('ID', 12, 2, 5)
+        ->alias('posts')
+        // ->whereIn('ID', 12, 2, 5)
+        ->orderBy(['post_date', 'post_title'], 'ASC')
+        ->limit(4)
         ->get();
 
 echo '<pre>';

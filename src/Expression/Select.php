@@ -33,6 +33,12 @@ class Select
         return $this;
     }
 
+    public function alias($name): self
+    {
+        $this->sql['alias'] = 'AS ' . $name;
+        return $this;
+    }
+
     public function from(string $table_name): self
     {
         global $wpdb;
@@ -73,23 +79,43 @@ class Select
         return $this;
     }
 
-    public function whereNot($column, string $operator = null, string $value = null): self
+    public function whereNot(string $column, string $operator = null, string $value = null): self
     {
         $this->sql['whereNot'] = 'WHERE NOT ' . $column . ' ' . $operator . ' ?';
         $this->params[] = $value;
         return $this;
     }
 
-    public function andNot($column, string $operator = null, string $value = null): self
+    public function andNot(string $column, string $operator = null, string $value = null): self
     {
         $this->sql['andNot'] = 'AND NOT ' . $column . ' ' . $operator . ' ?';
         $this->params[] = $value;
         return $this;
     }
 
-    public function whereIn($column, ...$value): self
+    public function whereIn(string $column, ...$value): self
     {
         $this->sql['whereIn'] = 'WHERE ' . $column . ' IN (' . implode( ', ', $value ) . ')';
+        return $this;
+    }
+
+    public function orderBy($column, string $sort): self
+    {
+        $col = is_array( $column ) ? implode( ', ', $column ) : $column;
+        $this->sql['orderBy'] = 'ORDER BY ' . $col . ' ' . $sort;
+        return $this;
+    }
+
+    public function groupBy($column): self
+    {
+        $col = is_array( $column ) ? implode( ', ', $column ) : $column;
+        $this->sql['groupBy'] = 'GROUP BY ' . $col;
+        return $this;
+    }
+
+    public function limit(int $count): self
+    {
+        $this->sql['limit'] = 'LIMIT ' . $count;
         return $this;
     }
 
