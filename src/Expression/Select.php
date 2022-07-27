@@ -73,6 +73,26 @@ class Select
         return $this;
     }
 
+    public function whereNot($column, string $operator = null, string $value = null): self
+    {
+        $this->sql['whereNot'] = 'WHERE NOT ' . $column . ' ' . $operator . ' ?';
+        $this->params[] = $value;
+        return $this;
+    }
+
+    public function andNot($column, string $operator = null, string $value = null): self
+    {
+        $this->sql['andNot'] = 'AND NOT ' . $column . ' ' . $operator . ' ?';
+        $this->params[] = $value;
+        return $this;
+    }
+
+    public function whereIn($column, ...$value): self
+    {
+        $this->sql['whereIn'] = 'WHERE ' . $column . ' IN (' . implode( ', ', $value ) . ')';
+        return $this;
+    }
+
     private function fetch($query, array $args = [])
     {
         $conn = $this->db;

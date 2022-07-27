@@ -30,13 +30,18 @@ require_once __DIR__ . '/vendor/autoload.php';
 // $posts->execute();
 // print_r($posts->fetchAll());
 
+// $data = DB::select('ID', 'post_title')
+//         ->distinct()
+//         ->from('posts')
+//         ->where(function($query) {
+//             $query->where('post_type', '=', 'page')
+//                 ->andWhere('post_status', '=', 'publish');
+//         })
+//         ->get();
+
 $data = DB::select('ID', 'post_title')
-        ->distinct()
         ->from('posts')
-        ->where(function($query) {
-            $query->where('post_type', '=', 'page')
-                ->andWhere('post_status', '=', 'publish');
-        })
+        ->whereIn('ID', 12, 2, 5)
         ->get();
 
 echo '<pre>';
