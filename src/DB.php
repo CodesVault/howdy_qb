@@ -2,16 +2,11 @@
 
 namespace CodesVault\WPqb;
 
+use CodesVault\WPqb\Api\SelectInterface;
+
 class DB extends QueryFactory
 {
-    private static $driver = 'pdo';
-
-    public function setDriver($driver)
-    {
-        static::$driver = $driver;
-    }
-
-    public static function select(...$columns)
+    public static function select(...$columns): SelectInterface
     {
         $factory = new self(static::$driver);
         $query = $factory->selectQuery();

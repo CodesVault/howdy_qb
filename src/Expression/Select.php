@@ -2,9 +2,10 @@
 
 namespace CodesVault\WPqb\Expression;
 
+use CodesVault\WPqb\Api\SelectInterface;
 use CodesVault\WPqb\SqlGenerator;
 
-class Select
+class Select implements SelectInterface
 {
     protected $db;
     protected $sql = [];
@@ -33,7 +34,7 @@ class Select
         return $this;
     }
 
-    public function alias($name): self
+    public function alias(string $name): self
     {
         $this->sql['alias'] = 'AS ' . $name;
         return $this;
@@ -128,7 +129,7 @@ class Select
     }
 
     // get data from database
-    public function get()
+    public function get(): mixed
     {
         $this->start();
         $query = SqlGenerator::run($this->sql);
