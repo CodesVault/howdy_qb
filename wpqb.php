@@ -1,6 +1,6 @@
 <?php
 /**
- * @package wpq
+ * @package wpqb
  *
  * Plugin Name: WP Query Builder
  * Plugin URI: 
@@ -9,7 +9,7 @@
  * Author: CodesVault
  * Author URI: https://github.com/CodesVault
  * License: GPLv2 or later
- * Text Domain: wpq
+ * Text Domain: wpqb
  */
 
 if ( ! defined( 'ABSPATH' ) ) die();
@@ -47,9 +47,9 @@ $data = DB::select('posts.ID', 'posts.post_title')
         ->limit(4)
         ->get();
 
-echo '<pre>';
-print_r($data);
-echo '</pre>';
+// echo '<pre>';
+// print_r($data);
+// echo '</pre>';
 
 // $host = $_SERVER['HTTP_HOST'];
 // $dns =  'mysql:host=' . $host . ';dbname=' . $wpdb->dbname;
