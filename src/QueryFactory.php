@@ -29,7 +29,7 @@ class QueryFactory
         return new Select($this->db);
     }
 
-    protected function insertQuery(string $table_name, array $data): InsertInterface
+    protected function insertQuery(string $table_name, array $data)
     {
         return new Insert($this->db, $table_name, $data);
     }

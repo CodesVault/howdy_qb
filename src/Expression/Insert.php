@@ -5,7 +5,7 @@ namespace CodesVault\WPqb\Expression;
 use CodesVault\WPqb\Api\InsertInterface;
 use CodesVault\WPqb\SqlGenerator;
 
-class Insert implements InsertInterface
+class Insert
 {
     protected $db;
     protected $data = [];

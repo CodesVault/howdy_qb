@@ -19,6 +19,6 @@ class DB extends QueryFactory
     {
         $factory = new self(static::$driver);
         $insert = $factory->insertQuery($table_name, $data);
-        return $insert;
+        return $factory;
     }
 }
