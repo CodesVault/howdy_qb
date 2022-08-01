@@ -51,4 +51,24 @@ class SqlGenerator
             unset( static::$sql['distinct'] );
         }
     }
+
+    public static function create(array $sql)
+    {
+        $query = '';
+        if (isset($sql['start'])) {
+            $query .= $sql['start'] . ' ';
+            unset($sql['start']);
+        }
+        return $query;
+        foreach ($sql as $expression) {
+            if (is_array($expression)) {
+                foreach ($expression as $column) {
+                    $query .= $column . ' ';
+                }
+            } else {
+                $query .= $expression . ' ';
+            }
+        }
+        return $query;
+    }
 }

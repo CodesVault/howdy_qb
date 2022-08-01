@@ -11,6 +11,7 @@ class Create implements CreateInterface
     public $sql = [];
     protected $params = [];
     protected $column_name;
+    public $test;
 
     public function __construct($db, string $table_name)
     {
@@ -121,22 +122,13 @@ class Create implements CreateInterface
         return $wpdb->prefix . $this->table_name;
     }
 
-    private function fetch($query, array $args = [])
-    {
-        $conn = $this->db;
-        $data = $conn->prepare($query);
-        $data->execute($args);
-        return $data->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
-    // get data from database
-    public function get(): mixed
+    public function execute()
     {
         $this->start();
-        $query = SqlGenerator::run($this->sql);
-        // return $query;
+        $query = SqlGenerator::create($this->sql);
+        return $query;
 
-        $data = $this->fetch($query, $this->params);
-        return $data;
+        $conn = $this->db;
+        $conn->exec($query);
     }
 }
