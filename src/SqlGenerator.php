@@ -25,6 +25,19 @@ class SqlGenerator
         return $query;
     }
 
+    public static function insert(array $sql)
+    {
+        $query = '';
+        if (isset($sql['start'])) {
+            $query .= $sql['start'] . ' ';
+            unset($sql['start']);
+        }
+        foreach ($sql as $value) {
+            $query .= $value . ' ';
+        }
+        return $query;
+    }
+
     private static function setAlias()
     {
         static::$sql['table_name'] .= ' ' . static::$sql['alias'];

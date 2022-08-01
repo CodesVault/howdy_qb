@@ -100,10 +100,10 @@ class Select implements SelectInterface
         return $this;
     }
 
-    public function orderBy($column, string $sort): self
+    public function orderBy($column, string $sortType): self
     {
         $col = is_array( $column ) ? implode( ', ', $column ) : $column;
-        $this->sql['orderBy'] = 'ORDER BY ' . $col . ' ' . $sort;
+        $this->sql['orderBy'] = 'ORDER BY ' . $col . ' ' . $sortType;
         return $this;
     }
 
