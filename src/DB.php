@@ -21,4 +21,11 @@ class DB extends QueryFactory
         $insert = $factory->insertQuery($table_name, $data);
         return $factory;
     }
+
+    public static function create(string $table_name)
+    {
+        $factory = new self(static::$driver);
+        $create = $factory->createQuery($table_name);
+        return $create;
+    }
 }

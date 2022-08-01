@@ -4,6 +4,7 @@ namespace CodesVault\WPqb;
 
 use CodesVault\WPqb\Api\InsertInterface;
 use CodesVault\WPqb\Api\SelectInterface;
+use CodesVault\WPqb\Expression\Create;
 use CodesVault\WPqb\Expression\Insert;
 use CodesVault\WPqb\Expression\Select;
 
@@ -32,5 +33,10 @@ class QueryFactory
     protected function insertQuery(string $table_name, array $data)
     {
         return new Insert($this->db, $table_name, $data);
+    }
+
+    protected function createQuery(string $table_name)
+    {
+        return new Create($this->db, $table_name);
     }
 }

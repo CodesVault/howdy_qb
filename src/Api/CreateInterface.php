@@ -2,7 +2,7 @@
 
 namespace CodesVault\WPqb\Api;
 
-interface InsertInterface
+interface CreateInterface
 {
 
 }
