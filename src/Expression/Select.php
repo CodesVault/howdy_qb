@@ -58,23 +58,15 @@ class Select implements SelectInterface
         return $this;
     }
 
-    public function andWhere($column, string $operator = null, string $value = null): self
+    public function andWhere(string $column, string $operator = null, string $value = null): self
     {
-        if ( is_callable( $column ) ) {
-            call_user_func( $column, $this );
-            return $this;
-        }
         $this->sql['andWhere'] = 'AND ' . $column . ' ' . $operator . ' ?';
         $this->params[] = $value;
         return $this;
     }
 
-    public function orWhere($column, string $operator = null, string $value = null): self
+    public function orWhere(string $column, string $operator = null, string $value = null): self
     {
-        if ( is_callable( $column ) ) {
-            call_user_func( $column, $this );
-            return $this;
-        }
         $this->sql['orWhere'] = 'OR ' . $column . ' ' . $operator . ' ?';
         $this->params[] = $value;
         return $this;

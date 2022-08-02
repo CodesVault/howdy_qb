@@ -12,11 +12,11 @@ interface SelectInterface
 
     function from(string $table_name): self;
 
-    function where($column, ?string $operator, ?string $value): self;
+    function where($column, ?string $operator = null, ?string $value = null): self;
 
-    function andWhere($column, ?string $operator, ?string $value): self;
+    function andWhere(string $column, ?string $operator, ?string $value): self;
 
-    function orWhere($column, ?string $operator, ?string $value): self;
+    function orWhere(string $column, ?string $operator, ?string $value): self;
 
     function whereNot(string $column, ?string $operator, ?string $value): self;
 
