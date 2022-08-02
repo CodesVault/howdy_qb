@@ -1,5 +1,7 @@
-# wp_qb
-Database Query builder for WordPress
+# WP Query Builder
+Relational Database Query builder for WordPress
+
+<br>
 
 ## Dev Envirenment Setup
 
