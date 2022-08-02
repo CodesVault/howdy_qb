@@ -3,7 +3,8 @@ Relational Database Query builder for WordPress
 
 <br/>
 
-## Dev Envirenment Setup
+## Dev Envirenment Setup for Contributors
+Want to contribute to this package? Please follow the steps below.
 
 <ul>
     <li>Create a local WordPress envirenment setup.</li>
