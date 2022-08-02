@@ -11,6 +11,15 @@ final class Connect
         $dns =  'mysql:host=' . $host . ';dbname=' . $wpdb->dbname;
         $user = $wpdb->dbuser;
         $password = $wpdb->dbpassword;
-        return new \PDO($dns, $user, $password);
+
+        try {
+            return new \PDO($dns, $user, $password);
+        } catch (\PDOException $exception) {
+            $error_msg = sprintf(
+                "<strong style='color: red;'>%s</strong>",
+                $exception->getMessage()
+            );
+            throw new \Exception( $error_msg );
+        }
     }
 }

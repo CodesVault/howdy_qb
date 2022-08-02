@@ -11,7 +11,6 @@ class Create implements CreateInterface
     public $sql = [];
     protected $params = [];
     protected $column_name;
-    public $test;
 
     public function __construct($db, string $table_name)
     {
@@ -111,6 +110,13 @@ class Create implements CreateInterface
         return $this;
     }
 
+    public function default($value): self
+    {
+        $val = is_string($value) ? "'$value'" : $value;
+        $this->sql['columns'][$this->column_name]['default'] = "DEFAULT $val";
+        return $this;
+    }
+
     private function start()
     {
         $this->sql['start'] = 'CREATE TABLE';
@@ -126,9 +132,18 @@ class Create implements CreateInterface
     {
         $this->start();
         $query = SqlGenerator::create($this->sql);
-        return $query;
+        // return $query;
 
         $conn = $this->db;
-        $conn->exec($query);
+
+        try {
+            $conn->exec($query);
+        } catch (\PDOException $exception) {
+            $error_msg = sprintf(
+                "<strong style='color: red;'>%s</strong>",
+                $exception->getMessage()
+            );
+            throw new \Exception( $error_msg );
+        }
     }
 }

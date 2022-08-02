@@ -57,18 +57,27 @@ class SqlGenerator
         $query = '';
         if (isset($sql['start'])) {
             $query .= $sql['start'] . ' ';
-            unset($sql['start']);
         }
-        return $query;
-        foreach ($sql as $expression) {
+        if (isset($sql['table_name'])) {
+            $query .= $sql['table_name'] . ' ';
+        }
+
+        $query .= '(';
+        foreach ($sql as $ex => $expression) {
+            if ( $ex == 'start' || $ex == 'table_name' ) continue;
+
             if (is_array($expression)) {
-                foreach ($expression as $column) {
-                    $query .= $column . ' ';
+                foreach ($expression as $name => $column) {
+                    $expression[$name] = $name . ' ' . implode(' ', $column);
                 }
+                $query .= implode(', ', $expression);
             } else {
-                $query .= $expression . ' ';
+                $query .= ', ' . $expression . ' ';
             }
         }
+        $query .= ')';
+        // dump($query);
+
         return $query;
     }
 }
