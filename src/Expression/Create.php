@@ -86,6 +86,12 @@ class Create implements CreateInterface
         return $this;
     }
 
+    public function index(array $columns): self
+    {
+        $this->sql['index'] = "INDEX (" . implode(',', $columns) . ")";
+        return $this;
+    }
+
     public function date(): self
     {
         $this->sql['columns'][$this->column_name]['date'] = "DATE";
@@ -135,7 +141,6 @@ class Create implements CreateInterface
         // return $query;
 
         $conn = $this->db;
-
         try {
             $conn->exec($query);
         } catch (\PDOException $exception) {
@@ -143,7 +148,7 @@ class Create implements CreateInterface
                 "<strong style='color: red;'>%s</strong>",
                 $exception->getMessage()
             );
-            throw new \Exception( $error_msg );
+            throw new \Exception($error_msg);
         }
     }
 }

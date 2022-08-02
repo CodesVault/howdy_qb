@@ -4,22 +4,14 @@ namespace CodesVault\WPqb;
 
 class SqlGenerator
 {
-    protected static $sql;
-
-    public static function run($sql)
+    public static function select(array $sql)
     {
-        static::$sql = $sql;
-
         $query = '';
-        if ( isset( $sql['start'] ) ) {
-            static::setDistinct();
-            $query .= static::$sql['start'] . ' ';
-            unset( static::$sql['start'] );
+        if (isset($sql['start'])) {
+            $query .= $sql['start'] . ' ';
         }
-        foreach ( static::$sql as $value ) {
-            if ( isset( static::$sql['alias'] ) ) {
-                static::setAlias();
-            }
+        foreach ($sql as $key => $value) {
+            if ($key == 'start') continue;
             $query .= $value . ' ';
         }
         return $query;
@@ -36,20 +28,6 @@ class SqlGenerator
             $query .= $value . ' ';
         }
         return $query;
-    }
-
-    private static function setAlias()
-    {
-        static::$sql['table_name'] .= ' ' . static::$sql['alias'];
-        unset( static::$sql['alias'] );
-    }
-
-    private static function setDistinct()
-    {
-        if ( isset( static::$sql['distinct'] ) ) {
-            static::$sql['start'] = static::$sql['start'] . ' ' . static::$sql['distinct'];
-            unset( static::$sql['distinct'] );
-        }
     }
 
     public static function create(array $sql)
@@ -76,7 +54,6 @@ class SqlGenerator
             }
         }
         $query .= ')';
-        // dump($query);
 
         return $query;
     }

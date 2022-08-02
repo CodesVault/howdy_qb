@@ -120,19 +120,45 @@ class Select implements SelectInterface
         return $this;
     }
 
+    private function setAlias()
+    {
+        if (! isset($this->sql['alias'])) return;
+        
+        $this->sql['table_name'] .= ' ' . $this->sql['alias'];
+        unset($this->sql['alias']);
+    }
+
+    private function setDistinct()
+    {
+        if (! isset($this->sql['distinct'])) return;
+
+        $this->sql['start'] = $this->sql['start'] . ' ' . $this->sql['distinct'];
+        unset($this->sql['distinct']);
+    }
+
     private function fetch($query, array $args = [])
     {
         $conn = $this->db;
-        $data = $conn->prepare($query);
-        $data->execute($args);
-        return $data->fetchAll(\PDO::FETCH_ASSOC);
+        try {
+            $data = $conn->prepare($query);
+            $data->execute($args);
+            return $data->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Exception $exception) {
+            $error_msg = sprintf(
+                "<strong style='color: red;'>%s</strong>",
+                $exception->getMessage()
+            );
+            throw new \Exception($error_msg);
+        }
     }
 
     // get data from database
     public function get(): mixed
     {
         $this->start();
-        $query = SqlGenerator::run($this->sql);
+        $this->setAlias();
+        $this->setDistinct();
+        $query = SqlGenerator::select($this->sql);
         // return $query;
 
         $data = $this->fetch($query, $this->params);

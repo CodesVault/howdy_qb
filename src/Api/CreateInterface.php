@@ -6,23 +6,25 @@ interface CreateInterface
 {
     function column(string $column_name): self;
 
-    function int(int $size): self;
+    function int(int $size = 255): self;
 
-    function bigInt(int $size): self;
+    function bigInt(int $size = 255): self;
 
-    function double(int $size, int $d): self;
+    function double(int $size = 255, int $d = 2): self;
 
     function boolean(): self;
 
-    function string(int $size): self;
+    function string(int $size = 255): self;
 
-    function text(int $size): self;
+    function text(int $size = 10000): self;
 
     function longText(int $size): self;
 
     function required(): self;
 
-    function primary($columns): self;
+    function primary($columns = []): self;
+
+    function index(array $columns): self;
 
     function date(): self;
 
