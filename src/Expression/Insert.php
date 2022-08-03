@@ -34,8 +34,16 @@ class Insert
         $query = SqlGenerator::insert($this->sql);
 
         $conn = $this->db;
-        $data = $conn->prepare($query);
-        $data->execute($this->params);
+        try {
+            $data = $conn->prepare($query);
+            return $data->execute($this->params);
+        } catch (\Exception $exception) {
+            $error_msg = sprintf(
+                "<strong style='color: red;'>%s</strong>",
+                $exception->getMessage()
+            );
+            throw new \Exception($error_msg);
+        }
     }
 
     private function start()
