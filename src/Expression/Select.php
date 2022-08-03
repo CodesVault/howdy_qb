@@ -112,6 +112,40 @@ class Select implements SelectInterface
         return $this;
     }
 
+    private function setJoin($table_name, string $col1, string $col2, string $joinType = 'JOIN'): self
+    {
+        global $wpdb;
+        $table_names = [];
+        if (is_array($table_name)) {
+            foreach ($table_name as $table) {
+                $table_names[] = $wpdb->prefix . $table;
+            }
+        } else {
+            $table_names[] = $wpdb->prefix . $table_name;
+        }
+
+        $table = '';
+        if (count($table_names) > 1) {
+            $table = '(' . implode(',', $table_names) . ')';
+        } else {
+            $table = $table_names[0];
+        }
+
+        $this->sql['innerJoin'] = $joinType . ' ' . $table;
+        $this->sql['innerJoin'] .= ' ON ' . $col1 . ' = ' . $col2;
+        return $this;
+    }
+
+    public function join($table_name, string $col1, string $col2): self
+    {
+        return $this->setJoin($table_name, $col1, $col2);
+    }
+
+    public function innerJoin($table_name, string $col1, string $col2): self
+    {
+        return $this->setJoin($table_name, $col1, $col2, 'INNER JOIN');
+    }
+
     private function setAlias()
     {
         if (! isset($this->sql['alias'])) return;

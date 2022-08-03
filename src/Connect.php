@@ -7,10 +7,12 @@ final class Connect
     public static function pdo()
     {
         global $wpdb;
-        $host = $_SERVER['HTTP_HOST'];
-        $dns =  'mysql:host=' . $host . ';dbname=' . $wpdb->dbname;
-        $user = $wpdb->dbuser;
-        $password = $wpdb->dbpassword;
+
+        $host = htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES);
+        $dbname = htmlspecialchars($wpdb->dbname, ENT_QUOTES);
+        $user = htmlspecialchars($wpdb->dbuser, ENT_QUOTES);
+        $password = htmlspecialchars($wpdb->dbpassword, ENT_QUOTES);
+        $dns =  "mysql:host=$host;dbname=$dbname";
 
         try {
             return new \PDO($dns, $user, $password);
