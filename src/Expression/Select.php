@@ -146,6 +146,16 @@ class Select implements SelectInterface
         return $this->setJoin($table_name, $col1, $col2, 'INNER JOIN');
     }
 
+    public function leftJoin($table_name, string $col1, string $col2): self
+    {
+        return $this->setJoin($table_name, $col1, $col2, 'LEFT JOIN');
+    }
+
+    public function rightJoin($table_name, string $col1, string $col2): self
+    {
+        return $this->setJoin($table_name, $col1, $col2, 'RIGHT JOIN');
+    }
+
     private function setAlias()
     {
         if (! isset($this->sql['alias'])) return;
