@@ -1,5 +1,8 @@
 # WP Query Builder
-Relational Database Query builder for WordPress
+<p>
+Relational Database Query builder for WordPress.
+WP Query Builder uses <code>PDO</code> for database queries. It has <strong>zero dependencies</strong> with third-party query builders or any other composer library.
+</p>
 
 <br/>
 
@@ -105,7 +108,7 @@ DB::select('posts.post_title')
 <br>
 
 <p>
-Expressions also can be exicuted with one instence of <code>DB</code> class.
+Expressions also can be exicuted with one instence of <code>DB</code> class. By doing this database connection will be stablished only once.
 </p>
 
 ``` php
