@@ -136,22 +136,22 @@ class Select implements SelectInterface
         return $this;
     }
 
-    public function join($table_name, string $col1, string $col2): self
+    public function join($table_name, string $col1 = null, string $col2 = null): self
     {
         return $this->setJoin($table_name, $col1, $col2);
     }
 
-    public function innerJoin($table_name, string $col1, string $col2): self
+    public function innerJoin($table_name, string $col1 = null, string $col2 = null): self
     {
         return $this->setJoin($table_name, $col1, $col2, 'INNER JOIN');
     }
 
-    public function leftJoin($table_name, string $col1, string $col2): self
+    public function leftJoin($table_name, string $col1 = null, string $col2 = null): self
     {
         return $this->setJoin($table_name, $col1, $col2, 'LEFT JOIN');
     }
 
-    public function rightJoin($table_name, string $col1, string $col2): self
+    public function rightJoin($table_name, string $col1 = null, string $col2 = null): self
     {
         return $this->setJoin($table_name, $col1, $col2, 'RIGHT JOIN');
     }

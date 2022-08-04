@@ -22,7 +22,7 @@ interface SelectInterface
      *
      * @return CodesVault\WPqb\Api\SelectInterface
      */
-    function join($table_name, string $col1, string $col2): self;
+    function join($table_name, string $col1 = null, string $col2 = null): self;
 
     /**
      * INNER JOIN table(s) ON condition of
@@ -34,7 +34,7 @@ interface SelectInterface
      *
      * @return CodesVault\WPqb\Api\SelectInterface
      */
-    function innerJoin($table_name, string $col1, string $col2): self;
+    function innerJoin($table_name, string $col1 = null, string $col2 = null): self;
 
     /**
      * LEFT JOIN table(s) ON condition of
@@ -46,7 +46,7 @@ interface SelectInterface
      *
      * @return CodesVault\WPqb\Api\SelectInterface
      */
-    function leftJoin($table_name, string $col1, string $col2): self;
+    function leftJoin($table_name, string $col1 = null, string $col2 = null): self;
 
     /**
      * RIGHT JOIN table(s) ON condition of
@@ -58,7 +58,7 @@ interface SelectInterface
      *
      * @return CodesVault\WPqb\Api\SelectInterface
      */
-    function rightJoin($table_name, string $col1, string $col2): self;
+    function rightJoin($table_name, string $col1 = null, string $col2 = null): self;
 
     function where($column, ?string $operator = null, ?string $value = null): self;
 
