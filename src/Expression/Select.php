@@ -19,12 +19,31 @@ class Select implements SelectInterface
 
     private function start()
     {
-        $this->sql['start'] = 'SELECT';
+        $this->sql['start']['select'] = 'SELECT';
+    }
+
+    private function setStartExpression()
+    {
+        $sql = '';
+        if (isset($this->sql['start']['select'])) {
+            $sql .= 'SELECT ';
+        }
+        if (isset($this->sql['start']['distinct'])) {
+            $sql .= 'DISTINCT ';
+        }
+        if (isset($this->sql['columns'])) {
+            $sql .= $this->sql['columns'];
+            unset($this->sql['columns']);
+        }
+        if (isset($this->sql['start']['count'])) {
+            $sql .= ', ' . $this->sql['start']['count'];
+        }
+        return $this->sql['start'] = $sql;
     }
 
     public function distinct(): self
     {
-        $this->sql['distinct'] = 'DISTINCT';
+        $this->sql['start']['distinct'] = 'DISTINCT';
         return $this;
     }
 
@@ -112,7 +131,14 @@ class Select implements SelectInterface
         return $this;
     }
 
-    private function setJoin($table_name, string $col1, string $col2, string $joinType = 'JOIN'): self
+    public function count(string $column, string $alias = ''): self
+    {
+        $alias = $alias ? ' ' . $alias : '';
+        $this->sql['start']['count'] = 'COUNT(' . $column . ')' . $alias;
+        return $this;
+    }
+
+    private function setJoin($table_name, string $col1 = null, string $col2 = null, string $joinType = 'JOIN'): self
     {
         global $wpdb;
         $table_names = [];
@@ -131,8 +157,10 @@ class Select implements SelectInterface
             $table = $table_names[0];
         }
 
-        $this->sql['innerJoin'] = $joinType . ' ' . $table;
-        $this->sql['innerJoin'] .= ' ON ' . $col1 . ' = ' . $col2;
+        $this->sql['join'] = $joinType . ' ' . $table;
+        if ($col1 && $col2) {
+            $this->sql['join'] .= ' ON ' . $col1 . ' = ' . $col2;
+        }
         return $this;
     }
 
@@ -164,14 +192,6 @@ class Select implements SelectInterface
         unset($this->sql['alias']);
     }
 
-    private function setDistinct()
-    {
-        if (! isset($this->sql['distinct'])) return;
-
-        $this->sql['start'] = $this->sql['start'] . ' ' . $this->sql['distinct'];
-        unset($this->sql['distinct']);
-    }
-
     private function fetch($query, array $args = [])
     {
         $conn = $this->db;
@@ -193,9 +213,9 @@ class Select implements SelectInterface
     {
         $this->start();
         $this->setAlias();
-        $this->setDistinct();
+        $this->setStartExpression();
         $query = SqlGenerator::select($this->sql);
-        // return $query;
+        // return dump($query);
 
         $data = $this->fetch($query, $this->params);
         return $data;

@@ -64,7 +64,8 @@ DB::select('qb.ID', 'qb.name, qb.email')
     ->groupBy('name')
     ->get();
 
-// where clouse
+
+// *** where clouse
 $result =
 DB::select('posts.ID', 'posts.post_title')
     ->distinct()
@@ -82,6 +83,22 @@ DB::select('posts.ID', 'posts.post_title')
             ->andWhere('posts.post_type', '=', 'page');
     })
     ->orderBy('post_title', 'DESC')
+    ->get();
+
+
+// *** JOIN
+DB::select('users.display_name name')
+    ->count('posts.ID', 'posts')
+    ->from('users users')
+    ->join('posts posts')
+    ->where('posts.post_status', '=', 'publish')
+    ->andWhere('posts.post_type', '=', 'post')
+    ->get();
+
+DB::select('posts.post_title')
+    ->from('posts posts')
+    ->innerJoin('term_relationships term_rel', 'posts.ID', 'term_rel.object_id')
+    ->where('posts.post_status', '=', 'publish')
     ->get();
 ```
 

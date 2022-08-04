@@ -14,7 +14,7 @@ class SqlGenerator
             if ($key == 'start') continue;
             $query .= $value . ' ';
         }
-        return $query;
+        return trim($query);
     }
 
     public static function insert(array $sql)
@@ -27,7 +27,7 @@ class SqlGenerator
         foreach ($sql as $value) {
             $query .= $value . ' ';
         }
-        return $query;
+        return trim($query);
     }
 
     public static function create(array $sql)
@@ -55,6 +55,6 @@ class SqlGenerator
         }
         $query .= ')';
 
-        return $query;
+        return trim($query);
     }
 }
