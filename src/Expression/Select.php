@@ -11,18 +11,21 @@ class Select implements SelectInterface
     protected $sql = [];
     protected $params = [];
     protected $table_name;
+    protected $wpdb_object;
 
     public function __construct($db)
     {
         $this->db = $db;
+        global $wpdb;
+        $this->wpdb_object = $wpdb;
     }
 
-    private function start()
+    protected function start()
     {
         $this->sql['start']['select'] = 'SELECT';
     }
 
-    private function setStartExpression()
+    protected function setStartExpression()
     {
         $sql = '';
         if (isset($this->sql['start']['select'])) {
@@ -61,8 +64,7 @@ class Select implements SelectInterface
 
     public function from(string $table_name): self
     {
-        global $wpdb;
-        $this->sql['table_name'] = 'FROM ' . $wpdb->prefix . $table_name;
+        $this->sql['table_name'] = 'FROM ' . $this->wpdb_object->prefix . $table_name;
         return $this;
     }
 
@@ -146,14 +148,13 @@ class Select implements SelectInterface
 
     private function setJoin($table_name, string $col1 = null, string $col2 = null, string $joinType = 'JOIN'): self
     {
-        global $wpdb;
         $table_names = [];
         if (is_array($table_name)) {
             foreach ($table_name as $table) {
-                $table_names[] = $wpdb->prefix . $table;
+                $table_names[] = $this->wpdb_object->prefix . $table;
             }
         } else {
-            $table_names[] = $wpdb->prefix . $table_name;
+            $table_names[] = $this->wpdb_object->prefix . $table_name;
         }
 
         $table = '';
@@ -190,7 +191,7 @@ class Select implements SelectInterface
         return $this->setJoin($table_name, $col1, $col2, 'RIGHT JOIN');
     }
 
-    private function setAlias()
+    protected function setAlias()
     {
         if (! isset($this->sql['alias'])) return;
         

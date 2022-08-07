@@ -2,9 +2,17 @@
     "name": "codesvault/wpqb",
     "description": "WordPress Database Query Builder",
     "version": "0.0.1",
+    "scripts": {
+        "test": "phpunit"
+    },
     "autoload": {
         "psr-4": {
             "CodesVault\\WPqb\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CodesVault\\WPqb\\Tests\\": "tests/"
         }
     },
     "authors": [
@@ -13,5 +21,8 @@
             "email": "keramotul.islam@gmail.com"
         }
     ],
-    "license": "MIT"
+    "license": "MIT",
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
 }
