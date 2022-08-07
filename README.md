@@ -75,6 +75,7 @@ DB::select('posts.ID', 'posts.post_title')
     ->from('posts posts')
     ->where('posts.post_status', '=', 'publish')
     ->orderBy('post_title', 'DESC')
+    ->limit(10)->offset(2)
     ->get();
 
 $result =
