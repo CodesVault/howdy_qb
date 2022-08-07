@@ -11,11 +11,14 @@ class Create implements CreateInterface
     public $sql = [];
     protected $params = [];
     protected $column_name;
+    protected $wpdb_object;
 
     public function __construct($db, string $table_name)
     {
+        global $wpdb;
         $this->db = $db;
         $this->table_name = $table_name;
+        $this->wpdb_object = $wpdb;
 
         $this->start();
         $this->sql['table_name'] = $this->get_table_name();
@@ -123,15 +126,14 @@ class Create implements CreateInterface
         return $this;
     }
 
-    private function start()
+    protected function start()
     {
         $this->sql['start'] = 'CREATE TABLE';
     }
 
-    private function get_table_name()
+    protected function get_table_name()
     {
-        global $wpdb;
-        return $wpdb->prefix . $this->table_name;
+        return $this->wpdb_object->prefix . $this->table_name;
     }
 
     public function execute()
