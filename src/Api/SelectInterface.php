@@ -78,6 +78,8 @@ interface SelectInterface
 
     function limit(int $count): self;
 
+    function offset(int $count): self;
+
     function count(string $column, string $alias = ''): self;
 
     function get(): mixed;

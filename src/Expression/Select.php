@@ -131,6 +131,12 @@ class Select implements SelectInterface
         return $this;
     }
 
+    public function offset(int $count): self
+    {
+        $this->sql['offset'] = 'OFFSET ' . $count;
+        return $this;
+    }
+
     public function count(string $column, string $alias = ''): self
     {
         $alias = $alias ? ' ' . $alias : '';
