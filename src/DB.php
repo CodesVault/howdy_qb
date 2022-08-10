@@ -4,6 +4,7 @@ namespace CodesVault\WPqb;
 
 use CodesVault\WPqb\Api\CreateInterface;
 use CodesVault\WPqb\Api\SelectInterface;
+use CodesVault\WPqb\Api\UpdateInterface;
 
 class DB extends QueryFactory
 {
@@ -29,7 +30,7 @@ class DB extends QueryFactory
         return $create;
     }
 
-    public static function update(string $table_name, array $data)
+    public static function update(string $table_name, array $data): UpdateInterface
     {
         $factory = new self(static::$driver);
         $update = $factory->updateQuery($table_name, $data);

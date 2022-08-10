@@ -2,9 +2,10 @@
 
 namespace CodesVault\WPqb\Statement;
 
+use CodesVault\WPqb\Api\UpdateInterface;
 use CodesVault\WPqb\SqlGenerator;
 
-class Update
+class Update implements UpdateInterface
 {
     protected $db;
     protected $data = [];
