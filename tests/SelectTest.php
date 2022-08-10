@@ -3,7 +3,7 @@
 namespace CodesVault\WPqb\Tests;
 
 use PHPUnit\Framework\TestCase;
-use CodesVault\WPqb\Tests\Expression\SelectApi;
+use CodesVault\WPqb\Tests\Statement\SelectApi;
 
 class SelectTest extends TestCase
 {

@@ -2,11 +2,10 @@
 
 namespace CodesVault\WPqb;
 
-use CodesVault\WPqb\Api\InsertInterface;
 use CodesVault\WPqb\Api\SelectInterface;
-use CodesVault\WPqb\Expression\Create;
-use CodesVault\WPqb\Expression\Insert;
-use CodesVault\WPqb\Expression\Select;
+use CodesVault\WPqb\Statement\Create;
+use CodesVault\WPqb\Statement\Insert;
+use CodesVault\WPqb\Statement\Select;
 
 class QueryFactory
 {

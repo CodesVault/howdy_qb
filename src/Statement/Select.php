@@ -1,6 +1,6 @@
 <?php
 
-namespace CodesVault\WPqb\Expression;
+namespace CodesVault\WPqb\Statement;
 
 use CodesVault\WPqb\Api\SelectInterface;
 use CodesVault\WPqb\SqlGenerator;

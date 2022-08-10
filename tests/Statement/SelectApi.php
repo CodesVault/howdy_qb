@@ -1,8 +1,8 @@
 <?php
 
-namespace CodesVault\WPqb\Tests\Expression;
+namespace CodesVault\WPqb\Tests\Statement;
 
-use CodesVault\WPqb\Expression\Select;
+use CodesVault\WPqb\Statement\Select;
 use CodesVault\WPqb\SqlGenerator;
 use PHPUnit\Framework\TestCase;
 

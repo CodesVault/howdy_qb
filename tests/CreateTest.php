@@ -3,7 +3,7 @@
 namespace CodesVault\WPqb\Tests;
 
 use PHPUnit\Framework\TestCase;
-use CodesVault\WPqb\Tests\Expression\CreateApi;
+use CodesVault\WPqb\Tests\Statement\CreateApi;
 
 class CreateTest extends TestCase
 {
