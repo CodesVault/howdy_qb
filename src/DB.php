@@ -28,4 +28,11 @@ class DB extends QueryFactory
         $create = $factory->createQuery($table_name);
         return $create;
     }
+
+    public static function update(string $table_name, array $data)
+    {
+        $factory = new self(static::$driver);
+        $update = $factory->updateQuery($table_name, $data);
+        return $update;
+    }
 }

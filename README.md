@@ -45,7 +45,7 @@ DB::create('querybuilder')
 
 <br/>
 
-### Insert Data
+### Insert Statement
 ``` php
 DB::insert('querybuilder', [
     [
@@ -57,7 +57,21 @@ DB::insert('querybuilder', [
 
 <br/>
 
-### Select Data
+### Update Statement
+
+``` php
+DB::update('querybuilders', [
+    'name' => 'Keramot UL',
+    'email' => 'keramotul.islam@gmail.com'
+])
+->where('ID', '=', 10)
+->andWhere('name', '=', 'Abm Sourav')
+->execute();
+```
+
+<br>
+
+### Select Statement
 
 ``` php
 $result =
