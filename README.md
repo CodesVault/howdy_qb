@@ -13,19 +13,19 @@ Want to contribute to this package? Please follow the steps below.
     <li>Create a local WordPress envirenment setup.</li>
     <li>Create a basic plugin.</li>
     <li>Run <code>composer init</code> into the plugin.</li>
-    <li>Clone <code>git@github.com:CodesVault/wp_querybuilder.git</code> into vendor folder.</li>
+    <li>Clone <code>git@github.com:CodesVault/howdy_qb.git</code> into plugin folder.</li>
     <li>
         Add repository for local package in plugin's <code>composer.json</code>.
         <pre>
         "repositories": [
             {
                 "type": "path",
-                "url": "./vendor/wp_querybuilder"
+                "url": "./howdy_qb"
             }
         ],
         </pre>
     </li>
-    <li>Require this package. <code>composer require "codesvault/wpqb @dev"</code></li>
+    <li>Require this package. <code>composer require "codesvault/howdy-qb @dev"</code></li>
 </ul>
 
 <br/>
@@ -118,6 +118,25 @@ DB::select('posts.post_title')
     ->innerJoin('term_relationships term_rel', 'posts.ID', 'term_rel.object_id')
     ->where('posts.post_status', '=', 'publish')
     ->get();
+```
+
+<br>
+
+### Delete Statement
+
+``` php
+// delete one row
+DB::delete('posts')
+    ->where('ID', '=', 3)
+    ->execute();
+
+// delete all records
+DB::delete('posts')->execute();
+
+// drop table
+DB::delete('posts')
+    ->drop()
+    ->execute();
 ```
 
 <br>
