@@ -73,4 +73,21 @@ class SqlGenerator
         }
         return trim($query);
     }
+
+    public static function delete(array $sql)
+    {
+        $query = '';
+        if (isset($sql['start'])) {
+            $query .= $sql['start'] . ' ';
+        }
+        if (isset($sql['drop'])) {
+            $query = $sql['drop'] . ' ';
+            return trim($query);
+        }
+        foreach ($sql as $key => $value) {
+            if ($key == 'start') continue;
+            $query .= $value . ' ';
+        }
+        return trim($query);
+    }
 }
