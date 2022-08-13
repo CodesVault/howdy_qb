@@ -3,6 +3,7 @@
 namespace CodesVault\Howdyqb;
 
 use CodesVault\Howdyqb\Api\CreateInterface;
+use CodesVault\Howdyqb\Api\DeleteInterface;
 use CodesVault\Howdyqb\Api\SelectInterface;
 use CodesVault\Howdyqb\Api\UpdateInterface;
 
@@ -35,5 +36,12 @@ class DB extends QueryFactory
         $factory = new self(static::$driver);
         $update = $factory->updateQuery($table_name, $data);
         return $update;
+    }
+
+    public static function delete(string $table_name): DeleteInterface
+    {
+        $factory = new self(static::$driver);
+        $delete = $factory->deleteQuery($table_name);
+        return $delete;
     }
 }
