@@ -1,5 +1,5 @@
 {
-    "name": "codesvault/wpqb",
+    "name": "codesvault/howdy-qb",
     "description": "Database Query Builder for WordPress",
     "version": "0.0.1",
     "scripts": {
@@ -7,12 +7,12 @@
     },
     "autoload": {
         "psr-4": {
-            "CodesVault\\WPqb\\": "src/"
+            "CodesVault\\Howdyqb\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "CodesVault\\WPqb\\Tests\\": "tests/"
+            "CodesVault\\Howdyqb\\Tests\\": "tests/"
         }
     },
     "authors": [

@@ -1,6 +1,6 @@
 <?php
 
-namespace CodesVault\WPqb\Api;
+namespace CodesVault\Howdyqb\Api;
 
 interface UpdateInterface
 {

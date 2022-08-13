@@ -1,9 +1,9 @@
 <?php
 
-namespace CodesVault\WPqb\Tests\Statement;
+namespace CodesVault\Howdyqb\Tests\Statement;
 
-use CodesVault\WPqb\Statement\Update;
-use CodesVault\WPqb\SqlGenerator;
+use CodesVault\Howdyqb\Statement\Update;
+use CodesVault\Howdyqb\SqlGenerator;
 
 class UpdateApi extends Update
 {

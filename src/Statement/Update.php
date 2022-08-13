@@ -1,9 +1,9 @@
 <?php
 
-namespace CodesVault\WPqb\Statement;
+namespace CodesVault\Howdyqb\Statement;
 
-use CodesVault\WPqb\Api\UpdateInterface;
-use CodesVault\WPqb\SqlGenerator;
+use CodesVault\Howdyqb\Api\UpdateInterface;
+use CodesVault\Howdyqb\SqlGenerator;
 
 class Update implements UpdateInterface
 {

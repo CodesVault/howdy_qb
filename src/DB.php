@@ -1,10 +1,10 @@
 <?php
 
-namespace CodesVault\WPqb;
+namespace CodesVault\Howdyqb;
 
-use CodesVault\WPqb\Api\CreateInterface;
-use CodesVault\WPqb\Api\SelectInterface;
-use CodesVault\WPqb\Api\UpdateInterface;
+use CodesVault\Howdyqb\Api\CreateInterface;
+use CodesVault\Howdyqb\Api\SelectInterface;
+use CodesVault\Howdyqb\Api\UpdateInterface;
 
 class DB extends QueryFactory
 {

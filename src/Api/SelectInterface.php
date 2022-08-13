@@ -1,6 +1,6 @@
 <?php
 
-namespace CodesVault\WPqb\Api;
+namespace CodesVault\Howdyqb\Api;
 
 interface SelectInterface
 {
@@ -20,7 +20,7 @@ interface SelectInterface
      * @param string|null $col1
      * @param string|null $col2
      *
-     * @return CodesVault\WPqb\Api\SelectInterface
+     * @return CodesVault\Howdyqb\Api\SelectInterface
      */
     function join($table_name, string $col1 = null, string $col2 = null): self;
 
@@ -32,7 +32,7 @@ interface SelectInterface
      * @param string|null $col1
      * @param string|null $col2
      *
-     * @return CodesVault\WPqb\Api\SelectInterface
+     * @return CodesVault\Howdyqb\Api\SelectInterface
      */
     function innerJoin($table_name, string $col1 = null, string $col2 = null): self;
 
@@ -44,7 +44,7 @@ interface SelectInterface
      * @param string|null $col1
      * @param string|null $col2
      *
-     * @return CodesVault\WPqb\Api\SelectInterface
+     * @return CodesVault\Howdyqb\Api\SelectInterface
      */
     function leftJoin($table_name, string $col1 = null, string $col2 = null): self;
 
@@ -56,7 +56,7 @@ interface SelectInterface
      * @param string|null $col1
      * @param string|null $col2
      *
-     * @return CodesVault\WPqb\Api\SelectInterface
+     * @return CodesVault\Howdyqb\Api\SelectInterface
      */
     function rightJoin($table_name, string $col1 = null, string $col2 = null): self;
 
@@ -82,5 +82,5 @@ interface SelectInterface
 
     function count(string $column, string $alias = ''): self;
 
-    function get(): mixed;
+    function get();
 }

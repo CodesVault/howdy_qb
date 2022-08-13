@@ -1,6 +1,6 @@
 <?php
 
-namespace CodesVault\WPqb;
+namespace CodesVault\Howdyqb;
 
 class SqlGenerator
 {

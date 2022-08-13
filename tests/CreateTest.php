@@ -1,9 +1,9 @@
 <?php
 
-namespace CodesVault\WPqb\Tests;
+namespace CodesVault\Howdyqb\Tests;
 
 use PHPUnit\Framework\TestCase;
-use CodesVault\WPqb\Tests\Statement\CreateApi;
+use CodesVault\Howdyqb\Tests\Statement\CreateApi;
 
 class CreateTest extends TestCase
 {

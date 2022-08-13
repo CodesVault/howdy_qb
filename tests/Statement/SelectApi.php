@@ -1,9 +1,9 @@
 <?php
 
-namespace CodesVault\WPqb\Tests\Statement;
+namespace CodesVault\Howdyqb\Tests\Statement;
 
-use CodesVault\WPqb\Statement\Select;
-use CodesVault\WPqb\SqlGenerator;
+use CodesVault\Howdyqb\Statement\Select;
+use CodesVault\Howdyqb\SqlGenerator;
 use PHPUnit\Framework\TestCase;
 
 class SelectApi extends Select
