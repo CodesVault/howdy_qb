@@ -1,12 +1,12 @@
 <?php
 
-namespace CodesVault\WPqb;
+namespace CodesVault\Howdyqb;
 
-use CodesVault\WPqb\Api\SelectInterface;
-use CodesVault\WPqb\Statement\Create;
-use CodesVault\WPqb\Statement\Insert;
-use CodesVault\WPqb\Statement\Select;
-use CodesVault\WPqb\Statement\Update;
+use CodesVault\Howdyqb\Api\SelectInterface;
+use CodesVault\Howdyqb\Statement\Create;
+use CodesVault\Howdyqb\Statement\Insert;
+use CodesVault\Howdyqb\Statement\Select;
+use CodesVault\Howdyqb\Statement\Update;
 
 class QueryFactory
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace CodesVault\WPqb\Statement;
+namespace CodesVault\Howdyqb\Statement;
 
-use CodesVault\WPqb\Api\InsertInterface;
-use CodesVault\WPqb\SqlGenerator;
+use CodesVault\Howdyqb\Api\InsertInterface;
+use CodesVault\Howdyqb\SqlGenerator;
 
 class Insert
 {

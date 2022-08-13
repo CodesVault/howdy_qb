@@ -1,9 +1,9 @@
 <?php
 
-namespace CodesVault\WPqb\Statement;
+namespace CodesVault\Howdyqb\Statement;
 
-use CodesVault\WPqb\Api\CreateInterface;
-use CodesVault\WPqb\SqlGenerator;
+use CodesVault\Howdyqb\Api\CreateInterface;
+use CodesVault\Howdyqb\SqlGenerator;
 
 class Create implements CreateInterface
 {

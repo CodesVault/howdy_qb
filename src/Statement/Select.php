@@ -1,9 +1,9 @@
 <?php
 
-namespace CodesVault\WPqb\Statement;
+namespace CodesVault\Howdyqb\Statement;
 
-use CodesVault\WPqb\Api\SelectInterface;
-use CodesVault\WPqb\SqlGenerator;
+use CodesVault\Howdyqb\Api\SelectInterface;
+use CodesVault\Howdyqb\SqlGenerator;
 
 class Select implements SelectInterface
 {
@@ -216,7 +216,7 @@ class Select implements SelectInterface
     }
 
     // get data from database
-    public function get(): mixed
+    public function get()
     {
         $this->start();
         $this->setAlias();

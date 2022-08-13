@@ -1,9 +1,9 @@
 <?php
 
-namespace CodesVault\WPqb\Tests\Statement;
+namespace CodesVault\Howdyqb\Tests\Statement;
 
-use CodesVault\WPqb\Statement\Create;
-use CodesVault\WPqb\SqlGenerator;
+use CodesVault\Howdyqb\Statement\Create;
+use CodesVault\Howdyqb\SqlGenerator;
 use PHPUnit\Framework\TestCase;
 
 class CreateApi extends Create
