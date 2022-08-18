@@ -82,5 +82,7 @@ interface SelectInterface
 
     function count(string $column, string $alias = ''): self;
 
+    function raw(string $sql): self;
+
     function get();
 }

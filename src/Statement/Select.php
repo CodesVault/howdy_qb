@@ -191,6 +191,12 @@ class Select implements SelectInterface
         return $this->setJoin($table_name, $col1, $col2, 'RIGHT JOIN');
     }
 
+    public function raw(string $sql): self
+    {
+        $this->sql['raw'] = $sql;
+        return $this;
+    }
+
     protected function setAlias()
     {
         if (! isset($this->sql['alias'])) return;
