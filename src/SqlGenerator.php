@@ -50,7 +50,7 @@ class SqlGenerator
                 }
                 $query .= implode(', ', $expression);
             } else {
-                $query .= ', ' . $expression . ' ';
+                $query .= ', ' . $expression . '';
             }
         }
         $query .= ')';

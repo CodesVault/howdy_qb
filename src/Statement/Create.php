@@ -126,6 +126,13 @@ class Create implements CreateInterface
         return $this;
     }
 
+    public function foreignKey(string $column, string $reference_table, string $reference_column): self
+    {
+        $table_name = $this->wpdb_object->prefix . $reference_table;
+        $this->sql['foreignKey'] = "FOREIGN KEY ($column) REFERENCES $table_name ($reference_column)" ;
+        return $this;
+    }
+
     protected function start()
     {
         $this->sql['start'] = 'CREATE TABLE';
@@ -140,7 +147,7 @@ class Create implements CreateInterface
     {
         $this->start();
         $query = SqlGenerator::create($this->sql);
-        // return $query;
+        // return dump($query);
 
         $conn = $this->db;
         try {
