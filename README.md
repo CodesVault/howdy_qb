@@ -41,6 +41,14 @@ DB::create('querybuilder')
     ->column('email')->string(255)->default('NULL')
     ->index(['ID'])
     ->execute();
+
+// with foreign key
+DB::create('howdy_qb')
+    ->column('name')->string(255)->required()
+    ->column('email')->string(255)->required()
+    ->column('howdyID')->bigInt()->unsigned()
+    ->foreignKey('howdyID', 'howdy', 'ID')
+    ->execute();
 ```
 
 <br/>
