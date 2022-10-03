@@ -10,9 +10,21 @@
     <exclude-pattern>vendor/*</exclude-pattern>
     <exclude-pattern>.github/*</exclude-pattern>
 
-	<rule ref="WordPress.Security"></rule>
-	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed"></rule>
-	<rule ref="Generic.WhiteSpace.ScopeIndent.Incorrect"></rule>
+	<rule ref="WordPress">
+        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
+        <exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+		<exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingAfterOpen"/>
+        <exclude name="Squiz.Commenting.FileComment.Missing"/>
+        <exclude name="Squiz.Strings.DoubleQuoteUsage.NotRequired" />
+        <exclude name="Generic.Classes.OpeningBraceSameLine.BraceOnNewLine" />
+        <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.BraceOnNewLine" />
+        <exclude name="Squiz.Commenting.FunctionComment.Missing" />
+        <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.ExtraSpaceAfterCloseParenthesis" />
+        <exclude name="Generic.ControlStructures.InlineControlStructure.NotAllowed" />
+        <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterOpenParenthesis" />
+        <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeCloseParenthesis" />
+		<exclude name="Squiz.Commenting.ClassComment.Missing" />
+    </rule>
     <rule ref="Squiz.Commenting.DocCommentAlignment" />
     <rule ref="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine" />
     <rule ref="Squiz.Classes.ClassDeclaration.OpenBraceNewLine" />
