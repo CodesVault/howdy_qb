@@ -3,7 +3,10 @@
     "description": "Database Query Builder for WordPress",
     "version": "0.0.1",
     "scripts": {
-        "test": "phpunit"
+        "test": "phpunit",
+		"phpcs": "phpcs ",
+        "phpcbf": "phpcbf ",
+		"post-package-install": "phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs"
     },
     "autoload": {
         "psr-4": {
