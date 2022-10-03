@@ -36,5 +36,7 @@ interface CreateInterface
 
     function default($value): self;
 
+    function foreignKey(string $column, string $reference_table, string $reference_column): self;
+
     function execute();
 }
