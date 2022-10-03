@@ -24,6 +24,7 @@
         <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterOpenParenthesis" />
         <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeCloseParenthesis" />
 		<exclude name="Squiz.Commenting.ClassComment.Missing" />
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax.Found" />
     </rule>
     <rule ref="Squiz.Commenting.DocCommentAlignment" />
     <rule ref="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine" />
