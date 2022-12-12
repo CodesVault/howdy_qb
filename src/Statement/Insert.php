@@ -39,9 +39,11 @@ class Insert
             return $data->execute($this->params);
         } catch (\Exception $exception) {
             $error_msg = sprintf(
-                "<strong style='color: red;'>%s</strong>",
+                "<strong style='color: #d60202;'>%s</strong>  <strong style='color: red;'>%s</strong><br/>",
+                'ERROR Message',
                 $exception->getMessage()
             );
+            printf($error_msg);
             throw new \Exception($error_msg);
         }
     }
