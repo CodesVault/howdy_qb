@@ -44,4 +44,18 @@ class DB extends QueryFactory
         $delete = $factory->deleteQuery($table_name);
         return $delete;
     }
+
+    public static function drop(string $table_name)
+    {
+        $factory = new self(static::$driver);
+        $drop = $factory->dropQuery($table_name);
+        $drop->drop();
+    }
+
+    public static function dropIfExists(string $table_name)
+    {
+        $factory = new self(static::$driver);
+        $drop = $factory->dropQuery($table_name);
+        return $drop->dropIfExists();
+    }
 }

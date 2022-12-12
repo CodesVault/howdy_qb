@@ -5,6 +5,7 @@ namespace CodesVault\Howdyqb;
 use CodesVault\Howdyqb\Api\SelectInterface;
 use CodesVault\Howdyqb\Statement\Create;
 use CodesVault\Howdyqb\Statement\Delete;
+use CodesVault\Howdyqb\Statement\Drop;
 use CodesVault\Howdyqb\Statement\Insert;
 use CodesVault\Howdyqb\Statement\Select;
 use CodesVault\Howdyqb\Statement\Update;
@@ -49,5 +50,10 @@ class QueryFactory
     protected function deleteQuery(string $table_name)
     {
         return new Delete($this->db, $table_name);
+    }
+
+    protected function dropQuery(string $table_name)
+    {
+        return new Drop($this->db, $table_name);
     }
 }

@@ -12,5 +12,7 @@ interface DeleteInterface
 
     function drop();
 
+    function dropIfExists();
+
     function execute();
 }

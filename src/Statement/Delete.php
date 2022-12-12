@@ -58,6 +58,12 @@ class Delete implements DeleteInterface
         return $this;
     }
 
+    public function dropIfExists()
+    {
+        $this->sql['drop'] = 'DROP TABLE IF EXISTS ' . $this->table_name;
+        return $this;
+    }
+
     private function delete_data()
     {
         $query = SqlGenerator::delete($this->sql);
