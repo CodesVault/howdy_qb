@@ -149,6 +149,16 @@ DB::delete('posts')
 
 <br>
 
+### Drop Statement
+
+``` php
+DB::drop('posts');
+DB::dropIfExists('terms');
+```
+
+<br>
+<br>
+
 <p>
 Expressions also can be exicuted with one instence of <code>DB</code> class. By doing this database connection will be stablished only once.
 </p>
