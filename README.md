@@ -126,6 +126,14 @@ DB::select('posts.post_title')
     ->innerJoin('term_relationships term_rel', 'posts.ID', 'term_rel.object_id')
     ->where('posts.post_status', '=', 'publish')
     ->get();
+
+// raw sql
+DB::select('posts.post_title')
+    ->from('posts posts')
+    ->raw("WHERE posts.post_type = 'post'")
+    ->andWhere('posts.post_status', '=', 'publish')
+    ->raw("LIMIT 10")
+    ->get();
 ```
 
 <br>

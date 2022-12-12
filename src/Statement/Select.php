@@ -12,6 +12,7 @@ class Select implements SelectInterface
     protected $params = [];
     protected $table_name;
     protected $wpdb_object;
+    private $raw_count = 0;
 
     public function __construct($db)
     {
@@ -193,7 +194,7 @@ class Select implements SelectInterface
 
     public function raw(string $sql): self
     {
-        $this->sql['raw'] = $sql;
+        $this->sql['raw_'. $this->raw_count++] = $sql;
         return $this;
     }
 
