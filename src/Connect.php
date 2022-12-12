@@ -17,11 +17,7 @@ final class Connect
         try {
             return new \PDO($dns, $user, $password);
         } catch (\PDOException $exception) {
-            $error_msg = sprintf(
-                "<strong style='color: red;'>%s</strong>",
-                $exception->getMessage()
-            );
-            throw new \Exception( $error_msg );
+            Utilities::throughException($exception);
         }
     }
 }

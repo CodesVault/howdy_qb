@@ -20,10 +20,20 @@ class QueryFactory
         static::$driver = $driver;
     }
 
+    public static function getDriver()
+    {
+        return static::$driver;
+    }
+
     public function __construct($driver = 'pdo')
     {
-        if ( ! $this->db && $driver === 'pdo' ) {
+        if ($this->db) return;
+
+        if ('pdo' === $driver) {
             $this->db = Connect::pdo();
+        } elseif ('wpdb' === $driver) {
+            global $wpdb;
+            $this->db = $wpdb;
         }
     }
 
