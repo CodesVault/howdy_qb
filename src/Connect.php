@@ -8,7 +8,7 @@ final class Connect
     {
         global $wpdb;
 
-        $host = htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES);
+        $host = htmlspecialchars($wpdb->dbhost, ENT_QUOTES);
         $dbname = htmlspecialchars($wpdb->dbname, ENT_QUOTES);
         $user = htmlspecialchars($wpdb->dbuser, ENT_QUOTES);
         $password = htmlspecialchars($wpdb->dbpassword, ENT_QUOTES);
