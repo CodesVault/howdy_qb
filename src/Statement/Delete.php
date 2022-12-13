@@ -3,6 +3,7 @@
 namespace CodesVault\Howdyqb\Statement;
 
 use CodesVault\Howdyqb\Api\DeleteInterface;
+use CodesVault\Howdyqb\QueryFactory;
 use CodesVault\Howdyqb\SqlGenerator;
 use CodesVault\Howdyqb\Utilities;
 
@@ -34,21 +35,21 @@ class Delete implements DeleteInterface
             call_user_func( $column, $this );
             return $this;
         }
-        $this->sql['where'] = 'WHERE ' . $column . ' ' . $operator . ' ?';
+        $this->sql['where'] = 'WHERE ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder();
         $this->params[] = $value;
         return $this;
     }
 
     public function andWhere(string $column, string $operator = null, string $value = null): self
     {
-        $this->sql['andWhere'] = 'AND ' . $column . ' ' . $operator . ' ?';
+        $this->sql['andWhere'] = 'AND ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder();
         $this->params[] = $value;
         return $this;
     }
 
     public function orWhere(string $column, string $operator = null, string $value = null): self
     {
-        $this->sql['orWhere'] = 'OR ' . $column . ' ' . $operator . ' ?';
+        $this->sql['orWhere'] = 'OR ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder();
         $this->params[] = $value;
         return $this;
     }
@@ -65,15 +66,23 @@ class Delete implements DeleteInterface
         return $this;
     }
 
+    private function driver_exicute($sql)
+    {
+        $driver = $this->db;
+        if ('wpdb' === QueryFactory::getDriver()) {
+            return $driver->query($driver->prepare($sql, $this->params));
+        }
+
+        $data = $driver->prepare($sql);
+        return $data->execute($this->params);
+    }
+
     private function delete_data()
     {
         $query = SqlGenerator::delete($this->sql);
-        // return dump($query);
 
-        $conn = $this->db;
         try {
-            $data = $conn->prepare($query);
-            return $data->execute($this->params);
+            return $this->driver_exicute($query);
         } catch (\Exception $exception) {
             Utilities::throughException($exception);
         }
