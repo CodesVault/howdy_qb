@@ -1,7 +1,7 @@
 {
     "name": "codesvault/howdy-qb",
-    "description": "Database Query Builder for WordPress",
-    "version": "0.0.1",
+    "description": "Mysql Query Builder for WordPress",
+    "version": "1.0.0",
     "scripts": {
         "test": "phpunit",
 		"phpcs": "phpcs ",
@@ -21,6 +21,10 @@
     "authors": [
         {
             "name": "CodesVault",
+            "email": "codesvault@gmail.com"
+        },
+        {
+            "name": "Keramot UL Islam",
             "email": "keramotul.islam@gmail.com"
         }
     ],
@@ -37,6 +41,9 @@
     "keywords": [
         "wordpress",
         "database",
+        "query builder",
+        "pdo",
+        "mysqli",
         "query",
         "builder",
         "mysql",
