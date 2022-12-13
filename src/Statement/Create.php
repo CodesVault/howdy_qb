@@ -4,6 +4,7 @@ namespace CodesVault\Howdyqb\Statement;
 
 use CodesVault\Howdyqb\Api\CreateInterface;
 use CodesVault\Howdyqb\SqlGenerator;
+use CodesVault\Howdyqb\Utilities;
 
 class Create implements CreateInterface
 {
@@ -153,13 +154,7 @@ class Create implements CreateInterface
         try {
             $conn->exec($query);
         } catch (\PDOException $exception) {
-            $error_msg = sprintf(
-                "<strong style='color: #d60202;'>%s</strong>  <strong style='color: red;'>%s</strong><br/>",
-                'ERROR Message',
-                $exception->getMessage()
-            );
-            printf($error_msg);
-            throw new \Exception($error_msg);
+            Utilities::throughException($exception);
         }
     }
 }
