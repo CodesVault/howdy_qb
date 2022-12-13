@@ -3,6 +3,7 @@
 namespace CodesVault\Howdyqb\Statement;
 
 use CodesVault\Howdyqb\Api\InsertInterface;
+use CodesVault\Howdyqb\QueryFactory;
 use CodesVault\Howdyqb\SqlGenerator;
 use CodesVault\Howdyqb\Utilities;
 
@@ -34,13 +35,22 @@ class Insert
     {
         $query = SqlGenerator::insert($this->sql);
 
-        $conn = $this->db;
         try {
-            $data = $conn->prepare($query);
-            return $data->execute($this->params);
+            $this->driver_exicute($query);
         } catch (\Exception $exception) {
             Utilities::throughException($exception);
         }
+    }
+
+    private function driver_exicute($sql)
+    {
+        $driver = $this->db;
+        if ('wpdb' === QueryFactory::getDriver()) {
+            return $driver->query($driver->prepare($sql, $this->params));
+        }
+
+        $data = $driver->prepare($sql);
+        return $data->execute($this->params);
     }
 
     private function start()
@@ -71,10 +81,10 @@ class Insert
 
         if (count($this->data) > 1) {
             foreach ($this->data as $row) {
-                $placeholders[] = '(' . implode(',', array_fill(0, count($row), '?')) . ')';
+                $placeholders[] = '(' . implode(',', array_fill(0, count($row), Utilities::get_placeholder())) . ')';
             }
         } else {
-            $placeholders[] = '(' . implode(',', array_fill(0, count($this->data[0]), '?')) . ')';
+            $placeholders[] = '(' . implode(',', array_fill(0, count($this->data[0]), Utilities::get_placeholder())) . ')';
         }
         return 'VALUES ' . implode(',', $placeholders);
     }
