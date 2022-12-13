@@ -3,6 +3,7 @@
 namespace CodesVault\Howdyqb\Statement;
 
 use CodesVault\Howdyqb\Api\CreateInterface;
+use CodesVault\Howdyqb\QueryFactory;
 use CodesVault\Howdyqb\SqlGenerator;
 use CodesVault\Howdyqb\Utilities;
 
@@ -144,15 +145,24 @@ class Create implements CreateInterface
         return $this->wpdb_object->prefix . $this->table_name;
     }
 
+    private function driver_exicute($sql)
+    {
+        $driver = $this->db;
+        if ('wpdb' === QueryFactory::getDriver()) {
+            return $driver->query($sql);
+        }
+
+        return $driver->exec($sql);
+    }
+
     public function execute()
     {
         $this->start();
         $query = SqlGenerator::create($this->sql);
         // return dump($query);
 
-        $conn = $this->db;
         try {
-            $conn->exec($query);
+            $this->driver_exicute($query);
         } catch (\PDOException $exception) {
             Utilities::throughException($exception);
         }
