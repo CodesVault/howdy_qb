@@ -3,6 +3,7 @@
 namespace CodesVault\Howdyqb\Statement;
 
 use CodesVault\Howdyqb\Api\DropInterface;
+use CodesVault\Howdyqb\QueryFactory;
 use CodesVault\Howdyqb\SqlGenerator;
 use CodesVault\Howdyqb\Utilities;
 
@@ -35,14 +36,23 @@ class Drop implements DropInterface
         $this->drop_table();
     }
 
+    private function driver_exicute($sql)
+    {
+        $driver = $this->db;
+        if ('wpdb' === QueryFactory::getDriver()) {
+            return $driver->query($sql);
+        }
+
+        $data = $driver->prepare($sql);
+        return $data->execute($this->params);
+    }
+
     private function drop_table()
     {
         $query = trim($this->sql['drop']);
 
-        $conn = $this->db;
         try {
-            $data = $conn->prepare($query);
-            return $data->execute($this->params);
+            $this->driver_exicute($query);
         } catch (\Exception $exception) {
             Utilities::throughException($exception);
         }
