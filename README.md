@@ -5,30 +5,6 @@ WP Query Builder uses <code>PDO</code> for database queries. It has <strong>zero
 </p>
 
 <br/>
-
-## Dev Envirenment Setup for Contributors
-Want to contribute to this package? Please follow the steps below.
-
-<ul>
-    <li>Create a local WordPress envirenment setup.</li>
-    <li>Create a basic plugin.</li>
-    <li>Run <code>composer init</code> into the plugin.</li>
-    <li>Clone <code>git@github.com:CodesVault/howdy_qb.git</code> into plugin folder.</li>
-    <li>
-        Add repository for local package in plugin's <code>composer.json</code>.
-        <pre>
-        "repositories": [
-            {
-                "type": "path",
-                "url": "./howdy_qb"
-            }
-        ],
-        </pre>
-    </li>
-    <li>Require this package. <code>composer require "codesvault/howdy-qb @dev"</code></li>
-</ul>
-
-<br/>
 <br/>
 
 ## Examples
@@ -167,6 +143,7 @@ DB::dropIfExists('terms');
 <br>
 <br>
 
+### Single instence
 <p>
 Expressions also can be exicuted with one instence of <code>DB</code> class. By doing this database connection will be stablished only once.
 </p>
@@ -181,3 +158,43 @@ $db::select('posts.ID', 'posts.post_title')
 $db::create('meta')
     ...
 ```
+
+<br>
+<br>
+
+### Driver
+
+The default driver is `PDO`. But if you want to use `wpdb` which uses Mysqli, you also can do that by changing the driver.
+``` php
+$db = new DB();
+$db::setDriver('wpdb');
+
+$db::select('posts.post_title')
+    ->from('posts posts')
+    ->get();
+```
+
+<br>
+<br>
+
+## Dev Envirenment Setup for Contributors
+Want to contribute to this package? Please follow the steps below.
+
+<ul>
+    <li>Create a local WordPress envirenment setup.</li>
+    <li>Create a basic plugin.</li>
+    <li>Run <code>composer init</code> into the plugin.</li>
+    <li>Clone <code>git@github.com:CodesVault/howdy_qb.git</code> into plugin folder.</li>
+    <li>
+        Add repository for local package in plugin's <code>composer.json</code>.
+        <pre>
+        "repositories": [
+            {
+                "type": "path",
+                "url": "./howdy_qb"
+            }
+        ],
+        </pre>
+    </li>
+    <li>Require this package. <code>composer require "codesvault/howdy-qb @dev"</code></li>
+</ul>
