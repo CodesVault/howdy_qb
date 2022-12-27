@@ -145,6 +145,16 @@ class Create implements CreateInterface
         return $this->wpdb_object->prefix . $this->table_name;
     }
 
+    // get only sql query string
+    public function getSql()
+    {
+        $this->start();
+        $query = [
+            'query' => SqlGenerator::create($this->sql),
+        ];
+        return $query;
+    }
+
     private function driver_exicute($sql)
     {
         $driver = $this->db;
