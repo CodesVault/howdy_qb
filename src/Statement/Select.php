@@ -235,6 +235,19 @@ class Select implements SelectInterface
         return $data->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    // get only sql query string
+    public function getSql()
+    {
+        $this->start();
+        $this->setAlias();
+        $this->setStartExpression();
+        $query = [
+            'query' => SqlGenerator::select($this->sql),
+            'params' => $this->params
+        ];
+        return $query;
+    }
+
     // get data from database
     public function get()
     {
