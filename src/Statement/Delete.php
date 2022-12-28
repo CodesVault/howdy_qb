@@ -88,6 +88,17 @@ class Delete implements DeleteInterface
         }
     }
 
+    // get only sql query string
+    public function getSql()
+    {
+        $this->start();
+        $query = [
+            'query'     => SqlGenerator::delete($this->sql),
+            'params'    => $this->params,
+        ];
+        return $query;
+    }
+
     public function execute()
     {
         $this->start();
