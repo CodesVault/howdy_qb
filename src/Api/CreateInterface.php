@@ -38,5 +38,7 @@ interface CreateInterface
 
     function foreignKey(string $column, string $reference_table, string $reference_column): self;
 
+    function getSql();
+    
     function execute();
 }

@@ -55,6 +55,17 @@ class Update implements UpdateInterface
         $this->update_data();
     }
 
+    // get only sql query string
+    public function getSql()
+    {
+        $this->start();
+        $query = [
+            'query'     => SqlGenerator::update($this->sql),
+            'params'    => $this->params,
+        ];
+        return $query;
+    }
+
     protected function start()
     {
         $this->sql['start'] = 'UPDATE ' . $this->table_name;
