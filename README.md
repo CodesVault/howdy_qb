@@ -25,6 +25,14 @@ DB::create('howdy_qb')
     ->column('howdyID')->bigInt()->unsigned()
     ->foreignKey('howdyID', 'howdy', 'ID')
     ->execute();
+
+// get only SQL query string without DB execution.
+$sql=
+DB::create('howdy_qb')
+    ->column('name')->string(255)->required()
+    ->column('email')->string(255)->required()
+    ->getSql();
+// $sql = [ "query" => "CREATE TABLE wp_howdy_qb (name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL)" ]
 ```
 
 <br/>
@@ -51,6 +59,21 @@ DB::update('querybuilders', [
 ->where('ID', '=', 10)
 ->andWhere('name', '=', 'Abm Sourav')
 ->execute();
+
+// get only SQL query string without DB execution.
+$sql=
+DB::update('querybuilders', [
+    'name' => 'Keramot UL',
+    'email' => 'keramotul.islam@gmail.com'
+])
+->where('ID', '=', 10)
+->andWhere('name', '=', 'Abm Sourav')
+->getSql();
+// $sql =
+// [ 
+//   'query' => UPDATE wp_querybuilders SET name=?, email=? WHERE ID = ? AND name = ?
+//   'params' => "Keramot UL", "keramotul.islam@gmail.com", "10", "Abm Sourav"
+// ]
 ```
 
 <br>
@@ -110,6 +133,19 @@ DB::select('posts.post_title')
     ->andWhere('posts.post_status', '=', 'publish')
     ->raw("LIMIT 10")
     ->get();
+
+// get only SQL query string without DB execution.
+$sql=
+DB::select('posts.ID', 'posts.post_title')
+    ->from('posts posts')
+    ->where('posts.post_status', '=', 'publish')
+    ->orderBy('post_title', 'DESC')
+    ->getSql();
+// $sql =
+// [
+//   'query' => 'SELECT posts.ID, posts.post_title FROM wp_posts posts WHERE posts.post_status = ? ORDER BY post_title DESC'
+//   'params' => ['publish']
+// ]
 ```
 
 <br>
@@ -129,6 +165,17 @@ DB::delete('posts')->execute();
 DB::delete('posts')
     ->drop()
     ->execute();
+
+// get only SQL query string without DB execution.
+$sql=
+DB::delete('posts')
+    ->where('ID', '=', 3)
+    ->getSql();
+// $sql =
+// [
+//   'query' => DELETE FROM wp_posts WHERE ID = ?
+//   'params' => [3]
+// ]
 ```
 
 <br>
