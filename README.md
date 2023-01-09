@@ -209,6 +209,23 @@ $db::create('meta')
 <br>
 <br>
 
+### Database Connection
+By default database connection will set out of the box, automaically. But if you can also manually input database configurations.
+
+```php
+$db = new DB();
+$db->setDBConfig([
+    "dbhost"        => <mysql host>,
+    "dbname"        => <database name>,
+    "dbuser"        => <database username>,
+    "dbpassword"    => <database password>,
+    "prefix"        => <database table prefix>
+]);
+```
+
+<br>
+<br>
+
 ### Driver
 
 The default driver is `PDO`. But if you want to use `wpdb` which uses Mysqli, you also can do that by changing the driver.
