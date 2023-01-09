@@ -14,13 +14,18 @@ class Create implements CreateInterface
     protected $params = [];
     protected $column_name;
     protected $wpdb_object;
+    protected $table_name;
 
     public function __construct($db, string $table_name)
     {
         global $wpdb;
         $this->db = $db;
         $this->table_name = $table_name;
-        $this->wpdb_object = $wpdb;
+        $this->wpdb_object = QueryFactory::getConfig();
+        if (empty(QueryFactory::getConfig())) {
+            global $wpdb;
+            $this->wpdb_object = $wpdb;
+        }
 
         $this->start();
         $this->sql['table_name'] = $this->get_table_name();

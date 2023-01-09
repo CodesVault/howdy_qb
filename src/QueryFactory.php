@@ -14,6 +14,7 @@ class QueryFactory
 {
     protected $db = null;
     protected static $driver = 'pdo';
+    private static $config;
 
     public static function setDriver(string $driver)
     {
@@ -65,5 +66,16 @@ class QueryFactory
     protected function dropQuery(string $table_name)
     {
         return new Drop($this->db, $table_name);
+    }
+
+    public function setDBConfig($configurations)
+    {
+        Connect::config($configurations);
+        static::$config = (object)$configurations;
+    }
+
+    public static function getConfig()
+    {
+        return static::$config;
     }
 }

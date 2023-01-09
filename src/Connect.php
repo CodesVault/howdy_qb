@@ -4,14 +4,22 @@ namespace CodesVault\Howdyqb;
 
 final class Connect
 {
+    private static $configs;
+
+    public static function config($configs)
+    {
+        static::$configs = $configs;
+    }
+
     public static function pdo()
     {
         global $wpdb;
 
-        $host = htmlspecialchars($wpdb->dbhost, ENT_QUOTES);
-        $dbname = htmlspecialchars($wpdb->dbname, ENT_QUOTES);
-        $user = htmlspecialchars($wpdb->dbuser, ENT_QUOTES);
-        $password = htmlspecialchars($wpdb->dbpassword, ENT_QUOTES);
+        $configs = static::$configs ? (object)static::$configs : $wpdb;
+        $host = htmlspecialchars($configs->dbhost, ENT_QUOTES);
+        $dbname = htmlspecialchars($configs->dbname, ENT_QUOTES);
+        $user = htmlspecialchars($configs->dbuser, ENT_QUOTES);
+        $password = htmlspecialchars($configs->dbpassword, ENT_QUOTES);
         $dns =  "mysql:host=$host;dbname=$dbname";
 
         try {

@@ -60,8 +60,14 @@ class Insert
 
     private function get_table_name()
     {
-        global $wpdb;
-        return $wpdb->prefix . $this->table_name;
+        // global $wpdb;
+        // return $wpdb->prefix . $this->table_name;
+        if (empty(QueryFactory::getConfig())) {
+            global $wpdb;
+            return $wpdb->prefix . $this->table_name;
+        } else {
+            return QueryFactory::getConfig()->prefix . $this->table_name;
+        }
     }
 
     private function get_columns()

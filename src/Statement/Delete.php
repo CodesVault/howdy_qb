@@ -17,8 +17,11 @@ class Delete implements DeleteInterface
 
     public function __construct($db, string $table_name)
     {
-        global $wpdb;
-        $this->wpdb_object = $wpdb;
+        $this->wpdb_object = QueryFactory::getConfig();
+        if (empty(QueryFactory::getConfig())) {
+            global $wpdb;
+            $this->wpdb_object = $wpdb;
+        }
 
         $this->db = $db;
         $this->table_name = $this->wpdb_object->prefix . $table_name;
