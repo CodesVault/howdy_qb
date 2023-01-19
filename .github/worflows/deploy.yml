@@ -1,0 +1,31 @@
+name: Deploy to GitHub Pages
+
+
+on:
+  push:
+    branches: [doc]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - name: Get files
+        uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install packages
+        run: npm i
+      - name: Build project
+        run: npm run build
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: doc
+          folder: docs
