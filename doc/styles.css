@@ -1,0 +1,8 @@
+html[class~=dark] body {
+	background-color: #0d1117 !important;
+}
+
+html[class~=dark] .nextra-nav-container nav,
+html[class~=dark] footer {
+	background-color: rgba(13, 17, 23, .7) !important;
+}

@@ -1,0 +1,13 @@
+# Driver
+
+The default driver is `PDO`.
+But if you want to use `wpdb` object, which uses Mysqli. You can do that by changing the driver.
+``` php
+$db = new DB();
+$db::setDriver('wpdb');
+
+// then use the class instense for making queries.	
+$db::select('posts.post_title')
+    ->from('posts posts')
+    ->get();
+```

@@ -1,0 +1,23 @@
+# Delete Statement
+
+#### Delete data from table
+
+Delete one row
+``` php
+$db::delete('posts')
+    ->where('ID', '=', 3)
+    ->execute();
+```
+
+Delete all records in a table
+```php
+$db::delete('posts')->execute();
+```
+
+Get only raw SQL without DB execution.
+```php
+$sql=
+$db::delete('posts')
+    ->where('ID', '=', 3)
+    ->getSql();
+```

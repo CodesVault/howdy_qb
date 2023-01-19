@@ -1,0 +1,24 @@
+# Update Statement
+
+#### Update data in table
+
+First parameter is the table name without table prefix.
+``` php
+$db::update('querybuilder', [
+    'name' => 'Keramot UL',
+    'email' => 'keramotul.islam@gmail.com'
+])
+->where('ID', '=', 10)
+->andWhere('name', '=', 'Abm Sourav')
+->execute();
+```
+
+Get raw SQL without database query execution.
+``` php
+$db::update('querybuilder', [
+    'name' => 'Abm Sourav',
+    'email' => 'keramotul.islam@gmail.com'
+])
+->where('ID', '=', 5)
+->getSql();
+```

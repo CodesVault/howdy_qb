@@ -1,0 +1,15 @@
+.counter {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 2px 6px;
+  margin: 12px 0 0;
+}
+
+.dark body {
+	background-color: #890404;
+}
+/* html[data-theme='dark'],
+html[data-theme='dark'] body {
+  color: #fff;
+  background: rgb(186, 80, 80);
+} */

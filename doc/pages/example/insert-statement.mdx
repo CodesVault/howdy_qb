@@ -1,0 +1,27 @@
+# Insert Statement
+
+#### Insert data in table
+
+First parameter is the table name without table prefix.
+``` php
+$db::insert('querybuilder', [
+    [
+        'name'	=> 'Keramot UL Islam',
+        'email' => 'keramotul.@gmail.com',
+    ]
+]);
+```
+
+Bulk insertion is also available.
+``` php
+$db::insert('querybuilder', [
+    [
+        'name'	=> 'Keramot UL Islam',
+        'email' => 'keramotul.@gmail.com',
+    ],
+	[
+        'name'	=> 'CodesVault',
+        'email' => 'codesvault.@gmail.com',
+    ]
+]);
+```

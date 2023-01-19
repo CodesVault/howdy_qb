@@ -1,0 +1,19 @@
+# Getting Started
+
+## Installation
+Install the library using composer `composer require codesvault/howdy_qb`.
+
+## Database connection
+It connects to the WordPress database **automatically**.
+<br />But if you need then you also can set connection manually.
+
+```php
+$db = new DB();
+$db->setDBConfig([
+    "dbhost"        => <mysql host>,
+    "dbname"        => <database name>,
+    "dbuser"        => <database username>,
+    "dbpassword"    => <database password>,
+    "prefix"        => <database table prefix>
+]);
+```

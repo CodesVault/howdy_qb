@@ -1,0 +1,34 @@
+# Create Statement
+
+Create a Database table.
+
+``` php
+$db::create('querybuilder')
+    ->column('ID')->bigInt()->unsigned()->autoIncrement()->primary()->required()
+    ->column('name')->string(255)->required()
+    ->column('email')->string(255)->default('NULL')
+    ->index(['ID'])
+    ->execute();
+```
+
+Use of foreignKey
+
+```php
+DB::create('howdy_qb')
+    ->column('name')->string(255)->required()
+    ->column('email')->string(255)->required()
+    ->column('howdyID')->bigInt()->unsigned()
+    ->foreignKey('howdyID', 'howdy', 'ID')
+    ->execute();
+```
+
+Get raw SQL without database query execution.
+
+```php
+$db::create('howdy_qb')
+    ->column('name')->string(255)->required()
+    ->column('email')->string(255)->required()
+    ->column('howdyID')->bigInt()->unsigned()
+    ->foreignKey('howdyID', 'howdy', 'ID')
+    ->getSql();
+```

@@ -9,6 +9,8 @@ vendor
 composer.lock
 .DS_Store
 
+doc/build
+
 .phpunit.result.cache
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
