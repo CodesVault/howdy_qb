@@ -5,6 +5,10 @@ WP Query Builder uses <code>PDO</code> for database queries. It has <strong>zero
 </p>
 
 <br/>
+
+## Documentation
+Documentation website [here](https://wp-querybuilder.pages.dev/).
+
 <br/>
 
 ## Examples
@@ -70,7 +74,7 @@ DB::update('querybuilders', [
 ->andWhere('name', '=', 'Abm Sourav')
 ->getSql();
 // $sql =
-// [ 
+// [
 //   'query' => UPDATE wp_querybuilders SET name=?, email=? WHERE ID = ? AND name = ?
 //   'params' => "Keramot UL", "keramotul.islam@gmail.com", "10", "Abm Sourav"
 // ]
