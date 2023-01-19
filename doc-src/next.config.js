@@ -8,5 +8,5 @@ module.exports = {
 	images: {
 		unoptimized: true,
 	},
-	basePath: "/howdy_qb"
+	basePath: "/howdy_qb/docs"
 };
