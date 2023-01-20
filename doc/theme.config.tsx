@@ -2,11 +2,11 @@ import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
 
 const config: DocsThemeConfig = {
-  logo: <span style={{ color: '#4200b6' }}>WP QueryBuilder</span>,
+  logo: <strong style={{ color: '#782cfd' }}>WP QueryBuilder</strong>,
   project: {
     link: 'https://github.com/CodesVault/howdy_qb',
   },
-  docsRepositoryBase: 'https://github.com/CodesVault/howdy_qb/tree/doc',
+  docsRepositoryBase: 'https://github.com/CodesVault/howdy_qb/tree/doc/doc',
   footer: {
     text: <span>Copyright © 2022–2023 <a href="https://github.com/CodesVault" target="_blank">CodesVault</a></span>,
   },

@@ -2,7 +2,19 @@ html[class~=dark] body {
 	background-color: #0d1117 !important;
 }
 
-html[class~=dark] .nextra-nav-container nav,
+html[class~=dark] .nextra-nav-container,
 html[class~=dark] footer {
-	background-color: rgba(13, 17, 23, .7) !important;
+	background-color: rgba(4, 12, 23, 0.8) !important;
+}
+
+body a {
+	font-weight: 450 !important;
+}
+
+html[class~=dark] body pre {
+	background-color: #121a25 !important;
+}
+
+html[class~=dark] body .nextra-sidebar-container li a {
+    color: #bfbdbd;
 }

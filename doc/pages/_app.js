@@ -1,4 +1,3 @@
-// import { createGlobalStyle } from 'styled-components'
 import styles from '../styles.css'
 import { ThemeProvider } from 'next-themes'
 
