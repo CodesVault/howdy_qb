@@ -27,8 +27,8 @@ const config: DocsThemeConfig = {
 	  return <>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	  <meta property="og:url" content={`https://wp-querybuilder.pages.dev${asPath}`} />
-      <meta property="og:title" content={title || 'WP QueryBuilder'} />
-      <meta property="twitter:title" content={title || 'WP QueryBuilder'} />
+      <meta property="og:title" content={`${title} | WP QueryBuilder` || 'WP QueryBuilder'} />
+      <meta property="twitter:title" content={`${title} | WP QueryBuilder` || 'WP QueryBuilder'} />
       <meta property="og:description" content="Query builder for WordPress" />
       <meta property="twitter:description" content="Query builder for WordPress" />
 	  <meta property="og:type" content="documentation" />
