@@ -142,7 +142,7 @@ class Create implements CreateInterface
 
     protected function start()
     {
-        $this->sql['start'] = 'CREATE TABLE';
+        $this->sql['start'] = 'CREATE TABLE IF NOT EXISTS';
     }
 
     protected function get_table_name()
