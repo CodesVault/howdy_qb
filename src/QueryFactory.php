@@ -3,6 +3,7 @@
 namespace CodesVault\Howdyqb;
 
 use CodesVault\Howdyqb\Api\SelectInterface;
+use CodesVault\Howdyqb\Statement\Alter;
 use CodesVault\Howdyqb\Statement\Create;
 use CodesVault\Howdyqb\Statement\Delete;
 use CodesVault\Howdyqb\Statement\Drop;
@@ -51,6 +52,11 @@ class QueryFactory
     protected function createQuery(string $table_name)
     {
         return new Create($this->db, $table_name);
+    }
+
+	protected function alterQuery(string $table_name)
+    {
+        return new Alter($this->db, $table_name);
     }
 
     protected function updateQuery(string $table_name, array $data)

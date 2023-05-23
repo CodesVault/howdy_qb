@@ -2,86 +2,97 @@
 
 namespace CodesVault\Howdyqb\Statement;
 
-use CodesVault\Howdyqb\Api\CreateInterface;
+use CodesVault\Howdyqb\Api\AlterInterface;
 use CodesVault\Howdyqb\QueryFactory;
 use CodesVault\Howdyqb\SqlGenerator;
 use CodesVault\Howdyqb\Utilities;
 
-class Create implements CreateInterface
+class Alter implements AlterInterface
 {
     protected $db;
     public $sql = [];
     protected $params = [];
     protected $column_name;
-    protected $wpdb_object;
+    protected $connection_instence;
     protected $table_name;
 
     public function __construct($db, string $table_name)
     {
         $this->db = $db;
         $this->table_name = $table_name;
-        $this->wpdb_object = QueryFactory::getConfig();
+        $this->connection_instence = QueryFactory::getConfig();
         if (empty(QueryFactory::getConfig())) {
             global $wpdb;
-            $this->wpdb_object = $wpdb;
+            $this->connection_instence = $wpdb;
         }
 
         $this->start();
-        $this->sql['table_name'] = $this->get_table_name();
     }
 
-    public function column(string $column_name): self
-    {
-        $this->column_name = $column_name;
-        $this->sql['columns'][$column_name] = [];
-        return $this;
-    }
+	public function add(string $column): self
+	{
+		$this->sql[$column] = "ADD $column";
+		return $this;
+	}
+
+	public function modify(string $old_column, string $new_column = ''): self
+	{
+		$this->column_name = $new_column;
+		$this->sql[$new_column] = trim("MODIFY COLUMN $old_column $new_column");
+		return $this;
+	}
+
+	public function drop(string $column): self
+	{
+		$this->sql[$column] = "DROP COLUMN $column";
+		return $this;
+	}
 
     public function int(int $size = 255): self
     {
-        $this->sql['columns'][$this->column_name]['int'] = "INT($size)";
+        $this->sql[$this->column_name] .= " INT($size)";
         return $this;
     }
 
     public function bigInt(int $size = 255): self
     {
-        $this->sql['columns'][$this->column_name]['bigInt'] = "BIGINT($size)";
+        $this->sql[$this->column_name] .= " BIGINT($size)";
         return $this;
     }
 
     public function double(int $size = 255, int $d = 2): self
     {
-        $this->sql['columns'][$this->column_name]['double'] = "DOUBLE($size, $d)";
+        $this->sql[$this->column_name] .= " DOUBLE($size, $d)";
         return $this;
     }
 
     public function boolean(): self
     {
-        $this->sql['columns'][$this->column_name]['boolean'] = "BOOLEAN";
+        $this->sql[$this->column_name] .= " BOOLEAN";
         return $this;
     }
 
     public function string(int $size = 255): self
     {
-        $this->sql['columns'][$this->column_name]['string'] = "VARCHAR($size)";
+        $this->sql[$this->column_name] .= " VARCHAR($size)";
         return $this;
     }
 
     public function text(int $size = 10000): self
     {
-        $this->sql['columns'][$this->column_name]['text'] = "TEXT($size)";
+        $this->sql[$this->column_name] .= " TEXT($size)";
         return $this;
     }
 
     public function longText(int $size): self
     {
-        $this->sql['columns'][$this->column_name]['longText'] = "LONGTEXT($size)";
+        $this->sql[$this->column_name] .= " LONGTEXT($size)";
         return $this;
     }
 
     public function required(): self
     {
-        $this->sql['columns'][$this->column_name]['required'] = "NOT NULL";
+        $this->sql[$this->column_name] .= " NOT NULL";
         return $this;
     }
 
@@ -91,7 +102,7 @@ class Create implements CreateInterface
             $this->sql['primary'] = "PRIMARY KEY (" . implode(',', $columns) . ")";
             return $this;
         }
-        $this->sql['columns'][$this->column_name]['primary'] = "PRIMARY KEY";
+        $this->sql[$this->column_name] .= " PRIMARY KEY";
         return $this;
     }
 
@@ -103,50 +114,44 @@ class Create implements CreateInterface
 
     public function date(): self
     {
-        $this->sql['columns'][$this->column_name]['date'] = "DATE";
+        $this->sql[$this->column_name] .= " DATE";
         return $this;
     }
 
     public function dateTime(): self
     {
-        $this->sql['columns'][$this->column_name]['dateTime'] = "DATETIME";
+        $this->sql[$this->column_name] .= " DATETIME";
         return $this;
     }
 
     public function unsigned(): self
     {
-        $this->sql['columns'][$this->column_name]['unsigned'] = "UNSIGNED";
+        $this->sql[$this->column_name] .= " UNSIGNED";
         return $this;
     }
 
     public function autoIncrement(): self
     {
-        $this->sql['columns'][$this->column_name]['autoIncrement'] = "AUTO_INCREMENT";
+        $this->sql[$this->column_name] .= " AUTO_INCREMENT";
         return $this;
     }
 
     public function default($value): self
     {
         $val = is_string($value) ? "'$value'" : $value;
-        $this->sql['columns'][$this->column_name]['default'] = "DEFAULT $val";
-        return $this;
-    }
-
-    public function foreignKey(string $column, string $reference_table, string $reference_column): self
-    {
-        $table_name = $this->wpdb_object->prefix . $reference_table;
-        $this->sql['foreignKey'] = "FOREIGN KEY ($column) REFERENCES $table_name ($reference_column)" ;
+        $this->sql[$this->column_name] .= " DEFAULT $val";
         return $this;
     }
 
     protected function start()
     {
-        $this->sql['start'] = 'CREATE TABLE IF NOT EXISTS';
+		$table_name = $this->get_table_name();
+        $this->sql['start'] = "ALTER TABLE $table_name";
     }
 
     protected function get_table_name()
     {
-        return $this->wpdb_object->prefix . $this->table_name;
+        return $this->connection_instence->prefix . $this->table_name;
     }
 
     // get only sql query string
@@ -154,7 +159,7 @@ class Create implements CreateInterface
     {
         $this->start();
         $query = [
-            'query' => SqlGenerator::create($this->sql),
+            'query' => SqlGenerator::alter($this->sql),
         ];
         return $query;
     }
@@ -172,8 +177,7 @@ class Create implements CreateInterface
     public function execute()
     {
         $this->start();
-        $query = SqlGenerator::create($this->sql);
-        // return dump($query);
+        $query = SqlGenerator::alter($this->sql);
 
         try {
             $this->driver_exicute($query);
