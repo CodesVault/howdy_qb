@@ -1,0 +1,34 @@
+# Alter Statement
+
+Add new column.
+
+``` php
+DB::alter('cv_users')
+	->add('name')->longText()
+	->execute();
+```
+
+
+Modify column data type.
+
+``` php
+DB::alter('cv_users')
+    ->modify('name')->string()->required()
+    ->execute();
+```
+
+Modify column name and data type.
+
+```php
+DB::alter('cv_users')
+	->modify('name', 'username')->string(455)->required()
+	->execute();
+```
+
+Drop column.
+
+```php
+DB::alter('cv_users')
+	->drop('username')
+	->execute();
+```
