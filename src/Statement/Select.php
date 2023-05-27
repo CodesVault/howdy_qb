@@ -21,10 +21,10 @@ class Select implements SelectInterface
     {
         $this->db = $db;
         $this->wpdb_object = QueryFactory::getConfig();
-        if (empty(QueryFactory::getConfig())) {
-            global $wpdb;
-            $this->wpdb_object = $wpdb;
-        }
+        // if (empty(QueryFactory::getConfig())) {
+        //     global $wpdb;
+        //     $this->wpdb_object = $wpdb;
+        // }
     }
 
     protected function start()
@@ -207,7 +207,7 @@ class Select implements SelectInterface
     protected function setAlias()
     {
         if (! isset($this->sql['alias'])) return;
-        
+
         $this->sql['table_name'] .= ' ' . $this->sql['alias'];
         unset($this->sql['alias']);
     }

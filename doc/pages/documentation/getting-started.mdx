@@ -8,12 +8,33 @@ It connects to the WordPress database **automatically**.
 <br />But if you need then you also can set connection manually.
 
 ```php
-$db = new DB();
-$db->setDBConfig([
-    "dbhost"        => <mysql host>,
-    "dbname"        => <database name>,
-    "dbuser"        => <database username>,
-    "dbpassword"    => <database password>,
-    "prefix"        => <database table prefix>
+$db = DB::setConnection([
+    "dbhost"        => 'mysql_host',
+	"dbname"        => 'database_name',
+	"dbuser"        => 'database_user',
+	"dbpassword"    => 'database_password',
+	"prefix"        => 'database_table_prefix'
 ]);
+
+$db::select('posts.post_title')
+    ->from('posts posts')
+    ->get();
+```
+
+## Debugging
+
+To display query results in terminal, you should connect to the database using `setConnection` method.
+
+```php
+// debug.php
+
+$db = DB::setConnection();
+
+$result =
+$db::select('posts.post_title')
+    ->from('posts posts')
+    ->get();
+print_r($result);
+
+// terminal: php debug.php
 ```

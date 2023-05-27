@@ -40,6 +40,7 @@ class QueryFactory
 
     protected function selectQuery(): SelectInterface
     {
+		print_r("selectQuery \n");
         return new Select($this->db);
     }
 
