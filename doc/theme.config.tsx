@@ -36,13 +36,12 @@ const config: DocsThemeConfig = {
 	  <meta property='og:image' content='//abmsourav.com/welcome/wp-content/uploads/2023/01/WP-QueryBuilder.jpg' />
 	  <meta property='twitter:image' content='//abmsourav.com/welcome/wp-content/uploads/2023/01/WP-QueryBuilder.jpg' />
     </>
+  },
+  gitTimestamp: new Date().toDateString(),
+  banner: {
+    key: '1.3.1-release',
+    text: 'WP QueryBuilder 1.3.1 is released.',
   }
-//   banner: {
-//     key: '2.0-release',
-//     text: <a href="https://nextra.site" target="_blank">
-//       🎉 Nextra 2.0 is released. Read more →
-//     </a>,
-//   },
 }
 
 export default config
