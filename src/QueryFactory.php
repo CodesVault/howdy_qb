@@ -17,11 +17,6 @@ class QueryFactory
     protected static $driver = 'pdo';
     private static $config;
 
-    public static function setDriver(string $driver)
-    {
-        static::$driver = $driver;
-    }
-
     public static function getDriver()
     {
         return static::$driver;
@@ -37,6 +32,19 @@ class QueryFactory
             global $wpdb;
             $this->db = $wpdb;
         }
+    }
+
+	/**
+	 * Set manula connection
+	 *
+	 * @param array $configs
+	 * @param string $driver
+	 * @return CodesVault\Howdyqb\DB
+	 */
+	public static function setConnection($configs = [], $driver = 'pdo')
+    {
+		Connect::setManualConnection($configs);
+		return new DB($driver);
     }
 
     protected function selectQuery(): SelectInterface
@@ -72,12 +80,6 @@ class QueryFactory
     protected function dropQuery(string $table_name)
     {
         return new Drop($this->db, $table_name);
-    }
-
-    public function setDBConfig($configurations)
-    {
-        Connect::config($configurations);
-        static::$config = (object)$configurations;
     }
 
     public static function getConfig()
