@@ -6,7 +6,7 @@ WP Query Builder uses <code>PDO</code> for database queries. It has <strong>zero
 
 <br/>
 
-## Documentation
+# Documentation
 Documentation website [here](https://wp-querybuilder.pages.dev/).
 
 <br/>
