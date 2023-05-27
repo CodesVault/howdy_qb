@@ -146,7 +146,7 @@ $db = DB::setConnection(
 		"dbuser"        => 'database_user',
 		"dbpassword"    => 'database_password',
 		"prefix"        => 'database_table_prefix'
-	];
+	]
 );
 ```
 
