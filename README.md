@@ -8,6 +8,8 @@ WP Query Builder uses <code>PDO</code> for database queries. It has <strong>zero
 
 # Documentation
 Documentation website [here](https://wp-querybuilder.pages.dev/).
+<br/>
+This Query Builder is also used in [Kathamo](https://kathamo.dev) Framework. Kathamo is a modern framework for WordPress plugin development.
 
 <br/>
 
