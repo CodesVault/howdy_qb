@@ -1,4 +1,5 @@
 # WP Query Builder
+
 <p>
 Relational Database Query builder for WordPress.
 WP Query Builder uses <code>PDO</code> for database queries. It has <strong>zero dependencies</strong> with third-party query builders or any other composer library.
@@ -7,6 +8,7 @@ WP Query Builder uses <code>PDO</code> for database queries. It has <strong>zero
 <br/>
 
 # Documentation
+
 Documentation website [here](https://wp-querybuilder.pages.dev/).
 <br/>
 This Query Builder is also used in [Kathamo](https://kathamo.dev) Framework. Kathamo is a modern framework for WordPress plugin development.
@@ -16,7 +18,8 @@ This Query Builder is also used in [Kathamo](https://kathamo.dev) Framework. Kat
 ## Examples
 
 ### Create Table
-``` php
+
+```php
 DB::create('querybuilder')
     ->column('ID')->bigInt()->unsigned()->autoIncrement()->primary()->required()
     ->column('name')->string(255)->required()
@@ -28,7 +31,8 @@ DB::create('querybuilder')
 <br/>
 
 ### Insert Statement
-``` php
+
+```php
 DB::insert('querybuilder', [
     [
         'name' => 'Keramot UL Islam',
@@ -41,7 +45,7 @@ DB::insert('querybuilder', [
 
 ### Update Statement
 
-``` php
+```php
 DB::update('querybuilders', [
     'name' => 'Keramot UL',
     'email' => 'keramotul.islam@gmail.com'
@@ -55,7 +59,7 @@ DB::update('querybuilders', [
 
 ### Select Statement
 
-``` php
+```php
 $result =
 DB::select('qb.ID', 'qb.name, qb.email')
     ->from('querybuilders')
@@ -96,7 +100,7 @@ DB::select('posts.post_title')
 
 ### Delete Statement
 
-``` php
+```php
 // delete one row
 DB::delete('posts')
     ->where('ID', '=', 3)
@@ -110,7 +114,7 @@ DB::delete('posts')->execute();
 
 ### Drop Statement
 
-``` php
+```php
 DB::drop('posts');
 DB::dropIfExists('terms');
 ```
@@ -119,11 +123,12 @@ DB::dropIfExists('terms');
 <br>
 
 ### Single instence
+
 <p>
 Expressions also can be exicuted with one instence of <code>DB</code> class. By doing this database connection will be stablished only once.
 </p>
 
-``` php
+```php
 $db = new DB();
 
 $result =
@@ -138,6 +143,7 @@ $db::create('meta')
 <br>
 
 ### Database Connection
+
 By default database connection will set out of the box, automaically. But you can also manually input database configurations. This way, you also can debug your database queries from terminal.
 
 ```php
@@ -158,7 +164,8 @@ $db = DB::setConnection(
 ### Driver
 
 The default driver is `pdo`. But if you want to use `wpdb` which uses Mysqli, you also can do that by changing the driver.
-``` php
+
+```php
 $db = new DB('wpdb');
 
 $db::select('posts.post_title')
@@ -170,6 +177,7 @@ $db::select('posts.post_title')
 <br>
 
 ## Dev Envirenment Setup for Contributors
+
 Want to contribute to this package? Please follow the steps below.
 
 <ul>
@@ -183,7 +191,10 @@ Want to contribute to this package? Please follow the steps below.
         "repositories": [
             {
                 "type": "path",
-                "url": "./howdy_qb"
+                "url": "./howdy_qb",
+				"options": {
+					"symlink": true
+				}
             }
         ],
         </pre>
