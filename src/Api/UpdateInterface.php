@@ -10,5 +10,7 @@ interface UpdateInterface
 
     function orWhere(string $column, string $operator = null, string $value = null): self;
 
+    function getSql();
+
     function execute();
 }
