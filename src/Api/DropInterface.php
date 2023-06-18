@@ -4,7 +4,7 @@ namespace CodesVault\Howdyqb\Api;
 
 interface DropInterface
 {
-    function drop();
+    public function drop();
 
-    function dropIfExists();
+    public function dropIfExists();
 }
