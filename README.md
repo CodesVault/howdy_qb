@@ -183,7 +183,10 @@ Want to contribute to this package? Please follow the steps below.
         "repositories": [
             {
                 "type": "path",
-                "url": "./howdy_qb"
+                "url": "./howdy_qb",
+				"options": {
+					"symlink": true
+				}
             }
         ],
         </pre>
