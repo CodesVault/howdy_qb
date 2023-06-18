@@ -18,8 +18,11 @@ class Update implements UpdateInterface
 
     public function __construct($db, string $table_name, array $data)
     {
-        global $wpdb;
-        $this->wpdb_object = $wpdb;
+        $this->wpdb_object = QueryFactory::getConfig();
+        if (empty(QueryFactory::getConfig())) {
+            global $wpdb;
+            $this->wpdb_object = $wpdb;
+        }
 
         $this->db = $db;
         $this->data = $data;
@@ -53,6 +56,17 @@ class Update implements UpdateInterface
     {
         $this->start();
         $this->update_data();
+    }
+
+    // get only sql query string
+    public function getSql()
+    {
+        $this->start();
+        $query = [
+            'query'     => SqlGenerator::update($this->sql),
+            'params'    => $this->params,
+        ];
+        return $query;
     }
 
     protected function start()

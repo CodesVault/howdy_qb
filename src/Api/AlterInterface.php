@@ -2,9 +2,13 @@
 
 namespace CodesVault\Howdyqb\Api;
 
-interface CreateInterface
+interface AlterInterface
 {
-    function column(string $column_name): self;
+	function add(string $column): self;
+
+	function modify(string $old_column, string $new_column = ''): self;
+
+	function drop(string $column): self;
 
     function int(int $size = 255): self;
 
@@ -36,9 +40,7 @@ interface CreateInterface
 
     function default($value): self;
 
-    function foreignKey(string $column, string $reference_table, string $reference_column): self;
-
     function getSql();
-    
+
     function execute();
 }

@@ -58,6 +58,20 @@ class SqlGenerator
         return trim($query);
     }
 
+	public static function alter(array $sql)
+	{
+		$query = '';
+        if (isset($sql['start'])) {
+            $query .= $sql['start'] . ' ';
+        }
+		foreach ($sql as $key => $value) {
+            if ($key == 'start') continue;
+            $query .= $value . ' ';
+        }
+        $query = trim($query);
+		return $query . ";";
+	}
+
     public static function update(array $sql)
     {
         $query = '';
