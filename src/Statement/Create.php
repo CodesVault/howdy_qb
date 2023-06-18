@@ -85,6 +85,11 @@ class Create implements CreateInterface
         return $this;
     }
 
+    public function nullable(): self
+    {
+        return $this->default('NULL');
+    }
+
     public function primary($columns = []): self
     {
         if (! empty($columns)) {
