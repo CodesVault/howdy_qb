@@ -17,11 +17,8 @@ class Delete implements DeleteInterface
 
     public function __construct($db, string $table_name)
     {
-        $this->wpdb_object = QueryFactory::getConfig();
-        if (empty(QueryFactory::getConfig())) {
-            global $wpdb;
-            $this->wpdb_object = $wpdb;
-        }
+        global $wpdb;
+        $this->wpdb_object = $wpdb;
 
         $this->db = $db;
         $this->table_name = $this->wpdb_object->prefix . $table_name;
@@ -89,17 +86,6 @@ class Delete implements DeleteInterface
         } catch (\Exception $exception) {
             Utilities::throughException($exception);
         }
-    }
-
-    // get only sql query string
-    public function getSql()
-    {
-        $this->start();
-        $query = [
-            'query'     => SqlGenerator::delete($this->sql),
-            'params'    => $this->params,
-        ];
-        return $query;
     }
 
     public function execute()

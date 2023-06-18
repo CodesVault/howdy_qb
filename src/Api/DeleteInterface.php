@@ -14,7 +14,5 @@ interface DeleteInterface
 
     function dropIfExists();
 
-    function getSql();
-
     function execute();
 }

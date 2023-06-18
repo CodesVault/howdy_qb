@@ -8,10 +8,6 @@ lerna-debug.log*
 vendor
 composer.lock
 
-.DS_Store
-.github/
-doc/
-
 .phpunit.result.cache
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
