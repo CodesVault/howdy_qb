@@ -3,7 +3,6 @@
 namespace CodesVault\Howdyqb\Statement;
 
 use CodesVault\Howdyqb\Api\SelectInterface;
-use CodesVault\Howdyqb\Connect;
 use CodesVault\Howdyqb\QueryFactory;
 use CodesVault\Howdyqb\SqlGenerator;
 use CodesVault\Howdyqb\Utilities;
@@ -20,11 +19,8 @@ class Select implements SelectInterface
     public function __construct($db)
     {
         $this->db = $db;
-        $this->wpdb_object = QueryFactory::getConfig();
-        if (empty(QueryFactory::getConfig())) {
-            global $wpdb;
-            $this->wpdb_object = $wpdb;
-        }
+        global $wpdb;
+        $this->wpdb_object = $wpdb;
     }
 
     protected function start()
@@ -75,7 +71,7 @@ class Select implements SelectInterface
         return $this;
     }
 
-    public function where($column, ?string $operator = null, ?string $value = null): self
+    public function where($column, string $operator = null, string $value = null): self
     {
         if ( is_callable( $column ) ) {
             call_user_func( $column, $this );
@@ -237,19 +233,6 @@ class Select implements SelectInterface
         $data = $driver->prepare($sql);
         $data->execute($placeholders);
         return $data->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
-    // get only sql query string
-    public function getSql()
-    {
-        $this->start();
-        $this->setAlias();
-        $this->setStartExpression();
-        $query = [
-            'query' => SqlGenerator::select($this->sql),
-            'params' => $this->params
-        ];
-        return $query;
     }
 
     // get data from database

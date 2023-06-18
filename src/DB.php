@@ -2,7 +2,6 @@
 
 namespace CodesVault\Howdyqb;
 
-use CodesVault\Howdyqb\Api\AlterInterface;
 use CodesVault\Howdyqb\Api\CreateInterface;
 use CodesVault\Howdyqb\Api\DeleteInterface;
 use CodesVault\Howdyqb\Api\SelectInterface;
@@ -30,13 +29,6 @@ class DB extends QueryFactory
         $factory = new self(static::$driver);
         $create = $factory->createQuery($table_name);
         return $create;
-    }
-
-	public static function alter(string $table_name): AlterInterface
-    {
-        $factory = new self(static::$driver);
-        $alter = $factory->alterQuery($table_name);
-        return $alter;
     }
 
     public static function update(string $table_name, array $data): UpdateInterface

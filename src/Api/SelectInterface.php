@@ -84,7 +84,5 @@ interface SelectInterface
 
     function raw(string $sql): self;
 
-    function getSql();
-
     function get();
 }

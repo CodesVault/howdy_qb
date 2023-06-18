@@ -9,7 +9,7 @@ class CreateTest extends TestCase
 {
     public function testCreateTable()
     {
-        $sql = "CREATE TABLE IF NOT EXISTS wp_test (ID BIGINT(255) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) DEFAULT 'nil', INDEX (ID) )";
+        $sql = "CREATE TABLE wp_test (ID BIGINT(255) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) DEFAULT 'nil', INDEX (ID) )";
 
         $query =
             CreateApi::create('test')
