@@ -22,6 +22,8 @@ interface CreateInterface
 
     function required(): self;
 
+	function nullable(): self;
+
     function primary($columns = []): self;
 
     function index(array $columns): self;
