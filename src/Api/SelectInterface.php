@@ -4,13 +4,13 @@ namespace CodesVault\Howdyqb\Api;
 
 interface SelectInterface
 {
-    function distinct(): self;
+    public function distinct(): self;
 
-    function columns(...$columns): self;
+    public function columns(...$columns): self;
 
-    function alias(string $name): self;
+    public function alias(string $name): self;
 
-    function from(string $table_name): self;
+    public function from(string $table_name): self;
 
     /**
      * JOIN table(s) ON condition of
@@ -22,7 +22,7 @@ interface SelectInterface
      *
      * @return CodesVault\Howdyqb\Api\SelectInterface
      */
-    function join($table_name, string $col1 = null, string $col2 = null): self;
+    public function join($table_name, string $col1 = null, string $col2 = null): self;
 
     /**
      * INNER JOIN table(s) ON condition of
@@ -34,7 +34,7 @@ interface SelectInterface
      *
      * @return CodesVault\Howdyqb\Api\SelectInterface
      */
-    function innerJoin($table_name, string $col1 = null, string $col2 = null): self;
+    public function innerJoin($table_name, string $col1 = null, string $col2 = null): self;
 
     /**
      * LEFT JOIN table(s) ON condition of
@@ -46,7 +46,7 @@ interface SelectInterface
      *
      * @return CodesVault\Howdyqb\Api\SelectInterface
      */
-    function leftJoin($table_name, string $col1 = null, string $col2 = null): self;
+    public function leftJoin($table_name, string $col1 = null, string $col2 = null): self;
 
     /**
      * RIGHT JOIN table(s) ON condition of
@@ -58,33 +58,33 @@ interface SelectInterface
      *
      * @return CodesVault\Howdyqb\Api\SelectInterface
      */
-    function rightJoin($table_name, string $col1 = null, string $col2 = null): self;
+    public function rightJoin($table_name, string $col1 = null, string $col2 = null): self;
 
-    function where($column, ?string $operator = null, ?string $value = null): self;
+    public function where($column, ?string $operator = null, ?string $value = null): self;
 
-    function andWhere(string $column, ?string $operator, ?string $value): self;
+    public function andWhere(string $column, ?string $operator, ?string $value): self;
 
-    function orWhere(string $column, ?string $operator, ?string $value): self;
+    public function orWhere(string $column, ?string $operator, ?string $value): self;
 
-    function whereNot(string $column, ?string $operator, ?string $value): self;
+    public function whereNot(string $column, ?string $operator, ?string $value): self;
 
-    function andNot(string $column, ?string $operator, ?string $value): self;
+    public function andNot(string $column, ?string $operator, ?string $value): self;
 
-    function whereIn(string $column, ...$value): self;
+    public function whereIn(string $column, ...$value): self;
 
-    function orderBy($column, string $sort): self;
+    public function orderBy($column, string $sort): self;
 
-    function groupBy($column): self;
+    public function groupBy($column): self;
 
-    function limit(int $count): self;
+    public function limit(int $count): self;
 
-    function offset(int $count): self;
+    public function offset(int $count): self;
 
-    function count(string $column, string $alias = ''): self;
+    public function count(string $column, string $alias = ''): self;
 
-    function raw(string $sql): self;
+    public function raw(string $sql): self;
 
-    function getSql();
+    public function getSql();
 
-    function get();
+    public function get();
 }

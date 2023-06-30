@@ -20,7 +20,7 @@ This Query Builder is also used in [Kathamo](https://kathamo.dev) Framework. Kat
 DB::create('querybuilder')
     ->column('ID')->bigInt()->unsigned()->autoIncrement()->primary()->required()
     ->column('name')->string(255)->required()
-    ->column('email')->string(255)->default('NULL')
+    ->column('email')->string(255)->nullable()
     ->index(['ID'])
     ->execute();
 ```
