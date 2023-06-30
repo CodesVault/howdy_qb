@@ -37,10 +37,10 @@ const config: DocsThemeConfig = {
 	  <meta property='twitter:image' content='//abmsourav.com/welcome/wp-content/uploads/2023/01/WP-QueryBuilder.jpg' />
     </>
   },
-  gitTimestamp: new Date().toDateString(),
+  gitTimestamp: null,
   banner: {
-    key: '1.3.1-release',
-    text: 'WP QueryBuilder 1.3.1 is released.',
+    key: '1.3.2-release',
+    text: 'WP QueryBuilder 1.3.2 is released.',
   }
 }
 
