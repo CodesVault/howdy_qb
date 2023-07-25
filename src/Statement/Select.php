@@ -75,41 +75,41 @@ class Select implements SelectInterface
         return $this;
     }
 
-    public function where($column, ?string $operator = null, ?string $value = null): self
+    public function where($column, ?string $operator = null, $value = null): self
     {
         if ( is_callable( $column ) ) {
             call_user_func( $column, $this );
             return $this;
         }
-        $this->sql['where'] = 'WHERE ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder();
+        $this->sql['where'] = 'WHERE ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
     }
 
-    public function andWhere(string $column, string $operator = null, string $value = null): self
+    public function andWhere(string $column, string $operator = null, $value = null): self
     {
-        $this->sql['andWhere'] = 'AND ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder();
+        $this->sql['andWhere'] = 'AND ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
     }
 
-    public function orWhere(string $column, string $operator = null, string $value = null): self
+    public function orWhere(string $column, string $operator = null, $value = null): self
     {
-        $this->sql['orWhere'] = 'OR ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder();
+        $this->sql['orWhere'] = 'OR ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
     }
 
-    public function whereNot(string $column, string $operator = null, string $value = null): self
+    public function whereNot(string $column, string $operator = null, $value = null): self
     {
-        $this->sql['whereNot'] = 'WHERE NOT ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder();
+        $this->sql['whereNot'] = 'WHERE NOT ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
     }
 
-    public function andNot(string $column, string $operator = null, string $value = null): self
+    public function andNot(string $column, string $operator = null, $value = null): self
     {
-        $this->sql['andNot'] = 'AND NOT ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder();
+        $this->sql['andNot'] = 'AND NOT ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
     }
@@ -207,7 +207,7 @@ class Select implements SelectInterface
     protected function setAlias()
     {
         if (! isset($this->sql['alias'])) return;
-        
+
         $this->sql['table_name'] .= ' ' . $this->sql['alias'];
         unset($this->sql['alias']);
     }
@@ -224,10 +224,11 @@ class Select implements SelectInterface
     private function driver_exicute($sql, $placeholders)
     {
         $driver = $this->db;
-        if ('wpdb' === QueryFactory::getDriver()) {
+        if ($driver instanceof \wpdb) {
             if (empty($placeholders)) {
                 return $driver->get_results($sql, ARRAY_A);
             }
+
             return $driver->get_results(
                 $driver->prepare($sql, $placeholders),
                 ARRAY_A

@@ -23,11 +23,12 @@ class Utilities
         throw new \Exception($exception->getMessage());
     }
 
-    public static function get_placeholder()
+    public static function get_placeholder($db, $value)
     {
-        $driver = QueryFactory::getDriver();
-        if ('wpdb' === $driver) {
-            return '%s';
+        if ($db instanceof \wpdb) {
+            if (is_string($value)) return '%s';
+            if (is_integer($value)) return '%d';
+			if (is_float($value)) return '%f';
         }
         return "?";
     }

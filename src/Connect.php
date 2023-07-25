@@ -31,19 +31,23 @@ final class Connect
 
 	public static function setManualConnection(array $configs = [])
 	{
-		$path = explode('/wp-content', dirname(__DIR__));
-		if (! empty($path) && ! file_exists($path[0] . '/wp-config.php')) {
-			throw new \Exception('wp-config.php file not found');
-		}
-		require $path[0] . '/wp-config.php';
+		$configurations = [];
+		if (! defined('DB_HOST')) {
+			$path = explode('/wp-content', dirname(__DIR__));
+			if (! empty($path) && ! file_exists($path[0] . '/wp-config.php')) {
+				throw new \Exception('wp-config.php file not found');
+			}
+			require $path[0] . '/wp-config.php';
 
-		$configurations = [
-			"dbhost"        => DB_HOST,
-			"dbname"        => DB_NAME,
-			"dbuser"        => DB_USER,
-			"dbpassword"    => DB_PASSWORD,
-			"prefix"        => $table_prefix,
-		];
+			$configurations = [
+				"dbhost"        => DB_HOST,
+				"dbname"        => DB_NAME,
+				"dbuser"        => DB_USER,
+				"dbpassword"    => DB_PASSWORD,
+				"prefix"        => $table_prefix,
+			];
+		}
+
 		$configurations = array_merge($configurations, $configs);
         static::$configs = (object)$configurations;
 	}
