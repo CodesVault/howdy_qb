@@ -26,6 +26,7 @@ class Utilities
     public static function get_placeholder($db, $value)
     {
         if ($db instanceof \wpdb) {
+			if (is_array($value)) return '%s';
             if (is_string($value)) return '%s';
             if (is_integer($value)) return '%d';
 			if (is_float($value)) return '%f';

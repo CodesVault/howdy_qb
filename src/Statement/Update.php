@@ -80,13 +80,13 @@ class Update implements UpdateInterface
 
         $columns = [];
         foreach ($this->data as $column => $value) {
-            $columns[] = $column . '=' .  Utilities::get_placeholder();
+            $columns[] = $column . '=' .  Utilities::get_placeholder($this->db, $value);
             $this->params[] = $value;
         }
         return 'SET ' . implode(', ', $columns);
     }
 
-    public function where($column, string $operator = null, string $value = null): self
+    public function where($column, string $operator = null, $value = null): self
     {
         if ( is_callable( $column ) ) {
             call_user_func( $column, $this );
@@ -97,16 +97,16 @@ class Update implements UpdateInterface
         return $this;
     }
 
-    public function andWhere(string $column, string $operator = null, string $value = null): self
+    public function andWhere(string $column, string $operator = null, $value = null): self
     {
-        $this->sql['andWhere'] = 'AND ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder();
+        $this->sql['andWhere'] = 'AND ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
     }
 
-    public function orWhere(string $column, string $operator = null, string $value = null): self
+    public function orWhere(string $column, string $operator = null, $value = null): self
     {
-        $this->sql['orWhere'] = 'OR ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder();
+        $this->sql['orWhere'] = 'OR ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
     }

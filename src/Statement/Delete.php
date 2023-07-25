@@ -38,21 +38,21 @@ class Delete implements DeleteInterface
             call_user_func( $column, $this );
             return $this;
         }
-        $this->sql['where'] = 'WHERE ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder();
+        $this->sql['where'] = 'WHERE ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
     }
 
     public function andWhere(string $column, string $operator = null, string $value = null): self
     {
-        $this->sql['andWhere'] = 'AND ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder();
+        $this->sql['andWhere'] = 'AND ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
     }
 
     public function orWhere(string $column, string $operator = null, string $value = null): self
     {
-        $this->sql['orWhere'] = 'OR ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder();
+        $this->sql['orWhere'] = 'OR ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
     }

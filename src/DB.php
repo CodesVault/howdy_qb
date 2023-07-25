@@ -12,6 +12,7 @@ class DB extends QueryFactory
 {
     public static function select(...$columns): SelectInterface
     {
+		dump(static::$driver);
         $factory = new self(static::$driver);
         $query = $factory->selectQuery();
         $query = $query->columns(...$columns);
@@ -20,6 +21,7 @@ class DB extends QueryFactory
 
     public static function insert(string $table_name, array $data)
     {
+		dump(static::$driver);
         $factory = new self(static::$driver);
         $factory->insertQuery($table_name, $data);
         return $factory;

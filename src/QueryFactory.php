@@ -13,7 +13,7 @@ use CodesVault\Howdyqb\Statement\Update;
 
 class QueryFactory
 {
-    protected static $db = null;
+    protected $db = null;
     protected static $driver = 'pdo';
     private static $config;
 
@@ -24,13 +24,15 @@ class QueryFactory
 
     public function __construct($driver = 'pdo')
     {
-        if (self::$db) return;
+        if ($this->db) return;
+
+		static::$driver = $driver;
 
         if ('pdo' === $driver) {
-            self::$db = Connect::pdo();
+            $this->db = Connect::pdo();
         } elseif ('wpdb' === $driver) {
             global $wpdb;
-            self::$db = $wpdb;
+            $this->db = $wpdb;
         }
     }
 
@@ -46,12 +48,13 @@ class QueryFactory
 		if (! empty($configs)) {
 			Connect::setManualConnection($configs);
 		}
+		static::$config = $configs;
 		return new DB($driver);
     }
 
-    protected static function selectQuery(): SelectInterface
+    protected function selectQuery(): SelectInterface
     {
-        return new Select(self::$db);
+        return new Select($this->db);
     }
 
     protected function insertQuery(string $table_name, array $data)

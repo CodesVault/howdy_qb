@@ -27,7 +27,7 @@ class Insert
         $this->sql['columns'] = $this->get_columns();
         $this->sql['value_placeholders'] = $this->get_value_placeholders();
         $this->params = $this->get_params();
-        
+
         $this->insert_data();
     }
 
@@ -44,8 +44,9 @@ class Insert
 
     private function driver_exicute($sql)
     {
+		dump($sql, $this->params);
         $driver = $this->db;
-        if ('wpdb' === QueryFactory::getDriver()) {
+        if ($driver instanceof \wpdb) {
             return $driver->query($driver->prepare($sql, $this->params));
         }
 
@@ -60,15 +61,17 @@ class Insert
 
     private function get_table_name()
     {
-        // global $wpdb;
-        // return $wpdb->prefix . $this->table_name;
+       return $this->getTablePrefix()->prefix . $this->table_name;
+    }
+
+	private function getTablePrefix()
+	{
         if (empty(QueryFactory::getConfig())) {
             global $wpdb;
-            return $wpdb->prefix . $this->table_name;
-        } else {
-            return QueryFactory::getConfig()->prefix . $this->table_name;
+            return $wpdb;
         }
-    }
+		return QueryFactory::getConfig();
+	}
 
     private function get_columns()
     {
@@ -87,10 +90,10 @@ class Insert
 
         if (count($this->data) > 1) {
             foreach ($this->data as $row) {
-                $placeholders[] = '(' . implode(',', array_fill(0, count($row), Utilities::get_placeholder())) . ')';
+                $placeholders[] = '(' . implode(',', array_fill(0, count($row), Utilities::get_placeholder($this->db, $row))) . ')';
             }
         } else {
-            $placeholders[] = '(' . implode(',', array_fill(0, count($this->data[0]), Utilities::get_placeholder())) . ')';
+            $placeholders[] = '(' . implode(',', array_fill(0, count($this->data[0]), Utilities::get_placeholder($this->db, $this->data))) . ')';
         }
         return 'VALUES ' . implode(',', $placeholders);
     }
