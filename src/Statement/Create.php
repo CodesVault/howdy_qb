@@ -20,11 +20,6 @@ class Create implements CreateInterface
     {
         $this->db = $db;
         $this->table_name = $table_name;
-        $this->wpdb_object = QueryFactory::getConfig();
-        if (empty(QueryFactory::getConfig())) {
-            global $wpdb;
-            $this->wpdb_object = $wpdb;
-        }
 
         $this->start();
         $this->sql['table_name'] = $this->get_table_name();
@@ -139,7 +134,7 @@ class Create implements CreateInterface
 
     public function foreignKey(string $column, string $reference_table, string $reference_column): self
     {
-        $table_name = $this->wpdb_object->prefix . $reference_table;
+        $table_name = Utilities::get_db_configs()->prefix . $reference_table;
         $this->sql['foreignKey'] = "FOREIGN KEY ($column) REFERENCES $table_name ($reference_column)" ;
         return $this;
     }
@@ -151,7 +146,7 @@ class Create implements CreateInterface
 
     protected function get_table_name()
     {
-        return $this->wpdb_object->prefix . $this->table_name;
+        return Utilities::get_db_configs()->prefix . $this->table_name;
     }
 
     // get only sql query string
@@ -167,7 +162,7 @@ class Create implements CreateInterface
     private function driver_exicute($sql)
     {
         $driver = $this->db;
-        if ($driver instanceof \wpdb) {
+        if (class_exists('wpdb') && $driver instanceof \wpdb) {
             return $driver->query($sql);
         }
 

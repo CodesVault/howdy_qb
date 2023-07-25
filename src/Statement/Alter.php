@@ -175,7 +175,7 @@ class Alter implements AlterInterface
     private function driver_exicute($sql)
     {
         $driver = $this->db;
-        if ($driver instanceof \wpdb) {
+        if (class_exists('wpdb') && $driver instanceof \wpdb) {
             return $driver->query($sql);
         }
 

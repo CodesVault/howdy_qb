@@ -44,9 +44,8 @@ class Insert
 
     private function driver_exicute($sql)
     {
-		dump($sql, $this->params);
         $driver = $this->db;
-        if ($driver instanceof \wpdb) {
+        if (class_exists('wpdb') && $driver instanceof \wpdb) {
             return $driver->query($driver->prepare($sql, $this->params));
         }
 
@@ -61,17 +60,8 @@ class Insert
 
     private function get_table_name()
     {
-       return $this->getTablePrefix()->prefix . $this->table_name;
+       return Utilities::get_db_configs()->prefix . $this->table_name;
     }
-
-	private function getTablePrefix()
-	{
-        if (empty(QueryFactory::getConfig())) {
-            global $wpdb;
-            return $wpdb;
-        }
-		return QueryFactory::getConfig();
-	}
 
     private function get_columns()
     {

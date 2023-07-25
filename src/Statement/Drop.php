@@ -17,14 +17,8 @@ class Drop implements DropInterface
 
     public function __construct($db, string $table_name)
     {
-        $this->wpdb_object = QueryFactory::getConfig();
-        if (empty(QueryFactory::getConfig())) {
-            global $wpdb;
-            $this->wpdb_object = $wpdb;
-        }
-
         $this->db = $db;
-        $this->table_name = $this->wpdb_object->prefix . $table_name;
+        $this->table_name = Utilities::get_db_configs()->prefix . $table_name;
     }
 
     public function drop()
@@ -42,7 +36,7 @@ class Drop implements DropInterface
     private function driver_exicute($sql)
     {
         $driver = $this->db;
-        if ('wpdb' === QueryFactory::getDriver()) {
+		if (class_exists('wpdb') && $driver instanceof \wpdb) {
             return $driver->query($sql);
         }
 

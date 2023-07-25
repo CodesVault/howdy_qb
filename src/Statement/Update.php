@@ -14,26 +14,20 @@ class Update implements UpdateInterface
     public $sql = [];
     protected $params = [];
     protected $table_name;
-    protected $wpdb_object;
 
     public function __construct($db, string $table_name, array $data)
     {
-        $this->wpdb_object = QueryFactory::getConfig();
-        if (empty(QueryFactory::getConfig())) {
-            global $wpdb;
-            $this->wpdb_object = $wpdb;
-        }
+		$this->db = $db;
 
-        $this->db = $db;
         $this->data = $data;
-        $this->table_name = $this->wpdb_object->prefix . $table_name;
+        $this->table_name = $this->get_table_prefix()->prefix . $table_name;
         $this->sql['set_columns'] = $this->set_columns();
     }
 
     private function driver_exicute($sql)
     {
         $driver = $this->db;
-        if ('wpdb' === QueryFactory::getDriver()) {
+        if (class_exists('wpdb') && $driver instanceof \wpdb) {
             return $driver->query($driver->prepare($sql, $this->params));
         }
 
@@ -69,6 +63,15 @@ class Update implements UpdateInterface
         return $query;
     }
 
+	private function get_table_prefix()
+	{
+        if (empty(QueryFactory::getConfig())) {
+            global $wpdb;
+            return $wpdb;
+        }
+		return QueryFactory::getConfig();
+	}
+
     protected function start()
     {
         $this->sql['start'] = 'UPDATE ' . $this->table_name;
@@ -92,7 +95,7 @@ class Update implements UpdateInterface
             call_user_func( $column, $this );
             return $this;
         }
-        $this->sql['where'] = 'WHERE ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder();
+        $this->sql['where'] = 'WHERE ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
     }

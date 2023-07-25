@@ -33,4 +33,13 @@ class Utilities
         }
         return "?";
     }
+
+	public static function get_db_configs()
+	{
+        if (empty(QueryFactory::getConfig())) {
+            global $wpdb;
+            return $wpdb;
+        }
+		return QueryFactory::getConfig();
+	}
 }

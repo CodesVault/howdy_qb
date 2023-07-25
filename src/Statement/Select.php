@@ -14,17 +14,11 @@ class Select implements SelectInterface
     protected $sql = [];
     protected $params = [];
     protected $table_name;
-    protected $wpdb_object;
     private $raw_count = 0;
 
     public function __construct($db)
     {
         $this->db = $db;
-        $this->wpdb_object = QueryFactory::getConfig();
-        if (empty(QueryFactory::getConfig())) {
-            global $wpdb;
-            $this->wpdb_object = $wpdb;
-        }
     }
 
     protected function start()
@@ -71,7 +65,7 @@ class Select implements SelectInterface
 
     public function from(string $table_name): self
     {
-        $this->sql['table_name'] = 'FROM ' . $this->wpdb_object->prefix . $table_name;
+        $this->sql['table_name'] = 'FROM ' . Utilities::get_db_configs()->prefix . $table_name;
         return $this;
     }
 
@@ -158,10 +152,10 @@ class Select implements SelectInterface
         $table_names = [];
         if (is_array($table_name)) {
             foreach ($table_name as $table) {
-                $table_names[] = $this->wpdb_object->prefix . $table;
+                $table_names[] = Utilities::get_db_configs()->prefix . $table;
             }
         } else {
-            $table_names[] = $this->wpdb_object->prefix . $table_name;
+            $table_names[] = Utilities::get_db_configs()->prefix . $table_name;
         }
 
         $table = '';
@@ -224,7 +218,7 @@ class Select implements SelectInterface
     private function driver_exicute($sql, $placeholders)
     {
         $driver = $this->db;
-        if ($driver instanceof \wpdb) {
+        if (class_exists('wpdb') && $driver instanceof \wpdb) {
             if (empty($placeholders)) {
                 return $driver->get_results($sql, ARRAY_A);
             }
