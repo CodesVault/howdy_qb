@@ -13,18 +13,12 @@ class Alter implements AlterInterface
     public $sql = [];
     protected $params = [];
     protected $column_name;
-    protected $connection_instence;
     protected $table_name;
 
     public function __construct($db, string $table_name)
     {
         $this->db = $db;
         $this->table_name = $table_name;
-        $this->connection_instence = QueryFactory::getConfig();
-        if (empty(QueryFactory::getConfig())) {
-            global $wpdb;
-            $this->connection_instence = $wpdb;
-        }
 
         $this->start();
     }
@@ -143,16 +137,30 @@ class Alter implements AlterInterface
         return $this;
     }
 
+	public function nullable(): self
+    {
+        return $this->default('NULL');
+    }
+
     protected function start()
     {
 		$table_name = $this->get_table_name();
         $this->sql['start'] = "ALTER TABLE $table_name";
     }
 
-    protected function get_table_name()
+    private function get_table_name()
     {
-        return $this->connection_instence->prefix . $this->table_name;
+       return $this->getTablePrefix()->prefix . $this->table_name;
     }
+
+	private function getTablePrefix()
+	{
+        if (empty(QueryFactory::getConfig())) {
+            global $wpdb;
+            return $wpdb;
+        }
+		return QueryFactory::getConfig();
+	}
 
     // get only sql query string
     public function getSql()
@@ -167,7 +175,7 @@ class Alter implements AlterInterface
     private function driver_exicute($sql)
     {
         $driver = $this->db;
-        if ('wpdb' === QueryFactory::getDriver()) {
+        if ($driver instanceof \wpdb) {
             return $driver->query($sql);
         }
 

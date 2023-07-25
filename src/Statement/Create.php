@@ -167,7 +167,7 @@ class Create implements CreateInterface
     private function driver_exicute($sql)
     {
         $driver = $this->db;
-        if ('wpdb' === QueryFactory::getDriver()) {
+        if ($driver instanceof \wpdb) {
             return $driver->query($sql);
         }
 

@@ -40,6 +40,8 @@ interface AlterInterface
 
     function default($value): self;
 
+	function nullable(): self;
+
     function getSql();
 
     function execute();
