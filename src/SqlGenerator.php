@@ -46,7 +46,7 @@ class SqlGenerator
 
             if (is_array($expression)) {
                 foreach ($expression as $name => $column) {
-                    $expression[$name] = $name . ' ' . implode(' ', $column);
+                    $expression[$name] = '`'. $name . '` ' . implode(' ', $column);
                 }
                 $query .= implode(', ', $expression);
             } else {
