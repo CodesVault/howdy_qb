@@ -42,6 +42,10 @@ interface AlterInterface
 
 	function nullable(): self;
 
+	public function foreignKey(string $column, string $reference_table, string $reference_column): self;
+
+	public function onDelete(string $action): self;
+
     function getSql();
 
     function execute();

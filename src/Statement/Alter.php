@@ -14,6 +14,7 @@ class Alter implements AlterInterface
     protected $params = [];
     protected $column_name;
     protected $table_name;
+    protected $column_exists = false;
 
     public function __construct($db, string $table_name)
     {
@@ -25,6 +26,11 @@ class Alter implements AlterInterface
 
 	public function add(string $column): self
 	{
+	    $this->column_name = $column;
+        if ($this->hasColumn($column)) {
+           $this->column_exists = true;
+        }
+
 		$this->sql[$column] = "ADD $column";
 		return $this;
 	}
@@ -142,6 +148,19 @@ class Alter implements AlterInterface
         return $this->default('NULL');
     }
 
+    public function foreignKey(string $column, string $reference_table, string $reference_column): self
+    {
+        $table_name = Utilities::get_db_configs()->prefix . $reference_table;
+        $this->sql['foreignKey'] = "ADD FOREIGN KEY (`$column`) REFERENCES $table_name (`$reference_column`)" ;
+        return $this;
+    }
+
+    public function onDelete(string $action): self
+    {
+        $this->sql['onDelete'] = "ON DELETE $action";
+        return $this;
+    }
+
     protected function start()
     {
 		$table_name = $this->get_table_name();
@@ -161,6 +180,30 @@ class Alter implements AlterInterface
         }
 		return QueryFactory::getConfig();
 	}
+
+	private function hasColumn($column)
+    {
+        $columns = [];
+        $driver = $this->db;
+        $table_name = Utilities::get_db_configs()->prefix .$this->table_name;
+
+        if (class_exists('wpdb') && $driver instanceof \wpdb) {
+            $columns = $driver->get_results("DESCRIBE `$table_name`", ARRAY_N);
+        } else {
+            $columns = $driver->query("DESCRIBE `$table_name`")->fetchAll(\PDO::FETCH_COLUMN);
+        }
+
+        foreach ($columns as $value) {
+            if (is_array($value) && $value[0] === $column) {
+                return $column;
+            }
+            if (! is_array($value) && $value === $column) {
+                return $column;
+            }
+        }
+
+        return false;
+    }
 
     // get only sql query string
     public function getSql()
@@ -186,6 +229,10 @@ class Alter implements AlterInterface
     {
         $this->start();
         $query = SqlGenerator::alter($this->sql);
+
+        if ($this->column_exists) {
+            return;
+        }
 
         try {
             $this->driver_exicute($query);
