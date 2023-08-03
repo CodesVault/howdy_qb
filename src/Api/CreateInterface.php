@@ -40,6 +40,8 @@ interface CreateInterface
 
     public function foreignKey(string $column, string $reference_table, string $reference_column): self;
 
+    public function onDelete(string $action): self;
+
 	public function getSql();
 
     public function execute();

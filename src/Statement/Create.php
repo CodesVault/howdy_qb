@@ -3,7 +3,6 @@
 namespace CodesVault\Howdyqb\Statement;
 
 use CodesVault\Howdyqb\Api\CreateInterface;
-use CodesVault\Howdyqb\QueryFactory;
 use CodesVault\Howdyqb\SqlGenerator;
 use CodesVault\Howdyqb\Utilities;
 
@@ -136,6 +135,12 @@ class Create implements CreateInterface
     {
         $table_name = Utilities::get_db_configs()->prefix . $reference_table;
         $this->sql['foreignKey'] = "FOREIGN KEY ($column) REFERENCES $table_name ($reference_column)" ;
+        return $this;
+    }
+
+    public function onDelete(string $action): self
+    {
+        $this->sql['onDelete'] = "ON DELETE $action";
         return $this;
     }
 
