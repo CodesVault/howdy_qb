@@ -222,7 +222,11 @@ class Alter implements AlterInterface
             return $driver->query($sql);
         }
 
-        return $driver->exec($sql);
+		try {
+			return $driver->exec($sql);
+        } catch (\PDOException $exception) {
+            Utilities::throughException($exception);
+        }
     }
 
     public function execute()
@@ -234,10 +238,6 @@ class Alter implements AlterInterface
             return;
         }
 
-        try {
-            $this->driver_exicute($query);
-        } catch (\PDOException $exception) {
-            Utilities::throughException($exception);
-        }
+    	$this->driver_exicute($query);
     }
 }

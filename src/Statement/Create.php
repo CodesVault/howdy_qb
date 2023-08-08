@@ -171,7 +171,11 @@ class Create implements CreateInterface
             return $driver->query($sql);
         }
 
-        return $driver->exec($sql);
+		try {
+			return $driver->exec($sql);
+        } catch (\PDOException $exception) {
+            Utilities::throughException($exception);
+        }
     }
 
     public function execute()
@@ -180,10 +184,6 @@ class Create implements CreateInterface
         $query = SqlGenerator::create($this->sql);
         // return dump($query);
 
-        try {
-            $this->driver_exicute($query);
-        } catch (\PDOException $exception) {
-            Utilities::throughException($exception);
-        }
+        $this->driver_exicute($query);
     }
 }

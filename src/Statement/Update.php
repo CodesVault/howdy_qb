@@ -32,18 +32,18 @@ class Update implements UpdateInterface
         }
 
         $data = $driver->prepare($sql);
-        return $data->execute($this->params);
+		try {
+			return $data->execute($this->params);
+        } catch (\Exception $exception) {
+            Utilities::throughException($exception);
+        }
     }
 
     private function update_data()
     {
         $query = SqlGenerator::update($this->sql);
 
-        try {
-            $this->driver_exicute($query);
-        } catch (\Exception $exception) {
-            Utilities::throughException($exception);
-        }
+        $this->driver_exicute($query);
     }
 
     public function execute()

@@ -70,18 +70,18 @@ class Delete implements DeleteInterface
         }
 
         $data = $driver->prepare($sql);
-        return $data->execute($this->params);
+		try {
+			return $data->execute($this->params);
+        } catch (\PDOException $exception) {
+            Utilities::throughException($exception);
+        }
     }
 
     private function delete_data()
     {
         $query = SqlGenerator::delete($this->sql);
 
-        try {
-            return $this->driver_exicute($query);
-        } catch (\Exception $exception) {
-            Utilities::throughException($exception);
-        }
+        return $this->driver_exicute($query);
     }
 
     // get only sql query string

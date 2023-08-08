@@ -41,17 +41,17 @@ class Drop implements DropInterface
         }
 
         $data = $driver->prepare($sql);
-        return $data->execute($this->params);
+		try {
+			return $data->execute($this->params);
+        } catch (\Exception $exception) {
+            Utilities::throughException($exception);
+        }
     }
 
     private function drop_table()
     {
         $query = trim($this->sql['drop']);
 
-        try {
-            $this->driver_exicute($query);
-        } catch (\Exception $exception) {
-            Utilities::throughException($exception);
-        }
+        $this->driver_exicute($query);
     }
 }

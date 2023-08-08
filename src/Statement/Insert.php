@@ -35,11 +35,7 @@ class Insert
     {
         $query = SqlGenerator::insert($this->sql);
 
-        try {
-            $this->driver_exicute($query);
-        } catch (\Exception $exception) {
-            Utilities::throughException($exception);
-        }
+        $this->driver_exicute($query);
     }
 
     private function driver_exicute($sql)
@@ -50,7 +46,11 @@ class Insert
         }
 
         $data = $driver->prepare($sql);
-        return $data->execute($this->params);
+		try {
+			return $data->execute($this->params);
+        } catch (\Exception $exception) {
+            Utilities::throughException($exception);
+        }
     }
 
     private function start()
