@@ -24,7 +24,7 @@ class Update implements UpdateInterface
         $this->sql['set_columns'] = $this->set_columns();
     }
 
-    private function driver_exicute($sql)
+    private function driver_execute($sql)
     {
         $driver = $this->db;
         if (class_exists('wpdb') && $driver instanceof \wpdb) {
@@ -43,7 +43,7 @@ class Update implements UpdateInterface
     {
         $query = SqlGenerator::update($this->sql);
 
-        $this->driver_exicute($query);
+        $this->driver_execute($query);
     }
 
     public function execute()

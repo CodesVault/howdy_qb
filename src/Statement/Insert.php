@@ -3,7 +3,6 @@
 namespace CodesVault\Howdyqb\Statement;
 
 use CodesVault\Howdyqb\Api\InsertInterface;
-use CodesVault\Howdyqb\QueryFactory;
 use CodesVault\Howdyqb\SqlGenerator;
 use CodesVault\Howdyqb\Utilities;
 
@@ -35,10 +34,10 @@ class Insert
     {
         $query = SqlGenerator::insert($this->sql);
 
-        $this->driver_exicute($query);
+        $this->driver_execute($query);
     }
 
-    private function driver_exicute($sql)
+    private function driver_execute($sql)
     {
         $driver = $this->db;
         if (class_exists('wpdb') && $driver instanceof \wpdb) {
