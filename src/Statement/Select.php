@@ -14,7 +14,7 @@ class Select implements SelectInterface
     protected $sql = [];
     protected $params = [];
     protected $table_name;
-    private $raw_count = 0;
+    private $row_count = 0;
 
     public function __construct($db)
     {
@@ -114,10 +114,10 @@ class Select implements SelectInterface
         return $this;
     }
 
-    public function orderBy($column, string $sortType): self
+    public function orderBy($column, string $sort_type): self
     {
         $col = is_array( $column ) ? implode( ', ', $column ) : $column;
-        $this->sql['orderBy'] = 'ORDER BY ' . $col . ' ' . $sortType;
+        $this->sql['orderBy'] = 'ORDER BY ' . $col . ' ' . $sort_type;
         return $this;
     }
 
@@ -194,7 +194,7 @@ class Select implements SelectInterface
 
     public function raw(string $sql): self
     {
-        $this->sql['raw_'. $this->raw_count++] = $sql;
+        $this->sql['raw_'. $this->row_count++] = $sql;
         return $this;
     }
 
@@ -209,13 +209,13 @@ class Select implements SelectInterface
     private function fetch($query, array $args = [])
     {
         try {
-            return $this->driver_exicute($query, $args);
+            return $this->driver_execute($query, $args);
         } catch (\Exception $exception) {
             Utilities::throughException($exception);
         }
     }
 
-    private function driver_exicute($sql, $placeholders)
+    private function driver_execute($sql, $placeholders)
     {
         $driver = $this->db;
         if (class_exists('wpdb') && $driver instanceof \wpdb) {
@@ -254,7 +254,6 @@ class Select implements SelectInterface
         $this->setAlias();
         $this->setStartExpression();
         $query = SqlGenerator::select($this->sql);
-        // return dump($query);
 
         $data = $this->fetch($query, $this->params);
         return $data;

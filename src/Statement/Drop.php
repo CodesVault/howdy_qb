@@ -33,7 +33,7 @@ class Drop implements DropInterface
         $this->drop_table();
     }
 
-    private function driver_exicute($sql)
+    private function driver_execute($sql)
     {
         $driver = $this->db;
 		if (class_exists('wpdb') && $driver instanceof \wpdb) {
@@ -52,6 +52,6 @@ class Drop implements DropInterface
     {
         $query = trim($this->sql['drop']);
 
-        $this->driver_exicute($query);
+        $this->driver_execute($query);
     }
 }
