@@ -215,7 +215,7 @@ class Alter implements AlterInterface
         return $query;
     }
 
-    private function driver_exicute($sql)
+    private function driver_execute($sql)
     {
         $driver = $this->db;
         if (class_exists('wpdb') && $driver instanceof \wpdb) {
@@ -238,6 +238,6 @@ class Alter implements AlterInterface
             return;
         }
 
-    	$this->driver_exicute($query);
+    	$this->driver_execute($query);
     }
 }
