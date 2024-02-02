@@ -57,8 +57,7 @@
 			".gitignore",
 			"tests",
 			"phpunit.xml",
-			"phpcs.xml",
-			"LICENSE"
+			"phpcs.xml"
 		]
 	}
 }
