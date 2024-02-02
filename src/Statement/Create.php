@@ -67,9 +67,15 @@ class Create implements CreateInterface
         return $this;
     }
 
-    public function longText(int $size): self
+    public function longText(): self
     {
-        $this->sql['columns'][$this->column_name]['longText'] = "LONGTEXT($size)";
+        $this->sql['columns'][$this->column_name]['longText'] = "LONGTEXT";
+        return $this;
+    }
+
+	public function json(): self
+    {
+        $this->sql['columns'][$this->column_name]['json'] = "JSON";
         return $this;
     }
 

@@ -18,7 +18,9 @@ interface CreateInterface
 
     public function text(int $size = 10000): self;
 
-    public function longText(int $size): self;
+    public function longText(): self;
+
+    public function json(): self;
 
     public function required(): self;
 
