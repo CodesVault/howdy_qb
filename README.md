@@ -18,13 +18,13 @@ This Query Builder is also used in [Kathamo](https://kathamo.dev) Framework. Kat
 ### Create Table
 ``` php
 DB::create('querybuilder')
-    ->column('ID')->bigInt()->unsigned()->autoIncrement()->primary()->required()
-    ->column('user_id')->bigInt()->unsigned()->required()
+	->column('ID')->bigInt()->unsigned()->autoIncrement()->primary()->required()
+	->column('user_id')->bigInt()->unsigned()->required()
 	->column('name')->string(255)->required()
-    ->column('email')->string(255)->nullable()
+	->column('email')->string(255)->nullable()
 	->foreignKey('user_id', 'users.ID', 'cascade')
-    ->index(['ID'])
-    ->execute();
+	->index(['ID'])
+	->execute();
 ```
 
 <br/>
@@ -182,15 +182,15 @@ Want to contribute to this package? Please follow the steps below.
     <li>
         Add repository for local package in plugin's <code>composer.json</code>.
         <pre>
-        "repositories": [
-            {
-                "type": "path",
-                "url": "./howdy_qb",
+		"repositories": [
+			{
+				"type": "path",
+				"url": "./howdy_qb",
 				"options": {
 					"symlink": true
 				}
-            }
-        ],
+			}
+		],
         </pre>
     </li>
     <li>Require this package. <code>composer require "codesvault/howdy-qb @dev"</code></li>
