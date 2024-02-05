@@ -137,16 +137,21 @@ class Create implements CreateInterface
         return $this;
     }
 
-    public function foreignKey(string $column, string $reference_table, string $reference_column): self
+    public function foreignKey(string $column, string $ref_table_column, string $on_delete = null): self
     {
-        $table_name = Utilities::get_db_configs()->prefix . $reference_table;
-        $this->sql['foreignKey'] = "FOREIGN KEY ($column) REFERENCES $table_name ($reference_column)" ;
+		$ref_table_column = explode('.', $ref_table_column);
+        $table_name = Utilities::get_db_configs()->prefix . $ref_table_column[0];
+        $this->sql['foreignKey'] = "FOREIGN KEY ($column) REFERENCES $table_name ($ref_table_column[1])";
+
+		if ($on_delete) {
+			$this->sql['foreignKey'] .= " ON DELETE " . strtoupper($on_delete);
+		}
         return $this;
     }
 
     public function onDelete(string $action): self
     {
-        $this->sql['onDelete'] = "ON DELETE $action";
+        $this->sql['onDelete'] = "ON DELETE " . strtoupper($action);
         return $this;
     }
 
@@ -167,6 +172,7 @@ class Create implements CreateInterface
         $query = [
             'query' => SqlGenerator::create($this->sql),
         ];
+		print_r($query);
         return $query;
     }
 

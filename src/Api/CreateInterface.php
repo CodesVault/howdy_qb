@@ -40,7 +40,7 @@ interface CreateInterface
 
     public function default($value): self;
 
-    public function foreignKey(string $column, string $reference_table, string $reference_column): self;
+    public function foreignKey(string $column, string $ref_table_column, string $on_delete = null): self;
 
     public function onDelete(string $action): self;
 

@@ -49,10 +49,13 @@ class SqlGenerator
                     $expression[$name] = '`'. $name . '` ' . implode(' ', $column);
                 }
                 $query .= implode(', ', $expression);
-            } else {
-                $query .= ', ' . $expression . '';
+
+				continue;
             }
+
+			$query .= ', ' . $expression . '';
         }
+
         $query .= ')';
 
         return trim($query);
