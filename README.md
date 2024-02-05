@@ -182,15 +182,15 @@ Want to contribute to this package? Please follow the steps below.
     <li>
         Add repository for local package in plugin's <code>composer.json</code>.
         <pre>
-		"repositories": [
-			{
-				"type": "path",
-				"url": "./howdy_qb",
-				"options": {
-					"symlink": true
-				}
-			}
-		],
+"repositories": [
+	{
+		"type": "path",
+		"url": "./howdy_qb",
+		"options": {
+			"symlink": true
+		}
+	}
+],
         </pre>
     </li>
     <li>Require this package. <code>composer require "codesvault/howdy-qb @dev"</code></li>
