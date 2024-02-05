@@ -19,8 +19,10 @@ This Query Builder is also used in [Kathamo](https://kathamo.dev) Framework. Kat
 ``` php
 DB::create('querybuilder')
     ->column('ID')->bigInt()->unsigned()->autoIncrement()->primary()->required()
-    ->column('name')->string(255)->required()
+    ->column('user_id')->bigInt()->unsigned()->required()
+	->column('name')->string(255)->required()
     ->column('email')->string(255)->nullable()
+	->foreignKey('user_id', 'users.ID', 'cascade')
     ->index(['ID'])
     ->execute();
 ```
