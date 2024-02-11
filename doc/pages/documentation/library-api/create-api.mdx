@@ -37,7 +37,7 @@
 
     function default($value): self;
 
-    function foreignKey(string $column, string $reference_table, string $reference_column): self;
+    public function foreignKey(string $column, string $ref_table_column, string $on_delete = null): self;
 
     function getSql();
 

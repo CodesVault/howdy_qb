@@ -3,12 +3,14 @@
 Create a Database table.
 
 ``` php
-$db::create('querybuilder')
+$db::create('product_users')
     ->column('ID')->bigInt()->unsigned()->autoIncrement()->primary()->required()
     ->column('name')->string(255)->required()
     ->column('email')->string(255)->nullable()
-    ->index(['ID'])
-    ->execute();
+	->column('bio')->json()->required()
+	->column('created_at')->dateTime()->default('0000-00-00 00:00:00')
+	->column('updated_at')->dateTime()->default('0000-00-00 00:00:00')
+	->execute();
 ```
 
 Use of foreignKey
@@ -18,17 +20,17 @@ DB::create('howdy_qb')
     ->column('name')->string(255)->required()
     ->column('email')->string(255)->required()
     ->column('howdyID')->bigInt()->unsigned()
-    ->foreignKey('howdyID', 'howdy', 'ID')
+    ->foreignKey('howdyID', 'users.ID', 'cascade')
+	->index(['howdyID'])
     ->execute();
 ```
 
 Get raw SQL without database query execution.
 
 ```php
-$db::create('howdy_qb')
+$sql = $db::create('howdy_qb')
     ->column('name')->string(255)->required()
     ->column('bio')->json()->required()
     ->column('howdyID')->bigInt()->unsigned()
-    ->foreignKey('howdyID', 'howdy', 'ID')
     ->getSql();
 ```
