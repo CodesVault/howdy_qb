@@ -118,6 +118,17 @@ DB::dropIfExists('terms');
 ```
 
 <br>
+
+### Alter Statement
+
+``` php
+DB::alter('cv_users')
+	->modify('name', 'username')->string(455)->required()
+	->modify('settings')->json()
+	->execute();
+```
+
+<br>
 <br>
 
 ### Single instence
