@@ -27,7 +27,7 @@ Get raw SQL without database query execution.
 ```php
 $db::create('howdy_qb')
     ->column('name')->string(255)->required()
-    ->column('email')->string(255)->required()
+    ->column('bio')->json()->required()
     ->column('howdyID')->bigInt()->unsigned()
     ->foreignKey('howdyID', 'howdy', 'ID')
     ->getSql();
