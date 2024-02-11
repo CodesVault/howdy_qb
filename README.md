@@ -123,9 +123,9 @@ DB::dropIfExists('terms');
 
 ``` php
 DB::alter('cv_users')
-	->modify('name', 'username')->string(455)->required()
-	->modify('settings')->json()
-	->execute();
+    ->modify('name', 'username')->string(455)->required()
+    ->modify('settings')->json()
+    ->execute();
 ```
 
 <br>
