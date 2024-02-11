@@ -90,6 +90,12 @@ class Alter implements AlterInterface
         return $this;
     }
 
+	public function json(): self
+    {
+        $this->sql[$this->column_name] .= " JSON";
+        return $this;
+    }
+
     public function required(): self
     {
         $this->sql[$this->column_name] .= " NOT NULL";

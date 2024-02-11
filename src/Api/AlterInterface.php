@@ -24,6 +24,8 @@ interface AlterInterface
 
     function longText(int $size): self;
 
+	public function json(): self;
+
     function required(): self;
 
     function primary($columns = []): self;
