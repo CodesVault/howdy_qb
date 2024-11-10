@@ -34,6 +34,8 @@ interface CreateInterface
 
     public function dateTime(): self;
 
+	public function timestamp(): self;
+
     public function unsigned(): self;
 
     public function autoIncrement(): self;

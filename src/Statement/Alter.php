@@ -130,6 +130,25 @@ class Alter implements AlterInterface
         return $this;
     }
 
+	public function timestamp($default = null, $on_update = null): self
+	{
+		$this->sql['columns'][$this->column_name] .= " TIMESTAMP";
+
+		if ($default === 'now') {
+			$this->sql['columns'][$this->column_name] .= " DEFAULT CURRENT_TIMESTAMP";
+		} elseif ($default && $default !== 'now') {
+			$this->sql['columns'][$this->column_name] .= " DEFAULT " . $default;
+		}
+
+		if ($on_update === 'current') {
+			$this->sql['columns'][$this->column_name] .= " ON UPDATE CURRENT_TIMESTAMP";
+		} elseif ($on_update && $on_update !== 'current') {
+			$this->sql['columns'][$this->column_name] .= " ON UPDATE " . $on_update;
+		}
+
+		return $this;
+	}
+
     public function unsigned(): self
     {
         $this->sql[$this->column_name] .= " UNSIGNED";

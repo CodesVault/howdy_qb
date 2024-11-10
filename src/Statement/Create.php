@@ -118,6 +118,25 @@ class Create implements CreateInterface
         return $this;
     }
 
+	public function timestamp($default = null, $on_update = null): self
+	{
+		$this->sql['columns'][$this->column_name]['timestamp'] = "TIMESTAMP";
+
+		if ($default === 'now') {
+			$this->sql['columns'][$this->column_name]['default'] = "DEFAULT CURRENT_TIMESTAMP";
+		} elseif ($default && $default !== 'now') {
+			$this->sql['columns'][$this->column_name]['default'] = "DEFAULT " . $default;
+		}
+
+		if ($on_update === 'current') {
+			$this->sql['columns'][$this->column_name]['onUpdate'] = "ON UPDATE CURRENT_TIMESTAMP";
+		} elseif ($on_update && $on_update !== 'current') {
+			$this->sql['columns'][$this->column_name]['onUpdate'] = "ON UPDATE " . $on_update;
+		}
+
+		return $this;
+	}
+
     public function unsigned(): self
     {
         $this->sql['columns'][$this->column_name]['unsigned'] = "UNSIGNED";

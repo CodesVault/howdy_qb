@@ -22,6 +22,7 @@ DB::create('querybuilder')
 	->column('user_id')->bigInt()->unsigned()->required()
 	->column('name')->string(255)->required()
 	->column('email')->string(255)->nullable()
+	->column('created_at')->timestamp('now', 'current')
 	->foreignKey('user_id', 'users.ID', 'cascade')
 	->index(['ID'])
 	->execute();
