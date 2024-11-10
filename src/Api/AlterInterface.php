@@ -42,6 +42,8 @@ interface AlterInterface
 
     function default($value): self;
 
+	public function enum(array $allowed): self;
+
 	function nullable(): self;
 
 	public function foreignKey(string $column, string $reference_table, string $reference_column): self;

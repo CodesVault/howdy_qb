@@ -174,6 +174,23 @@ class Create implements CreateInterface
         return $this;
     }
 
+	public function enum(array $allowed): self
+	{
+		$list = '';
+		foreach ($allowed as $value) {
+			if (gettype($value) === 'string') {
+				$list .= "'$value', ";
+			} else {
+				$list .= $value . ", ";
+			}
+		}
+
+		$list = substr(trim($list), 0, -1);
+
+		$this->sql['columns'][$this->column_name]['enum'] = "ENUM(" . $list . ")";
+		return $this;
+	}
+
     protected function start()
     {
         $this->sql['start'] = 'CREATE TABLE IF NOT EXISTS';
@@ -191,7 +208,6 @@ class Create implements CreateInterface
         $query = [
             'query' => SqlGenerator::create($this->sql),
         ];
-		print_r($query);
         return $query;
     }
 

@@ -132,18 +132,18 @@ class Alter implements AlterInterface
 
 	public function timestamp($default = null, $on_update = null): self
 	{
-		$this->sql['columns'][$this->column_name] .= " TIMESTAMP";
+		$this->sql[$this->column_name] .= " TIMESTAMP";
 
 		if ($default === 'now') {
-			$this->sql['columns'][$this->column_name] .= " DEFAULT CURRENT_TIMESTAMP";
+			$this->sql[$this->column_name] .= " DEFAULT CURRENT_TIMESTAMP";
 		} elseif ($default && $default !== 'now') {
-			$this->sql['columns'][$this->column_name] .= " DEFAULT " . $default;
+			$this->sql[$this->column_name] .= " DEFAULT " . $default;
 		}
 
 		if ($on_update === 'current') {
-			$this->sql['columns'][$this->column_name] .= " ON UPDATE CURRENT_TIMESTAMP";
+			$this->sql[$this->column_name] .= " ON UPDATE CURRENT_TIMESTAMP";
 		} elseif ($on_update && $on_update !== 'current') {
-			$this->sql['columns'][$this->column_name] .= " ON UPDATE " . $on_update;
+			$this->sql[$this->column_name] .= " ON UPDATE " . $on_update;
 		}
 
 		return $this;
@@ -185,6 +185,23 @@ class Alter implements AlterInterface
         $this->sql['onDelete'] = "ON DELETE $action";
         return $this;
     }
+
+	public function enum(array $allowed): self
+	{
+		$list = '';
+		foreach ($allowed as $value) {
+			if (gettype($value) === 'string') {
+				$list .= "'$value', ";
+			} else {
+				$list .= $value . ", ";
+			}
+		}
+
+		$list = substr(trim($list), 0, -1);
+
+		$this->sql[$this->column_name] .= " ENUM(" . $list . ")";
+		return $this;
+	}
 
     protected function start()
     {
