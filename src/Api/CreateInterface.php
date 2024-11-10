@@ -34,7 +34,7 @@ interface CreateInterface
 
     public function dateTime(): self;
 
-	public function timestamp(): self;
+	public function timestamp($default = null, $on_update = null): self;
 
     public function unsigned(): self;
 

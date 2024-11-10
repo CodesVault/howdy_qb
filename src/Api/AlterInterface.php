@@ -36,6 +36,8 @@ interface AlterInterface
 
     function dateTime(): self;
 
+	public function timestamp($default = null, $on_update = null): self;
+
     function unsigned(): self;
 
     function autoIncrement(): self;
