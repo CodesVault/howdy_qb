@@ -34,11 +34,15 @@ interface CreateInterface
 
     public function dateTime(): self;
 
+	public function timestamp(): self;
+
     public function unsigned(): self;
 
     public function autoIncrement(): self;
 
     public function default($value): self;
+
+	public function enum(array $allowed): self;
 
     public function foreignKey(string $column, string $ref_table_column, string $on_delete = null): self;
 
