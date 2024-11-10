@@ -23,6 +23,7 @@ Modify column name and data type.
 DB::alter('cv_users')
 	->modify('name', 'username')->string(455)->required()
 	->modify('settings')->json()
+	->column('created_at')->timestamp('now')
 	->execute();
 ```
 

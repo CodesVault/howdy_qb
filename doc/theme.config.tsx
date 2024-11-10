@@ -39,8 +39,8 @@ const config: DocsThemeConfig = {
   },
   gitTimestamp: null,
   banner: {
-    key: '1.6.2-release',
-    text: 'WP QueryBuilder 1.6.2 is released.',
+    key: '1.6.3-release',
+    text: 'WP QueryBuilder 1.6.3 is released.',
   }
 }
 

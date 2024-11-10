@@ -8,8 +8,9 @@ $db::create('product_users')
     ->column('name')->string(255)->required()
     ->column('email')->string(255)->nullable()
 	->column('bio')->json()->required()
-	->column('created_at')->dateTime()->default('0000-00-00 00:00:00')
-	->column('updated_at')->dateTime()->default('0000-00-00 00:00:00')
+	->column('settings')->enum(['active', 'inactive'])
+	->column('created_at')->timestamp('now')
+	->column('updated_at')->timestamp('now', 'current')
 	->execute();
 ```
 
@@ -20,6 +21,7 @@ DB::create('howdy_qb')
     ->column('name')->string(255)->required()
     ->column('email')->string(255)->required()
     ->column('howdyID')->bigInt()->unsigned()
+	->column('created_at')->dateTime()->default('0000-00-00 00:00:00')
     ->foreignKey('howdyID', 'users.ID', 'cascade')
 	->index(['howdyID'])
     ->execute();
