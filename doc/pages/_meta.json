@@ -1,7 +1,7 @@
 {
-  "index": "Introduction",
-  "---": {
-    "type": "separator"
+  "index": {
+	"title": "WP QueryBuilder",
+	"type": "page"
   },
   "documentation": {
 	"title": "Documentation"

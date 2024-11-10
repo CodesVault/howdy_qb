@@ -8,7 +8,14 @@ composer require codesvault/howdy-qb
 
 ## Database connection
 It connects to the WordPress database **automatically**.
-<br />But if you need then you also can set connection manually.
+
+```php
+$db = new DB();
+```
+
+<br />
+
+But if you need then you also can set connection manually.
 
 ```php
 $db = DB::setConnection([
