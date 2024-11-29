@@ -1,7 +1,7 @@
 {
     "name": "codesvault/howdy-qb",
     "description": "Mysql Query Builder for WordPress",
-    "version": "1.6.3",
+    "version": "1.6.4",
     "minimum-stability": "stable",
     "scripts": {
         "test": "phpunit",
