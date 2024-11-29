@@ -19,7 +19,7 @@ final class Connect
         $host = htmlspecialchars($configs->dbhost, ENT_QUOTES);
         $dbname = htmlspecialchars($configs->dbname, ENT_QUOTES);
         $user = htmlspecialchars($configs->dbuser, ENT_QUOTES);
-        $password = htmlspecialchars($configs->dbpassword, ENT_QUOTES);
+        $password = $configs->dbpassword;
         $dns =  "mysql:host=$host;dbname=$dbname";
 
         try {
