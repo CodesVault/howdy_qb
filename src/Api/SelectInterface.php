@@ -22,7 +22,7 @@ interface SelectInterface
      *
      * @return CodesVault\Howdyqb\Api\SelectInterface
      */
-    public function join($table_name, string $col1 = null, string $col2 = null): self;
+    public function join($table_name, ?string $col1 = null, ?string $col2 = null): self;
 
     /**
      * INNER JOIN table(s) ON condition of
@@ -34,7 +34,7 @@ interface SelectInterface
      *
      * @return CodesVault\Howdyqb\Api\SelectInterface
      */
-    public function innerJoin($table_name, string $col1 = null, string $col2 = null): self;
+    public function innerJoin($table_name, ?string $col1 = null, ?string $col2 = null): self;
 
     /**
      * LEFT JOIN table(s) ON condition of
@@ -46,7 +46,7 @@ interface SelectInterface
      *
      * @return CodesVault\Howdyqb\Api\SelectInterface
      */
-    public function leftJoin($table_name, string $col1 = null, string $col2 = null): self;
+    public function leftJoin($table_name, ?string $col1 = null, ?string $col2 = null): self;
 
     /**
      * RIGHT JOIN table(s) ON condition of
@@ -58,7 +58,7 @@ interface SelectInterface
      *
      * @return CodesVault\Howdyqb\Api\SelectInterface
      */
-    public function rightJoin($table_name, string $col1 = null, string $col2 = null): self;
+    public function rightJoin($table_name, ?string $col1 = null, ?string $col2 = null): self;
 
     public function where($column, ?string $operator = null, ?string $value = null): self;
 

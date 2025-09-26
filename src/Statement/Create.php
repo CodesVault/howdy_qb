@@ -156,7 +156,7 @@ class Create implements CreateInterface
         return $this;
     }
 
-    public function foreignKey(string $column, string $ref_table_column, string $on_delete = null): self
+    public function foreignKey(string $column, string $ref_table_column, ?string $on_delete = null): self
     {
 		$ref_table_column = explode('.', $ref_table_column);
         $table_name = Utilities::get_db_configs()->prefix . $ref_table_column[0];

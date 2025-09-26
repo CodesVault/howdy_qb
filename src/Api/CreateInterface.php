@@ -44,7 +44,7 @@ interface CreateInterface
 
 	public function enum(array $allowed): self;
 
-    public function foreignKey(string $column, string $ref_table_column, string $on_delete = null): self;
+    public function foreignKey(string $column, string $ref_table_column, ?string $on_delete = null): self;
 
     public function onDelete(string $action): self;
 
