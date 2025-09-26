@@ -89,6 +89,9 @@ class SqlGenerator
         }
         foreach ($sql as $key => $value) {
             if ($key == 'start' || $key == 'set_columns') continue;
+			if (is_array($value)) {
+				$value = trim(implode(' ', $value));
+			}
             $query .= $value . ' ';
         }
         return trim($query);
@@ -106,6 +109,9 @@ class SqlGenerator
         }
         foreach ($sql as $key => $value) {
             if ($key == 'start') continue;
+			if (is_array($value)) {
+				$value = trim(implode(' ', $value));
+			}
             $query .= $value . ' ';
         }
         return trim($query);
