@@ -11,7 +11,7 @@
 
     function bigInt(int $size = 255): self;
 
-    function double(int $size = 255, int $d = 2): self;
+    function double(): self;
 
     function boolean(): self;
 
@@ -42,6 +42,12 @@
     function default($value): self;
 
 	public function enum(array $allowed): self;
+
+	function nullable(): self;
+
+	public function decimal(int $precision = 8, int $scale = 2): self;
+
+	public function float(): self;
 
     function getSql();
 

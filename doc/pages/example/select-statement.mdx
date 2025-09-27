@@ -8,6 +8,8 @@ $db::select('posts.ID', 'posts.post_title')
     ->distinct()
     ->from('posts posts')
     ->where('posts.post_status', '=', 'publish')
+	->andWhere('post.post_title', 'LIKE', '%Lorem Ipsum%')
+	->andWhere('post.comment_status', '=', 'open')
     ->orderBy('post_title', 'DESC')
     ->limit(10)->offset(2)
     ->get();
