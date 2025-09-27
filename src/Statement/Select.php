@@ -80,37 +80,37 @@ class Select implements SelectInterface
         return $this;
     }
 
-    public function andWhere(string $column, string $operator = null, $value = null): self
+    public function andWhere(string $column, ?string $operator = null, $value = null): self
     {
-        $this->sql['andWhere'] = 'AND ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
+        $this->sql['andWhere'][] = 'AND ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
     }
 
-    public function orWhere(string $column, string $operator = null, $value = null): self
+    public function orWhere(string $column, ?string $operator = null, $value = null): self
     {
-        $this->sql['orWhere'] = 'OR ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
+        $this->sql['orWhere'][] = 'OR ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
     }
 
-    public function whereNot(string $column, string $operator = null, $value = null): self
+    public function whereNot(string $column, ?string $operator = null, $value = null): self
     {
-        $this->sql['whereNot'] = 'WHERE NOT ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
+        $this->sql['whereNot'][] = 'WHERE NOT ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
     }
 
-    public function andNot(string $column, string $operator = null, $value = null): self
+    public function andNot(string $column, ?string $operator = null, $value = null): self
     {
-        $this->sql['andNot'] = 'AND NOT ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
+        $this->sql['andNot'][] = 'AND NOT ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
     }
 
     public function whereIn(string $column, ...$value): self
     {
-        $this->sql['whereIn'] = 'WHERE ' . $column . ' IN (' . implode( ', ', $value ) . ')';
+        $this->sql['whereIn'][] = 'WHERE ' . $column . ' IN (' . implode( ', ', $value ) . ')';
         return $this;
     }
 
@@ -147,7 +147,7 @@ class Select implements SelectInterface
         return $this;
     }
 
-    private function setJoin($table_name, string $col1 = null, string $col2 = null, string $joinType = 'JOIN'): self
+    private function setJoin($table_name, ?string $col1 = null, ?string $col2 = null, string $joinType = 'JOIN'): self
     {
         $table_names = [];
         if (is_array($table_name)) {
@@ -172,22 +172,22 @@ class Select implements SelectInterface
         return $this;
     }
 
-    public function join($table_name, string $col1 = null, string $col2 = null): self
+    public function join($table_name, ?string $col1 = null, ?string $col2 = null): self
     {
         return $this->setJoin($table_name, $col1, $col2);
     }
 
-    public function innerJoin($table_name, string $col1 = null, string $col2 = null): self
+    public function innerJoin($table_name, ?string $col1 = null, ?string $col2 = null): self
     {
         return $this->setJoin($table_name, $col1, $col2, 'INNER JOIN');
     }
 
-    public function leftJoin($table_name, string $col1 = null, string $col2 = null): self
+    public function leftJoin($table_name, ?string $col1 = null, ?string $col2 = null): self
     {
         return $this->setJoin($table_name, $col1, $col2, 'LEFT JOIN');
     }
 
-    public function rightJoin($table_name, string $col1 = null, string $col2 = null): self
+    public function rightJoin($table_name, ?string $col1 = null, ?string $col2 = null): self
     {
         return $this->setJoin($table_name, $col1, $col2, 'RIGHT JOIN');
     }

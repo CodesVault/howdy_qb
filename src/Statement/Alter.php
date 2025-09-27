@@ -60,9 +60,9 @@ class Alter implements AlterInterface
         return $this;
     }
 
-    public function double(int $size = 255, int $d = 2): self
+    public function double(): self
     {
-        $this->sql[$this->column_name] .= " DOUBLE($size, $d)";
+        $this->sql[$this->column_name] .= " DOUBLE";
         return $this;
     }
 
@@ -200,6 +200,18 @@ class Alter implements AlterInterface
 		$list = substr(trim($list), 0, -1);
 
 		$this->sql[$this->column_name] .= " ENUM(" . $list . ")";
+		return $this;
+	}
+
+	public function decimal(int $precision = 8, int $scale = 2): self
+	{
+		$this->sql[$this->column_name] .= " DECIMAL($precision, $scale)";
+		return $this;
+	}
+
+	public function float(): self
+	{
+		$this->sql[$this->column_name] .= " FLOAT";
 		return $this;
 	}
 

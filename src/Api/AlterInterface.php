@@ -14,7 +14,7 @@ interface AlterInterface
 
     function bigInt(int $size = 255): self;
 
-    function double(int $size = 255, int $d = 2): self;
+    function double(): self;
 
     function boolean(): self;
 
@@ -47,6 +47,10 @@ interface AlterInterface
 	public function enum(array $allowed): self;
 
 	function nullable(): self;
+
+	public function decimal(int $precision = 8, int $scale = 2): self;
+
+	public function float(): self;
 
 	public function foreignKey(string $column, string $reference_table, string $reference_column): self;
 

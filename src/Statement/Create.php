@@ -43,9 +43,9 @@ class Create implements CreateInterface
         return $this;
     }
 
-    public function double(int $size = 255, int $d = 2): self
+    public function double(): self
     {
-        $this->sql['columns'][$this->column_name]['double'] = "DOUBLE($size, $d)";
+        $this->sql['columns'][$this->column_name]['double'] = "DOUBLE";
         return $this;
     }
 
@@ -156,7 +156,7 @@ class Create implements CreateInterface
         return $this;
     }
 
-    public function foreignKey(string $column, string $ref_table_column, string $on_delete = null): self
+    public function foreignKey(string $column, string $ref_table_column, ?string $on_delete = null): self
     {
 		$ref_table_column = explode('.', $ref_table_column);
         $table_name = Utilities::get_db_configs()->prefix . $ref_table_column[0];
@@ -188,6 +188,18 @@ class Create implements CreateInterface
 		$list = substr(trim($list), 0, -1);
 
 		$this->sql['columns'][$this->column_name]['enum'] = "ENUM(" . $list . ")";
+		return $this;
+	}
+
+	public function decimal($precision = 8, $scale = 2): self
+	{
+		$this->sql['columns'][$this->column_name]['decimal'] = "DECIMAL($precision, $scale)";
+		return $this;
+	}
+
+	public function float(): self
+	{
+		$this->sql['columns'][$this->column_name]['float'] = "FLOAT";
 		return $this;
 	}
 

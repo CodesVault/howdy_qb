@@ -10,7 +10,7 @@ interface CreateInterface
 
     public function bigInt(int $size = 255): self;
 
-    public function double(int $size = 255, int $d = 2): self;
+    public function double(): self;
 
     public function boolean(): self;
 
@@ -44,7 +44,11 @@ interface CreateInterface
 
 	public function enum(array $allowed): self;
 
-    public function foreignKey(string $column, string $ref_table_column, string $on_delete = null): self;
+	public function decimal(int $precision = 8, int $scale = 2): self;
+
+	public function float(): self;
+
+    public function foreignKey(string $column, string $ref_table_column, ?string $on_delete = null): self;
 
     public function onDelete(string $action): self;
 
