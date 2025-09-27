@@ -11,6 +11,12 @@ Documentation website [here](https://wp-querybuilder.pages.dev/).
 <br/>
 This Query Builder is also used in [Kathamo](https://kathamo.dev) Framework. Kathamo is a modern framework for WordPress plugin development.
 
+### Installation:
+
+```
+composer require codesvault/howdy-qb
+```
+
 <br/>
 
 ## Examples
