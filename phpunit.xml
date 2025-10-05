@@ -2,9 +2,10 @@
 <phpunit
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
-        backupGlobals="true"
-        bootstrap="vendor/autoload.php"
-        colors="true">
+        backupGlobals="false"
+        bootstrap="tests/bootstrap.php"
+        colors="true"
+        verbose="true">
     <!-- <coverage>
         <include>
             <directory suffix=".php">src/</directory>
