@@ -37,10 +37,11 @@ class Select implements SelectInterface
         }
         if (isset($this->sql['columns'])) {
             $sql .= $this->sql['columns'];
+			$sql .= isset($this->sql['start']['count']) ? ', ' : '';
             unset($this->sql['columns']);
         }
         if (isset($this->sql['start']['count'])) {
-            $sql .= ', ' . $this->sql['start']['count'];
+            $sql .= $this->sql['start']['count'];
         }
         return $this->sql['start'] = $sql;
     }
@@ -53,6 +54,9 @@ class Select implements SelectInterface
 
     public function columns(...$columns): self
     {
+		if (empty($columns)) {
+			return $this;
+		}
         $this->sql['columns'] = implode(', ', $columns);
         return $this;
     }
@@ -110,7 +114,11 @@ class Select implements SelectInterface
 
     public function whereIn(string $column, ...$value): self
     {
-        $this->sql['whereIn'][] = 'WHERE ' . $column . ' IN (' . implode( ', ', $value ) . ')';
+		$list = implode(', ', array_map(function($item) {
+			return "'" . $item . "'";
+		}, $value));
+
+        $this->sql['whereIn'][] = 'WHERE ' . $column . " IN ($list)";
         return $this;
     }
 

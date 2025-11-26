@@ -13,9 +13,15 @@ final class Connect
 
     public static function pdo()
     {
-        global $wpdb;
+		$configs = static::$configs ? (object)static::$configs : false;
+		if (! $configs) {
+			global $wpdb;
+			$configs = $wpdb;
+		}
+		if (! $configs) {
+			throw new \Exception('Database configuration not found');
+		}
 
-        $configs = static::$configs ? (object)static::$configs : $wpdb;
         $host = htmlspecialchars($configs->dbhost, ENT_QUOTES);
         $dbname = htmlspecialchars($configs->dbname, ENT_QUOTES);
         $user = htmlspecialchars($configs->dbuser, ENT_QUOTES);
