@@ -18,10 +18,13 @@
     </coverage>
     <testsuites>
         <testsuite name="Unit">
-            <directory suffix=".php">./pest-test/Unit</directory>
+            <directory suffix=".php">./tests/Unit</directory>
         </testsuite>
         <testsuite name="Feature">
-            <directory suffix=".php">./pest-test/Feature</directory>
+            <directory suffix=".php">./tests/Feature</directory>
+        </testsuite>
+		<testsuite name="Integration">
+            <directory suffix=".php">./tests/Integration</directory>
         </testsuite>
     </testsuites>
     <logging>

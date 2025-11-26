@@ -331,97 +331,95 @@ test('can perform inner join', function () {
     }
 });
 
-// test('can perform left join', function () {
-//     $results = $this->db->select('u.name', 'p.title')
-//         ->from('qb_user')
-//         ->alias('u')
-//         ->leftJoin('qb_posts p', 'u.id', 'p.user_id')
-//         ->get();
+test('can perform left join', function () {
+    $results = $this->db->select('user.name', 'post.title')
+        ->from('qb_user user')
+        ->leftJoin('qb_posts post', 'user.id', 'post.user_id')
+        ->get();
 
-//     $this->assertGreaterThan(0, count($results));
-//     // Should include users even if they don't have posts
-//     $this->assertGreaterThanOrEqual(4, count($results));
-// });
+    $this->assertGreaterThan(0, count($results));
+    // Should include users even if they don't have posts
+    $this->assertGreaterThanOrEqual(4, count($results));
+});
 
-// test('can perform right join', function () {
-//     $results = $this->db->select('u.name', 'p.title')
-//         ->from('qb_user')
-//         ->alias('u')
-//         ->rightJoin('qb_posts p', 'u.id', 'p.user_id')
-//         ->get();
+test('can perform right join', function () {
+    $results = $this->db->select('user.name', 'post.title')
+        ->from('qb_user')
+        ->alias('user')
+        ->rightJoin('qb_posts post', 'user.id', 'post.user_id')
+        ->get();
 
-//     $this->assertGreaterThan(0, count($results));
-//     foreach ($results as $result) {
-//         $this->assertArrayHasKey('title', $result);
-//     }
-// });
+    $this->assertGreaterThan(0, count($results));
+    foreach ($results as $result) {
+        $this->assertArrayHasKey('title', $result);
+    }
+});
 
-// test('can use raw SQL', function () {
-//     $results = $this->db->select('*')
-//         ->from('qb_user')
-//         ->raw("WHERE age > 25")
-//         ->get();
+test('can use raw SQL', function () {
+    $results = $this->db->select('*')
+        ->from('qb_user')
+        ->raw("WHERE age > 25")
+        ->get();
 
-//     $this->assertGreaterThan(0, count($results));
-//     foreach ($results as $result) {
-//         $this->assertGreaterThan(25, (int)$result['age']);
-//     }
-// });
+    $this->assertGreaterThan(0, count($results));
+    foreach ($results as $result) {
+        $this->assertGreaterThan(25, (int)$result['age']);
+    }
+});
 
-// test('can combine multiple query methods', function () {
-//     $results = $this->db->select('u.name', 'u.country', 'p.title')
-//         ->from('qb_user')
-//         ->alias('u')
-//         ->leftJoin('qb_posts p', 'u.id', 'p.user_id')
-//         ->where('u.age', '>', 25)
-//         ->andWhere('p.status', '=', 'published')
-//         ->orderBy('u.name', 'ASC')
-//         ->limit(10)
-//         ->get();
+test('can combine multiple query methods', function () {
+    $results = $this->db->select('user.name', 'user.country', 'post.title')
+        ->from('qb_user user')
+        ->leftJoin('qb_posts post', 'user.id', 'post.user_id')
+        ->where('user.age', '>', 25)
+        ->andWhere('post.status', '=', 'published')
+        ->orderBy('user.name', 'ASC')
+        ->limit(10)
+        ->get();
 
-//     $this->assertGreaterThanOrEqual(0, count($results));
-//     foreach ($results as $result) {
-//         $this->assertArrayHasKey('name', $result);
-//         $this->assertArrayHasKey('country', $result);
-//         if ($result['title'] !== null) {
-//             $this->assertArrayHasKey('title', $result);
-//         }
-//     }
-// });
+    $this->assertGreaterThanOrEqual(0, count($results));
+    foreach ($results as $result) {
+        $this->assertArrayHasKey('name', $result);
+        $this->assertArrayHasKey('country', $result);
+        if ($result['title'] !== null) {
+            $this->assertArrayHasKey('title', $result);
+        }
+    }
+});
 
-// test('can get SQL query without executing', function () {
-//     $queryData = $this->db->select('*')
-//         ->from('qb_user')
-//         ->where('age', '>', 25)
-//         ->getSql();
+test('can get SQL query without executing', function () {
+    $queryData = $this->db->select('*')
+        ->from('qb_user')
+        ->where('age', '>', 25)
+        ->getSql();
 
-//     $this->assertIsArray($queryData);
-//     $this->assertArrayHasKey('query', $queryData);
-//     $this->assertArrayHasKey('params', $queryData);
-//     $this->assertIsString($queryData['query']);
-//     $this->assertIsArray($queryData['params']);
-// });
+    $this->assertIsArray($queryData);
+    $this->assertArrayHasKey('query', $queryData);
+    $this->assertArrayHasKey('params', $queryData);
+    $this->assertIsString($queryData['query']);
+    $this->assertIsArray($queryData['params']);
+});
 
-// test('returns empty result for non-existent conditions', function () {
-//     $results = $this->db->select('*')
-//         ->from('qb_user')
-//         ->where('name', '=', 'Non Existent User')
-//         ->get();
+test('returns empty result for non-existent conditions', function () {
+    $results = $this->db->select('*')
+        ->from('qb_user')
+        ->where('name', '=', 'Non Existent User')
+        ->get();
 
-//     $this->assertEquals(0, count($results));
-// });
+    $this->assertEquals(0, count($results));
+});
 
-// test('can use callable where clause', function () {
-//     $results = $this->db->select('*')
-//         ->from('qb_user')
-//         ->where(function($query) {
-//             $query->where('country', '=', 'USA')
-//                   ->orWhere('age', '>', 30);
-//         })
-//         ->get();
+test('can use callable where clause', function () {
+    $results = $this->db->select('*')
+        ->from('qb_user')
+        ->where(function($query) {
+            $query->where('country', '=', 'USA')
+                  ->orWhere('age', '>', 30);
+        })
+        ->get();
 
-//     $this->assertGreaterThan(0, count($results));
-// });
+    $this->assertGreaterThan(0, count($results));
+});
 
 afterEach(function () {
     // Clean up test data after each test

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CodesVault\Howdyqb\Tests;
 
 use CodesVault\Howdyqb\DB;
-use CodesVault\Howdyqb\Connect;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use wpdb;
 
@@ -59,13 +58,14 @@ abstract class TestCase extends BaseTestCase
         if (!$wpdb || !($wpdb instanceof wpdb)) {
             // Create a PHPUnit mock for wpdb when the global is not available
             $this->mockWpdb = $this->createMock(wpdb::class);
+			$db_config = $this->getDatabaseConfig();
 
             // Set up default properties
-            $this->mockWpdb->prefix = 'wp_';
-            $this->mockWpdb->dbhost = 'mysql';
-            $this->mockWpdb->dbname = 'wp';
-            $this->mockWpdb->dbuser = 'wp';
-            $this->mockWpdb->dbpassword = 'secret';
+            $this->mockWpdb->prefix = $db_config['prefix'];
+            $this->mockWpdb->dbhost = $db_config['dbhost'];
+            $this->mockWpdb->dbname = $db_config['dbname'];
+            $this->mockWpdb->dbuser = $db_config['dbuser'];
+            $this->mockWpdb->dbpassword = $db_config['dbpassword'];
             $this->mockWpdb->last_error = '';
             $this->mockWpdb->insert_id = 0;
             $this->mockWpdb->rows_affected = 0;
@@ -150,10 +150,6 @@ abstract class TestCase extends BaseTestCase
     public function getQueryBuilder()
     {
         $this->currentDriver = 'pdo';
-
-        // Set up proper database configuration for PDO
-        // $config = $this->getDatabaseConfig();
-        // Connect::setManualConnection($config);
 
         return new DB('pdo');
     }
