@@ -3,7 +3,6 @@
 namespace CodesVault\Howdyqb\Statement;
 
 use CodesVault\Howdyqb\Api\DeleteInterface;
-use CodesVault\Howdyqb\QueryFactory;
 use CodesVault\Howdyqb\SqlGenerator;
 use CodesVault\Howdyqb\Utilities;
 

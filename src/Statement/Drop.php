@@ -3,8 +3,6 @@
 namespace CodesVault\Howdyqb\Statement;
 
 use CodesVault\Howdyqb\Api\DropInterface;
-use CodesVault\Howdyqb\QueryFactory;
-use CodesVault\Howdyqb\SqlGenerator;
 use CodesVault\Howdyqb\Utilities;
 
 class Drop implements DropInterface

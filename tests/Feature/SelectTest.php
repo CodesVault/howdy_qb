@@ -74,6 +74,23 @@ beforeEach(function () {
     ]);
 });
 
+afterEach(function () {
+    // Clean up test data after each test
+    try {
+        $this->db->drop('qb_posts');
+        $this->db->drop('qb_user');
+    } catch (Exception $e) {
+        // Handle cleanup errors gracefully
+    }
+});
+
+test('select method chains correctly', function () {
+    $select = $this->db->select('*')
+        ->from('qb_posts');
+
+    $this->assertInstanceOf(\CodesVault\Howdyqb\Statement\Select::class, $select);
+});
+
 test('can select all columns from table', function () {
     $results = $this->db->select('*')
         ->from('qb_user')
@@ -419,14 +436,4 @@ test('can use callable where clause', function () {
         ->get();
 
     $this->assertGreaterThan(0, count($results));
-});
-
-afterEach(function () {
-    // Clean up test data after each test
-    try {
-        $this->db->drop('qb_posts');
-        $this->db->drop('qb_user');
-    } catch (Exception $e) {
-        // Handle cleanup errors gracefully
-    }
 });

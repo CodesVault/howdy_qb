@@ -16,6 +16,22 @@ beforeEach(function () {
         ->execute();
 });
 
+afterEach(function () {
+    // Clean up test data after each test
+    try {
+        $this->db->delete('querybuilder')->execute();
+    } catch (Exception $e) {
+        // Handle cleanup errors gracefully
+    }
+});
+
+test('select method chains correctly', function () {
+    $select = $this->db->select('*')
+        ->from('qb_posts');
+
+    $this->assertInstanceOf(\CodesVault\Howdyqb\Statement\Select::class, $select);
+});
+
 test('can insert single record into querybuilder table', function () {
     // Test data for single record insertion
     $testData = [
@@ -87,13 +103,4 @@ test('can insert multiple records into querybuilder table', function () {
     $this->assertContains('alice.smith@example.com', $emails);
     $this->assertContains('bob.johnson@example.com', $emails);
     $this->assertContains('carol.williams@example.com', $emails);
-});
-
-afterEach(function () {
-    // Clean up test data after each test
-    try {
-        $this->db->delete('querybuilder')->execute();
-    } catch (Exception $e) {
-        // Handle cleanup errors gracefully
-    }
 });
