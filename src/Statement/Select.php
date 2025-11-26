@@ -3,8 +3,7 @@
 namespace CodesVault\Howdyqb\Statement;
 
 use CodesVault\Howdyqb\Api\SelectInterface;
-use CodesVault\Howdyqb\Connect;
-use CodesVault\Howdyqb\QueryFactory;
+use CodesVault\Howdyqb\Expression\SubQuery;
 use CodesVault\Howdyqb\SqlGenerator;
 use CodesVault\Howdyqb\Utilities;
 
@@ -57,7 +56,27 @@ class Select implements SelectInterface
 		if (empty($columns)) {
 			return $this;
 		}
-        $this->sql['columns'] = implode(', ', $columns);
+
+		$this->sql['columns'] = '';
+		foreach ($columns as $column) {
+			if (is_callable($column)) {
+				$subQueryInstence = new SubQuery($this->db);
+				call_user_func($column, $subQueryInstence);
+
+				$alias = $subQueryInstence->columnAlias();
+				$subQuerySql = $subQueryInstence->getSql();
+				$this->sql['columns'] .= "(" . $subQuerySql['query'] . ") $alias,";
+
+				foreach ($subQuerySql['params'] as $param) {
+					$this->params[] = $param;
+				}
+				continue;
+			}
+			$this->sql['columns'] .= $column . ", ";
+		}
+
+		$this->sql['columns'] = rtrim($this->sql['columns'], ", ");
+
         return $this;
     }
 
@@ -75,10 +94,25 @@ class Select implements SelectInterface
 
     public function where($column, ?string $operator = null, $value = null): self
     {
-        if ( is_callable( $column ) ) {
-            call_user_func( $column, $this );
+        if (is_callable($column)) {
+            call_user_func($column, $this);
             return $this;
         }
+
+		if (is_callable($value)) {
+			$subQueryInstence = new SubQuery($this->db);
+			call_user_func($value, $subQueryInstence);
+			$subQuerySql = $subQueryInstence->getSql();
+
+			$this->sql['where'] = 'WHERE ' . $column . ' ' . $operator . " (" . $subQuerySql['query'] . ")";
+
+			foreach ($subQuerySql['params'] as $param) {
+				$this->params[] = $param;
+			}
+
+			return $this;
+		}
+
         $this->sql['where'] = 'WHERE ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
@@ -112,13 +146,54 @@ class Select implements SelectInterface
         return $this;
     }
 
-    public function whereIn(string $column, ...$value): self
-    {
+	public function andIn(string $column, ...$value): self
+	{
+		if (is_callable($value)) {
+			$subQueryInstence = new SubQuery($this->db);
+			call_user_func($value, $subQueryInstence);
+			$subQuerySql = $subQueryInstence->getSql();
+
+			$this->sql['andIn'] = "AND " . $column . " IN (" . $subQuerySql['query'] . ")";
+
+			foreach ($subQuerySql['params'] as $param) {
+				$this->params[] = $param;
+			}
+
+			return $this;
+		}
+
 		$list = implode(', ', array_map(function($item) {
-			return "'" . $item . "'";
+			$this->params[] = $item;
+			return Utilities::get_placeholder($this->db, $item);
 		}, $value));
 
-        $this->sql['whereIn'][] = 'WHERE ' . $column . " IN ($list)";
+        $this->sql['andIn'][] = 'AND ' . $column . " IN ($list)";
+
+		return $this;
+	}
+
+    public function whereIn(string $column, ...$value): self
+    {
+		if (count($value) === 1 && is_callable($value[0])) {
+			$subQueryInstence = new SubQuery($this->db);
+			call_user_func($value[0], $subQueryInstence);
+			$subQuerySql = $subQueryInstence->getSql();
+
+			$this->sql['whereIn'][] = 'WHERE ' . $column . " IN (" . $subQuerySql['query'] . ")";
+
+			foreach ($subQuerySql['params'] as $param) {
+				$this->params[] = $param;
+			}
+
+			return $this;
+		}
+
+		$list = implode(', ', array_map(function($item) {
+			$this->params[] = $item;
+			return Utilities::get_placeholder($this->db, $item);
+		}, $value));
+
+        $this->sql['whereIn'][] = 'WHERE ' . $column . " IN (" . $list . ")";
         return $this;
     }
 
