@@ -115,7 +115,8 @@ class Select implements SelectInterface
     public function whereIn(string $column, ...$value): self
     {
 		$list = implode(', ', array_map(function($item) {
-			return "'" . $item . "'";
+			$this->params[] = $item;
+			return Utilities::get_placeholder($this->db, $item);
 		}, $value));
 
         $this->sql['whereIn'][] = 'WHERE ' . $column . " IN ($list)";
