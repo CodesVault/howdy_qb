@@ -20,7 +20,7 @@ class SqlGenerator
         return trim($query);
     }
 
-    public static function insert(array $sql)
+    public static function insert(array $sql, array $select_sql = [])
     {
         $query = '';
         if (isset($sql['start'])) {
@@ -30,6 +30,12 @@ class SqlGenerator
         foreach ($sql as $value) {
             $query .= $value . ' ';
         }
+
+		if (! empty($select_sql['start'])) {
+			$query = trim($query) . ' ';
+			$query .= self::select($select_sql);
+		}
+
         return trim($query);
     }
 
@@ -45,7 +51,7 @@ class SqlGenerator
 
         $query .= '(';
         foreach ($sql as $ex => $expression) {
-            if ( $ex == 'start' || $ex == 'table_name' ) continue;
+            if ($ex == 'start' || $ex == 'table_name' || $ex == 'unique') continue;
 
             if (is_array($expression)) {
                 foreach ($expression as $name => $column) {
@@ -58,6 +64,10 @@ class SqlGenerator
 
 			$query .= ', ' . $expression . '';
         }
+
+		if (! empty($sql['unique']) && is_array($sql['unique'])) {
+			$query .= ', UNIQUE (' . implode(',', $sql['unique']) . ')';
+		}
 
         $query .= ')';
 

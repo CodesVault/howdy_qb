@@ -18,11 +18,11 @@ class DB extends QueryFactory
         return $query;
     }
 
-    public static function insert(string $table_name, array $data)
+    public static function insert(string $table_name, array $data = [])
     {
         $factory = new self(static::$driver);
-        $factory->insertQuery($table_name, $data);
-        return $factory;
+        $query = $factory->insertQuery($table_name, $data);
+        return $query;
     }
 
     public static function create(string $table_name): CreateInterface

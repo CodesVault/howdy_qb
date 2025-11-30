@@ -52,6 +52,8 @@ interface CreateInterface
 
     public function onDelete(string $action): self;
 
+	public function unique(): self;
+
 	public function getSql();
 
     public function execute();

@@ -2,15 +2,19 @@
 
 namespace CodesVault\Howdyqb\Statement;
 
-use CodesVault\Howdyqb\Api\InsertInterface;
+use CodesVault\Howdyqb\Expression\SqlCore;
 use CodesVault\Howdyqb\SqlGenerator;
 use CodesVault\Howdyqb\Utilities;
 
 class Insert
 {
+	// bring all SQL expressions
+	use SqlCore;
+
     protected $db;
     protected $data = [];
-    public $sql = [];
+	protected $insert_sql = [];
+    protected $sql = [];
     public $test = [];
     protected $params = [];
     private $table_name;
@@ -22,19 +26,10 @@ class Insert
         $this->table_name = $table_name;
 
         $this->start();
-        $this->sql['table_name'] = $this->get_table_name();
-        $this->sql['columns'] = $this->get_columns();
-        $this->sql['value_placeholders'] = $this->get_value_placeholders();
+        $this->insert_sql['insert_table_name'] = $this->get_table_name();
+        $this->insert_sql['insert_columns'] = $this->get_columns();
+        $this->insert_sql['value_placeholders'] = $this->get_value_placeholders();
         $this->params = $this->get_params();
-
-        $this->insert_data();
-    }
-
-    private function insert_data()
-    {
-        $query = SqlGenerator::insert($this->sql);
-
-        $this->driver_execute($query);
     }
 
     private function driver_execute($sql)
@@ -44,8 +39,8 @@ class Insert
             return $driver->query($driver->prepare($sql, $this->params));
         }
 
-        $data = $driver->prepare($sql);
 		try {
+			$data = $driver->prepare($sql);
 			return $data->execute($this->params);
         } catch (\Exception $exception) {
             Utilities::throughException($exception);
@@ -54,7 +49,7 @@ class Insert
 
     private function start()
     {
-        $this->sql['start'] = 'INSERT INTO';
+        $this->insert_sql['start'] = 'INSERT INTO';
     }
 
     private function get_table_name()
@@ -66,6 +61,10 @@ class Insert
     {
         if (empty($this->data)) return;
 
+		if (! is_array($this->data[0])) {
+			return '(' . implode(', ', $this->data) . ')';
+		}
+
         $columns = [];
         foreach ($this->data[0] as $column => $value) {
             $columns[] = $column;
@@ -75,6 +74,8 @@ class Insert
 
     private function get_value_placeholders()
     {
+		if (empty($this->data) || ! is_array($this->data[0])) return;
+
         $placeholders = [];
 
         if (count($this->data) > 1) {
@@ -89,6 +90,8 @@ class Insert
 
     private function get_params()
     {
+		if (empty($this->data) || ! is_array($this->data[0])) return [];
+
         $params = [];
         foreach ($this->data as $value) {
             foreach ($value as $val) {
@@ -97,4 +100,37 @@ class Insert
         }
         return $params;
     }
+
+	public function ignoreDuplicates(): self
+	{
+		$this->insert_sql['start'] = 'INSERT IGNORE INTO';
+		return $this;
+	}
+
+	public function select(...$columns): self
+	{
+		$this->sql['start']['select'] = 'SELECT';
+		if (! empty($columns)) {
+			$this->columns(...$columns);
+			return $this;
+		}
+
+		return $this;
+	}
+
+	public function getSql()
+	{
+		$this->setStartExpression();
+		return [
+			'query'     => SqlGenerator::insert($this->insert_sql, $this->sql),
+			'params'    => $this->params,
+		];
+	}
+
+	public function execute()
+	{
+		$this->setStartExpression();
+		$query = SqlGenerator::insert($this->insert_sql, $this->sql);
+        return $this->driver_execute($query);
+	}
 }
