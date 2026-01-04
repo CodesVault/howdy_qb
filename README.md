@@ -110,8 +110,8 @@ DB::select('*')
 	->from('querybuilder')
 	->whereIn('age', function ($subQuery) {
 		$subQuery->select('age')
-			->from('users')
-			->where('country', '=', 'Bangladesh');
+		->from('users')
+		->where('country', '=', 'Bangladesh');
 	})
 	->andWhere('name', '<>', 'Keramot')
 	->get();
