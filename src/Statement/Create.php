@@ -203,6 +203,15 @@ class Create implements CreateInterface
 		return $this;
 	}
 
+	public function unique(): self
+	{
+		if (! isset($this->sql['unique'])) {
+			$this->sql['unique'] = [];
+		}
+		array_push($this->sql['unique'], $this->column_name);
+		return $this;
+	}
+
     protected function start()
     {
         $this->sql['start'] = 'CREATE TABLE IF NOT EXISTS';
