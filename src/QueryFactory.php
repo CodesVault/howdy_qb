@@ -45,8 +45,8 @@ class QueryFactory
 	 */
 	public static function setConnection($configs = [], $driver = 'pdo')
     {
-		if (! empty($configs)) {
-			Connect::setManualConnection($configs);
+		if (empty($configs)) {
+			$configs = Connect::setManualConnection($configs);
 		}
 		static::$config = $configs;
 		return new DB($driver);
