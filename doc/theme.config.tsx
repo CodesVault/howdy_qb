@@ -10,7 +10,7 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/CodesVault/howdy_qb/tree/doc/doc',
   footer: {
-    text: <span>Copyright © 2022–2025 <a href="https://abmsourav.com/welcome" target="_blank">Keramot UL Islam</a></span>,
+    text: <span>Copyright © 2022–2026 <a href="https://abmsourav.com/welcome" target="_blank">Keramot UL Islam</a></span>,
   },
   primaryHue: 260,
   sidebar: {
@@ -39,8 +39,8 @@ const config: DocsThemeConfig = {
   },
   gitTimestamp: null,
   banner: {
-    key: '1.7.0-release',
-    text: 'WP QueryBuilder 1.7.0 is released.',
+    key: '2.1.0-release',
+    text: 'WP QueryBuilder 2.1.0 is released.',
   }
 }
 
