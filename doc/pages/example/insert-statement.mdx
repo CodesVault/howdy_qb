@@ -27,3 +27,24 @@ $db::insert('querybuilder', [
 ])
 ->execute();
 ```
+
+Conditional insert with dynamic data
+``` php
+DB::insert('querybuilder', ['name', 'email', 'age', 'country'])
+ 	->ignoreDuplicates()
+	->select('name', 'email', 'age', 'country')
+	->from('qb_source')
+	->where('country', '=', 'USA')
+	->execute();
+```
+
+``` php
+DB::insert('querybuilder', ['name', 'email', 'age', 'country'])
+	->select('name', 'email', 'age', 'country')
+	->from('qb_source')
+	->whereIn('country', function ($subQuery) {
+		$subQuery->select('country')
+			->from('qb_countries');
+	})
+	->execute();
+```
