@@ -73,7 +73,6 @@ DB::select('qb.ID', 'qb.name, qb.email')
     ->groupBy('name')
     ->get();
 
-
 // *** where clouse
 $result =
 DB::select('posts.ID', 'posts.post_title')
@@ -100,6 +99,22 @@ DB::select('posts.post_title')
     ->andWhere('posts.post_status', '=', 'publish')
     ->raw("LIMIT 10")
     ->get();
+```
+
+<br>
+
+#### Sub Query
+
+``` php
+DB::select('*')
+	->from('querybuilder')
+	->whereIn('age', function ($subQuery) {
+		$subQuery->select('age')
+			->from('users')
+			->where('country', '=', 'Bangladesh');
+	})
+	->andWhere('name', '<>', 'Keramot')
+	->get();
 ```
 
 <br>
