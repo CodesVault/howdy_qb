@@ -50,7 +50,7 @@ beforeEach(function () {
             'age' => 28,
             'country' => 'USA'
         ]
-    ]);
+    ])->execute();
 
     $this->db->insert('qb_posts', [
         [
@@ -71,7 +71,7 @@ beforeEach(function () {
             'content' => 'This is Jane\'s post content',
             'status' => 'published'
         ]
-    ]);
+    ])->execute();
 });
 
 afterEach(function () {
@@ -436,4 +436,62 @@ test('can use callable where clause', function () {
         ->get();
 
     $this->assertGreaterThan(0, count($results));
+});
+
+test('can use subquery in WHERE IN clause', function () {
+    $results = $this->db->select('*')
+        ->from('qb_user')
+        ->whereIn('id', function ($subQuery) {
+            $subQuery->select('user_id')
+                ->from('qb_posts')
+                ->where('status', '=', 'published');
+        })
+        ->get();
+
+    $this->assertGreaterThan(0, count($results));
+    // Should only return users who have published posts
+    foreach ($results as $result) {
+        $this->assertArrayHasKey('name', $result);
+        $this->assertArrayHasKey('email', $result);
+    }
+});
+
+test('can use subquery with multiple conditions', function () {
+    $results = $this->db->select('*')
+        ->from('qb_user')
+        ->whereIn('country', function ($subQuery) {
+            $subQuery->select('country')
+                ->from('qb_user')
+                ->where('age', '>', 27);
+        })
+        ->andWhere('name', '<>', 'Bob Johnson')
+        ->get();
+
+    $this->assertGreaterThan(0, count($results));
+    foreach ($results as $result) {
+        $this->assertArrayHasKey('name', $result);
+        $this->assertArrayHasKey('country', $result);
+        $this->assertNotEquals('Bob Johnson', $result['name']);
+    }
+});
+
+test('can use nested subquery in WHERE clause', function () {
+    $results = $this->db->select('*')
+        ->from('qb_posts')
+        ->where('user_id', 'IN', function ($subQuery) {
+            $subQuery->select('id')
+                ->from('qb_user')
+                ->whereIn('country', function ($nestedSubQuery) {
+                    $nestedSubQuery->select('country')
+                        ->from('qb_user')
+                        ->where('age', '>=', 30);
+                });
+        })
+        ->get();
+
+    $this->assertGreaterThanOrEqual(0, count($results));
+    foreach ($results as $result) {
+        $this->assertArrayHasKey('title', $result);
+        $this->assertArrayHasKey('user_id', $result);
+    }
 });

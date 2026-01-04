@@ -44,7 +44,7 @@ test('can insert single record into querybuilder table', function () {
     ];
 
     // Insert the data
-    $result = $this->db->insert('querybuilder', $testData);
+    $result = $this->db->insert('querybuilder', $testData)->execute();
 
     // Verify the insertion returns something (indicating success)
     $this->assertTrue(is_object($result) || $result === true);
@@ -86,7 +86,7 @@ test('can insert multiple records into querybuilder table', function () {
     ];
 
     // Insert the data
-    $result = $this->db->insert('querybuilder', $testData);
+    $result = $this->db->insert('querybuilder', $testData)->execute();
 
     // Verify the insertion returns something (indicating success)
     $this->assertTrue(is_object($result) || $result === true);
