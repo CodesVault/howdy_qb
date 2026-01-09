@@ -44,7 +44,8 @@ DB::insert('querybuilder', [
         'name' => 'Keramot UL Islam',
         'email' => 'keramotul.@gmail.com',
     ]
-]);
+])
+->execute();
 ```
 
 <br/>
