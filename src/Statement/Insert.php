@@ -5,6 +5,7 @@ namespace CodesVault\Howdyqb\Statement;
 use CodesVault\Howdyqb\Expression\SqlCore;
 use CodesVault\Howdyqb\SqlGenerator;
 use CodesVault\Howdyqb\Utilities;
+use CodesVault\Howdyqb\Validation\IdentifierValidator;
 
 class Insert
 {
@@ -23,16 +24,16 @@ class Insert
     {
         $this->db = $db;
         $this->data = $data;
-        $this->table_name = $table_name;
+        $this->table_name = IdentifierValidator::validateTableName($table_name);
 
         $this->start();
-        $this->insert_sql['insert_table_name'] = $this->get_table_name();
-        $this->insert_sql['insert_columns'] = $this->get_columns();
-        $this->insert_sql['value_placeholders'] = $this->get_value_placeholders();
-        $this->params = $this->get_params();
+        $this->insert_sql['insert_table_name'] = $this->getTableName();
+        $this->insert_sql['insert_columns'] = $this->getColumns();
+        $this->insert_sql['value_placeholders'] = $this->getValuePlaceholders();
+        $this->params = $this->getParams();
     }
 
-    private function driver_execute($sql)
+    private function driverExecute($sql)
     {
         $driver = $this->db;
         if (class_exists('wpdb') && $driver instanceof \wpdb) {
@@ -52,27 +53,30 @@ class Insert
         $this->insert_sql['start'] = 'INSERT INTO';
     }
 
-    private function get_table_name()
+    private function getTableName()
     {
-       return Utilities::get_db_configs()->prefix . $this->table_name;
+        $prefix = Utilities::get_db_configs()->prefix;
+        return IdentifierValidator::escapeIdentifier($prefix . $this->table_name);
     }
 
-    private function get_columns()
+    private function getColumns()
     {
         if (empty($this->data)) return;
 
 		if (! is_array($this->data[0])) {
-			return '(' . implode(', ', $this->data) . ')';
+			// Validate and escape column names for INSERT...SELECT
+			$escapedColumns = array_map(function ($col) {
+				return IdentifierValidator::validateColumnName($col);
+			}, $this->data);
+			return '(' . implode(', ', $escapedColumns) . ')';
 		}
 
-        $columns = [];
-        foreach ($this->data[0] as $column => $value) {
-            $columns[] = $column;
-        }
+        $columns = IdentifierValidator::validateColumnNames(array_keys($this->data[0]));
+
         return '(' . implode(', ', $columns) . ')';
     }
 
-    private function get_value_placeholders()
+    private function getValuePlaceholders()
     {
 		if (empty($this->data) || ! is_array($this->data[0])) return;
 
@@ -88,7 +92,7 @@ class Insert
         return 'VALUES ' . implode(',', $placeholders);
     }
 
-    private function get_params()
+    private function getParams()
     {
 		if (empty($this->data) || ! is_array($this->data[0])) return [];
 
@@ -131,6 +135,6 @@ class Insert
 	{
 		$this->setStartExpression();
 		$query = SqlGenerator::insert($this->insert_sql, $this->sql);
-        return $this->driver_execute($query);
+        return $this->driverExecute($query);
 	}
 }

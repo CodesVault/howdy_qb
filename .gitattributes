@@ -7,3 +7,4 @@
 /pint.json export-ignore
 /pest.xml export-ignore
 /phpcs.xml export-ignore
+/.editorconfig export-ignore
