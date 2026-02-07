@@ -46,7 +46,7 @@ beforeEach(function () {
             'country' => 'USA',
             'status' => 'active'
         ]
-    ]);
+    ])->execute();
 });
 
 afterEach(function () {

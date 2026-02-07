@@ -2,6 +2,7 @@
 
 namespace CodesVault\Howdyqb\Validation;
 
+use CodesVault\Howdyqb\Utilities;
 use InvalidArgumentException;
 
 class IdentifierValidator
@@ -17,7 +18,7 @@ class IdentifierValidator
                 sprintf('Invalid table name: "%s". Table names must start with a letter or underscore and contain only alphanumeric characters and underscores.', $tableName)
             );
         }
-        return $tableName;
+        return self::escapeIdentifier($tableName);
     }
 
     public static function validateColumnName(string $columnName): string
@@ -26,6 +27,11 @@ class IdentifierValidator
 
         if (empty($columnName)) {
             throw new InvalidArgumentException('Column name cannot be empty.');
+        }
+
+        // Allow wildcard selector
+        if ($columnName === '*') {
+            return '*';
         }
 
         // Handle table.column syntax
@@ -112,4 +118,24 @@ class IdentifierValidator
         $identifier = str_replace('`', '', $identifier);
         return '`' . $identifier . '`';
     }
+
+	public static function validateTableNameWithAlias(string $tableName): string
+	{
+		$tableName = trim($tableName);
+
+		if (empty($tableName)) {
+			throw new InvalidArgumentException('Table name cannot be empty.');
+		}
+
+		// Handle table AS alias or table alias syntax
+		$parts = explode(' ', $tableName);
+		if (count($parts) === 2) {
+			$tablePart =  self::validateTableName(Utilities::get_db_configs()->prefix . $parts[0]);
+			$aliasPart = self::validateTableName($parts[1]);
+
+			return $tablePart . ' ' . $aliasPart;
+		}
+
+		return self::validateTableName($tableName);
+	}
 }

@@ -18,7 +18,7 @@ afterEach(function () {
     // Clean up test tables after each test
     try {
         $this->db->dropIfExists('test_alter');
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
         // Table might not exist, ignore
     }
 });
@@ -54,7 +54,7 @@ test('can add new column to existing table', function () {
             'email' => 'john@example.com',
             'age' => 30
         ]
-    ]);
+    ])->execute();
 
     // Verify the new column exists and data was inserted
     $result = $this->db->select('*')
@@ -79,7 +79,7 @@ test('can add string column to table', function () {
             'email' => 'jane@example.com',
             'country' => 'USA'
         ]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('country')
         ->from('test_alter')
@@ -102,7 +102,7 @@ test('can drop column from table', function () {
             'email' => 'test@example.com',
             'temp_column' => 'temp_value'
         ]
-    ]);
+    ])->execute();
 
     // Now drop the column
     $this->db->alter('test_alter')
@@ -129,7 +129,7 @@ test('can add text column to table', function () {
             'email' => 'user@example.com',
             'description' => 'This is a long description'
         ]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('description')
         ->from('test_alter')
@@ -150,7 +150,7 @@ test('can add boolean column to table', function () {
             'email' => 'user@example.com',
             'is_active' => true
         ]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('is_active')
         ->from('test_alter')
@@ -171,7 +171,7 @@ test('can add date column to table', function () {
             'email' => 'user@example.com',
             'birth_date' => '1990-05-15'
         ]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('birth_date')
         ->from('test_alter')
@@ -192,7 +192,7 @@ test('can add datetime column to table', function () {
             'email' => 'user@example.com',
             'created_at' => '2024-01-15 10:30:00'
         ]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('created_at')
         ->from('test_alter')
@@ -212,7 +212,7 @@ test('can add timestamp column with default now', function () {
             'name' => 'User',
             'email' => 'user@example.com'
         ]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('updated_at')
         ->from('test_alter')
@@ -234,7 +234,7 @@ test('can add decimal column to table', function () {
             'email' => 'product@example.com',
             'price' => 99.99
         ]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('price')
         ->from('test_alter')
@@ -255,7 +255,7 @@ test('can add float column to table', function () {
             'email' => 'item@example.com',
             'weight' => 15.5
         ]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('weight')
         ->from('test_alter')
@@ -276,7 +276,7 @@ test('can add double column to table', function () {
             'email' => 'trans@example.com',
             'amount' => 1234.5678
         ]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('amount')
         ->from('test_alter')
@@ -297,7 +297,7 @@ test('can add enum column to table', function () {
             'email' => 'user@example.com',
             'status' => 'active'
         ]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('status')
         ->from('test_alter')
@@ -318,7 +318,7 @@ test('can add column with default value', function () {
             'name' => 'New User',
             'email' => 'newuser@example.com'
         ]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('role')
         ->from('test_alter')
@@ -339,7 +339,7 @@ test('can add required column to table', function () {
             'email' => 'user@example.com',
             'phone' => '123-456-7890'
         ]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('phone')
         ->from('test_alter')
@@ -360,7 +360,7 @@ test('can add unsigned integer column', function () {
             'email' => 'user@example.com',
             'points' => 100
         ]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('points')
         ->from('test_alter')
@@ -381,7 +381,7 @@ test('can add bigint column to table', function () {
             'email' => 'user@example.com',
             'large_number' => 9999999999
         ]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('large_number')
         ->from('test_alter')
@@ -403,7 +403,7 @@ test('can add json column to table', function () {
             'email' => 'user@example.com',
             'metadata' => $jsonData
         ]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('metadata')
         ->from('test_alter')
@@ -426,7 +426,7 @@ test('can update existing column type', function () {
 			'name' => $longName,
 			'email' => 'user@example.com'
 		]
-	]);
+	])->execute();
 
 	$result = $this->db->select('name')
 		->from('test_alter')

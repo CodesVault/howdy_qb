@@ -9,20 +9,22 @@ beforeEach(function () {
 
 afterEach(function () {
     // Clean up test tables after each test
+    // Drop child tables (with foreign keys) before parent tables
+    try {
+        $this->db->dropIfExists('test_orders');
+    } catch (\Exception $e) {
+    }
+    try {
+        $this->db->dropIfExists('test_parent');
+    } catch (\Exception $e) {
+    }
     try {
         $this->db->dropIfExists('test_users');
-    } catch (Exception $e) {
-        // Table might not exist, ignore
+    } catch (\Exception $e) {
     }
     try {
         $this->db->dropIfExists('test_products');
-    } catch (Exception $e) {
-        // Table might not exist, ignore
-    }
-    try {
-        $this->db->dropIfExists('test_orders');
-    } catch (Exception $e) {
-        // Table might not exist, ignore
+    } catch (\Exception $e) {
     }
 });
 
@@ -80,7 +82,7 @@ test('can create table with string column', function () {
     // Verify table was created by inserting and selecting data
     $this->db->insert('test_users', [
         ['id' => 1, 'name' => 'Test User']
-    ]);
+    ])->execute();
 
     $result = $this->db->select('name')
         ->from('test_users')
@@ -102,7 +104,7 @@ test('can create table with default string size', function () {
     $longName = str_repeat('a', 255);
     $this->db->insert('test_users', [
         ['id' => 1, 'name' => $longName]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('name')
         ->from('test_users')
@@ -121,7 +123,7 @@ test('can create table with text column', function () {
     $longText = 'This is a long description text.';
     $this->db->insert('test_users', [
         ['id' => 1, 'description' => $longText]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('description')
         ->from('test_users')
@@ -140,7 +142,7 @@ test('can create table with longtext column', function () {
     $veryLongText = str_repeat('Long content ', 1000);
     $this->db->insert('test_users', [
         ['id' => 1, 'content' => $veryLongText]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('content')
         ->from('test_users')
@@ -159,7 +161,7 @@ test('can create table with json column', function () {
     $jsonData = '{"age": 30, "name": "John"}';
     $this->db->insert('test_users', [
         ['id' => 1, 'metadata' => $jsonData]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('metadata')
         ->from('test_users')
@@ -178,7 +180,7 @@ test('can create table with double column', function () {
 
     $this->db->insert('test_products', [
         ['id' => 1, 'price' => 99.99]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('price')
         ->from('test_products')
@@ -196,7 +198,7 @@ test('can create table with float column', function () {
 
     $this->db->insert('test_products', [
         ['id' => 1, 'weight' => 15.5]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('weight')
         ->from('test_products')
@@ -214,7 +216,7 @@ test('can create table with decimal column', function () {
 
     $this->db->insert('test_products', [
         ['id' => 1, 'price' => 1234.56]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('price')
         ->from('test_products')
@@ -232,7 +234,7 @@ test('can create table with default decimal precision', function () {
 
     $this->db->insert('test_products', [
         ['id' => 1, 'price' => 99.99]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('price')
         ->from('test_products')
@@ -250,7 +252,7 @@ test('can create table with boolean column', function () {
 
     $this->db->insert('test_users', [
         ['id' => 1, 'is_active' => true]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('is_active')
         ->from('test_users')
@@ -268,7 +270,7 @@ test('can create table with date column', function () {
 
     $this->db->insert('test_users', [
         ['id' => 1, 'birth_date' => '1990-05-15']
-    ]);
+    ])->execute();
 
     $result = $this->db->select('birth_date')
         ->from('test_users')
@@ -286,7 +288,7 @@ test('can create table with datetime column', function () {
 
     $this->db->insert('test_users', [
         ['id' => 1, 'registered_at' => '2024-01-15 10:30:00']
-    ]);
+    ])->execute();
 
     $result = $this->db->select('registered_at')
         ->from('test_users')
@@ -304,7 +306,7 @@ test('can create table with timestamp column', function () {
 
     $this->db->insert('test_users', [
         ['id' => 1, 'created_at' => '2024-01-15 10:30:00']
-    ]);
+    ])->execute();
 
     $result = $this->db->select('created_at')
         ->from('test_users')
@@ -322,7 +324,7 @@ test('can create table with timestamp default now', function () {
 
     $this->db->insert('test_users', [
         ['id' => 1]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('created_at')
         ->from('test_users')
@@ -342,7 +344,7 @@ test('can create table with timestamp on update current', function () {
 
     $this->db->insert('test_users', [
         ['id' => 1, 'name' => 'Initial']
-    ]);
+    ])->execute();
 
     $result = $this->db->select('updated_at')
         ->from('test_users')
@@ -362,7 +364,7 @@ test('can create table with required column', function () {
     // Insert data - email is required
     $this->db->insert('test_users', [
         ['id' => 1, 'email' => 'test@example.com']
-    ]);
+    ])->execute();
 
     $result = $this->db->select('email')
         ->from('test_users')
@@ -381,7 +383,7 @@ test('can create table with nullable column', function () {
     // Insert without phone (nullable)
     $this->db->insert('test_users', [
         ['id' => 1]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('phone')
         ->from('test_users')
@@ -401,7 +403,7 @@ test('can create table with default value for string', function () {
     // Insert without status - should use default
     $this->db->insert('test_users', [
         ['id' => 1]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('status')
         ->from('test_users')
@@ -420,7 +422,7 @@ test('can create table with default value for integer', function () {
     // Insert without age - should use default
     $this->db->insert('test_users', [
         ['id' => 1]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('age')
         ->from('test_users')
@@ -438,7 +440,7 @@ test('can create table with unsigned column', function () {
 
     $this->db->insert('test_users', [
         ['id' => 1, 'points' => 100]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('points')
         ->from('test_users')
@@ -457,10 +459,10 @@ test('can create table with auto increment column', function () {
     // Insert without id - should auto increment
     $this->db->insert('test_users', [
         ['name' => 'User 1']
-    ]);
+    ])->execute();
     $this->db->insert('test_users', [
         ['name' => 'User 2']
-    ]);
+    ])->execute();
 
     $result = $this->db->select('id', 'name')
         ->from('test_users')
@@ -479,7 +481,7 @@ test('can create table with primary key', function () {
 
     $this->db->insert('test_users', [
         ['id' => 1, 'name' => 'Test User']
-    ]);
+    ])->execute();
 
     $result = $this->db->select('*')
         ->from('test_users')
@@ -500,7 +502,7 @@ test('can create table with composite primary key', function () {
     // Insert data with composite key
     $this->db->insert('test_orders', [
         ['order_id' => 1, 'product_id' => 100, 'quantity' => 5]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('*')
         ->from('test_orders')
@@ -522,7 +524,7 @@ test('can create table with index', function () {
     // Insert and query using indexed column
     $this->db->insert('test_users', [
         ['id' => 1, 'email' => 'indexed@example.com']
-    ]);
+    ])->execute();
 
     $result = $this->db->select('email')
         ->from('test_users')
@@ -542,7 +544,7 @@ test('can create table with composite index', function () {
 
     $this->db->insert('test_users', [
         ['id' => 1, 'first_name' => 'John', 'last_name' => 'Doe']
-    ]);
+    ])->execute();
 
     $result = $this->db->select('*')
         ->from('test_users')
@@ -561,7 +563,7 @@ test('can create table with enum column', function () {
 
     $this->db->insert('test_users', [
         ['id' => 1, 'role' => 'admin']
-    ]);
+    ])->execute();
 
     $result = $this->db->select('role')
         ->from('test_users')
@@ -599,12 +601,12 @@ test('can create table with foreign key', function () {
     // Insert parent record
     $this->db->insert('test_parent', [
         ['id' => 1, 'name' => 'Parent']
-    ]);
+    ])->execute();
 
     // Insert child record
     $this->db->insert('test_orders', [
         ['id' => 1, 'user_id' => 1]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('*')
         ->from('test_orders')
@@ -612,9 +614,6 @@ test('can create table with foreign key', function () {
         ->get();
 
     $this->assertEquals(1, (int)$result[0]['user_id']);
-
-    // Cleanup
-    $this->db->dropIfExists('test_parent');
 });
 
 test('can create table with foreign key and on delete cascade', function () {
@@ -631,15 +630,12 @@ test('can create table with foreign key and on delete cascade', function () {
         ->execute();
 
     // Insert records
-    $this->db->insert('test_parent', [['id' => 1]]);
-    $this->db->insert('test_orders', [['id' => 1, 'user_id' => 1]]);
+    $this->db->insert('test_parent', [['id' => 1]])->execute();
+    $this->db->insert('test_orders', [['id' => 1, 'user_id' => 1]])->execute();
 
     // Verify child exists
     $result = $this->db->select('*')->from('test_orders')->get();
     $this->assertCount(1, $result);
-
-    // Cleanup
-    $this->db->dropIfExists('test_parent');
 });
 
 test('can create table with foreign key and on delete set null', function () {
@@ -668,7 +664,7 @@ test('can create table with multiple columns', function () {
             'email' => 'john@example.com',
             'age' => 30
         ]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('*')
         ->from('test_users')
@@ -697,7 +693,7 @@ test('can execute table creation', function () {
             'name' => 'Test User',
             'email' => 'test@example.com'
         ]
-    ]);
+    ])->execute();
 
     $this->assertTrue(is_object($result) || $result === true);
 });
@@ -723,7 +719,7 @@ test('can create complex table with all features', function () {
             'description' => 'This is a comprehensive test product',
             'price' => 99.99
         ]
-    ]);
+    ])->execute();
 
     $result = $this->db->select('*')
         ->from('test_products')

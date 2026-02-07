@@ -16,7 +16,7 @@ class Utilities
         printf("<br /><strong>In %s %s</strong><br /><br />", $exception->getFile(), $exception->getLine());
         printf(
             "<div style='max-height: 300px; overflow: scroll;'><strong>Trace:</strong> <pre>%s</pre> </div><br />",
-            print_r($exception->getTrace(), true)
+            $exception->getTraceAsString()
         );
         printf("</div>");
 

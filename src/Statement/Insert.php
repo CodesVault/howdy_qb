@@ -24,7 +24,7 @@ class Insert
     {
         $this->db = $db;
         $this->data = $data;
-        $this->table_name = IdentifierValidator::validateTableName($table_name);
+        $this->table_name = $table_name;
 
         $this->start();
         $this->insert_sql['insert_table_name'] = $this->getTableName();
@@ -56,7 +56,7 @@ class Insert
     private function getTableName()
     {
         $prefix = Utilities::get_db_configs()->prefix;
-        return IdentifierValidator::escapeIdentifier($prefix . $this->table_name);
+        return IdentifierValidator::validateTableName($prefix . $this->table_name);
     }
 
     private function getColumns()
