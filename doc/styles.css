@@ -59,3 +59,53 @@ html[class~=dark] .home-intro .version {
 	letter-spacing: 1.2px;
 	box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.4);
 }
+
+div[title="Donation"] {
+	display: none;
+}
+
+.donation-title {
+	font-size: 40px;
+    font-weight: 600;
+    text-align: center;
+	margin: 30px 0 20px;
+}
+
+.donation-page {
+	text-align: center;
+}
+
+.donation-page .donation-desc {
+	color: #555;
+}
+html[class~=dark] .donation-page .donation-desc {
+	color: #d3d3d3;
+}
+
+.donation-page-link {
+	display: inline-block;
+	padding: 12px 30px;
+	background-color: #782cfd;
+	color: #fff !important;
+	border-radius: 5px;
+	text-decoration: none !important;
+	font-size: 1.1rem;
+	font-weight: 600;
+	letter-spacing: 1px;
+	box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.5);
+	margin-top: 50px;
+}
+
+.donation-page-link:hover {
+	background-color: #6e24ed;
+}
+
+.donation-page-qr {
+	display: flex;
+	justify-content: center;
+	margin-top: 50px;
+}
+
+.donation-page-qr img {
+	width: 250px;
+}

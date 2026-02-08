@@ -2,7 +2,6 @@ import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
 import { useRouter } from 'next/router'
 import { useConfig } from 'nextra-theme-docs'
-
 const config: DocsThemeConfig = {
   logo: <strong style={{ color: '#782cfd' }}>WP QueryBuilder</strong>,
   project: {
@@ -39,8 +38,8 @@ const config: DocsThemeConfig = {
   },
   gitTimestamp: null,
   banner: {
-    key: '2.1.0-release',
-    text: 'WP QueryBuilder 2.1.0 is released.',
+    key: '2.1.1-release',
+    text: 'WP QueryBuilder 2.1.1 is released.',
   }
 }
 

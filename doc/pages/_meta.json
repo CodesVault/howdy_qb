@@ -1,7 +1,8 @@
 {
   "index": {
-	"title": "WP QueryBuilder",
-	"type": "page"
+	"title": "Documentation",
+	"type": "page",
+	"href": "/documentation/getting-started"
   },
   "documentation": {
 	"title": "Documentation"
@@ -12,5 +13,10 @@
     "type": "page",
     "href": "https://abmsourav.com",
     "newWindow": true
+  },
+  "donation": {
+    "title": "Donation",
+    "type": "page",
+    "href": "/Donation"
   }
 }
