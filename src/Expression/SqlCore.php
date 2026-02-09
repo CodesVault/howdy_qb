@@ -191,16 +191,12 @@ trait SqlCore
         return $this;
     }
 
-    public function orderBy($column, string $sort_type = 'ASC'): self
+    public function orderBy(array|string $column, string $sort_type = 'ASC'): self
     {
 		if (is_array($column)) {
-			foreach ($column as $col) {
-				$colWithOrder = explode(' ', $col);
+			foreach ($column as $col => $shortType) {
 				$this->sql['orderBy'] = $this->sql['orderBy'] ?? '';
-				$this->sql['orderBy'] .= IdentifierValidator::validateColumnName($colWithOrder[0]);
-				if (isset($colWithOrder[1])) {
-					$this->sql['orderBy'] .= ' ' . $colWithOrder[1] . ', ';
-				}
+				$this->sql['orderBy'] .= IdentifierValidator::validateColumnName($col) . ' ' . $shortType . ', ';
 			}
 			$this->sql['orderBy'] = 'ORDER BY ' . rtrim($this->sql['orderBy'], ', ');
 			return $this;

@@ -13,6 +13,12 @@ class IdentifierValidator
 
 	public static function validateTableName(string $tableName): string
     {
+        if (strlen($tableName) > self::MAX_IDENTIFIER_LENGTH) {
+            throw new \InvalidArgumentException(
+                sprintf('Table name exceeds maximum length of %d characters.', self::MAX_IDENTIFIER_LENGTH)
+            );
+        }
+
         if (!self::isValidIdentifier($tableName)) {
             throw new \InvalidArgumentException(
                 sprintf('Invalid table name: "%s". Table names must start with a letter or underscore and contain only alphanumeric characters and underscores.', $tableName)

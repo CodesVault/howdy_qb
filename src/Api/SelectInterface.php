@@ -72,7 +72,7 @@ interface SelectInterface
 
     public function whereIn(string $column, ...$value): self;
 
-    public function orderBy($column, string $sort = 'ASC'): self;
+    public function orderBy(array|string $column, string $sort = 'ASC'): self;
 
     public function groupBy($column): self;
 

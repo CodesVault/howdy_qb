@@ -6,24 +6,24 @@ use CodesVault\Howdyqb\Validation\IdentifierValidator;
 
 // ==================== validateTableName Tests ====================
 
-test('validates valid identifiers', function () {
+test('validateTableName returns escaped identifier for valid names', function () {
     $validNames = [
-        'users',
-        'user_posts',
-        'UserPosts',
-        '_private_table',
-        'table123',
-        'a',
-        'A',
-        '_',
+        'users'          => '`users`',
+        'user_posts'     => '`user_posts`',
+        'UserPosts'      => '`UserPosts`',
+        '_private_table' => '`_private_table`',
+        'table123'       => '`table123`',
+        'a'              => '`a`',
+        'A'              => '`A`',
+        '_'              => '`_`',
     ];
 
-    foreach ($validNames as $name) {
-        expect(IdentifierValidator::validateTableName($name))->toBe($name);
+    foreach ($validNames as $name => $expected) {
+        expect(IdentifierValidator::validateTableName($name))->toBe($expected);
     }
 });
 
-test('rejects identifiers with special characters', function () {
+test('validateTableName rejects identifiers with special characters', function () {
     $invalidNames = [
         'users;DROP TABLE users',
         "users' OR '1'='1",
@@ -41,66 +41,135 @@ test('rejects identifiers with special characters', function () {
     }
 });
 
-test('rejects identifiers starting with numbers', function () {
+test('validateTableName rejects identifiers starting with numbers', function () {
     expect(fn () => IdentifierValidator::validateTableName('123table'))
         ->toThrow(InvalidArgumentException::class);
     expect(fn () => IdentifierValidator::validateTableName('1_users'))
         ->toThrow(InvalidArgumentException::class);
 });
 
-test('rejects standalone SQL keywords as identifiers', function () {
-    // Only standalone keywords at word boundaries are rejected
-    $namesWithKeywords = [
-        'SELECT',
-        'DROP',
-        'UNION',
-        'DELETE',
-    ];
+test('validateTableName rejects standalone SQL keywords', function () {
+    $keywords = ['SELECT', 'DROP', 'UNION', 'DELETE', 'INSERT', 'UPDATE', 'EXEC'];
 
-    foreach ($namesWithKeywords as $name) {
+    foreach ($keywords as $name) {
         expect(fn () => IdentifierValidator::validateTableName($name))
             ->toThrow(InvalidArgumentException::class);
     }
 });
 
-test('allows embedded SQL keywords in identifiers', function () {
-    // Embedded keywords are valid since they don't pose injection risk
+test('validateTableName allows embedded SQL keywords', function () {
     $validNames = [
-        'usersSELECT',
-        'DROP_table',
-        'tableUNION',
-        'DELETEusers',
+        'usersSELECT'  => '`usersSELECT`',
+        'DROP_table'   => '`DROP_table`',
+        'tableUNION'   => '`tableUNION`',
+        'DELETEusers'  => '`DELETEusers`',
     ];
 
-    foreach ($validNames as $name) {
-        expect(IdentifierValidator::validateTableName($name))->toBe($name);
+    foreach ($validNames as $name => $expected) {
+        expect(IdentifierValidator::validateTableName($name))->toBe($expected);
     }
 });
 
+test('validateTableName rejects name exceeding max length', function () {
+    $longName = str_repeat('a', 65);
+    expect(fn () => IdentifierValidator::validateTableName($longName))
+        ->toThrow(InvalidArgumentException::class);
+});
+
+test('validateTableName rejects empty string', function () {
+    expect(fn () => IdentifierValidator::validateTableName(''))
+        ->toThrow(InvalidArgumentException::class);
+});
+
 // ==================== validateColumnName Tests ====================
+
+test('validateColumnName returns escaped identifier', function () {
+    expect(IdentifierValidator::validateColumnName('email'))->toBe('`email`');
+    expect(IdentifierValidator::validateColumnName('user_name'))->toBe('`user_name`');
+});
 
 test('validateColumnName throws exception for empty name', function () {
     IdentifierValidator::validateColumnName('');
 })->throws(InvalidArgumentException::class, 'Column name cannot be empty');
 
-test('validateColumnName returns escaped identifier', function () {
-    $result = IdentifierValidator::validateColumnName('email');
-    expect($result)->toBe('`email`');
+test('validateColumnName returns wildcard as-is', function () {
+    expect(IdentifierValidator::validateColumnName('*'))->toBe('*');
 });
 
-test('validates table.column syntax', function () {
-    $result = IdentifierValidator::validateColumnName('users.id');
-    expect($result)->toBe('`users`.`id`');
+test('validateColumnName handles table.column syntax', function () {
+    expect(IdentifierValidator::validateColumnName('users.id'))->toBe('`users`.`id`');
+    expect(IdentifierValidator::validateColumnName('posts.title'))->toBe('`posts`.`title`');
 });
 
-test('rejects invalid table.column syntax with multiple dots', function () {
+test('validateColumnName rejects multiple dots', function () {
     IdentifierValidator::validateColumnName('db.users.id');
 })->throws(InvalidArgumentException::class, 'Invalid column name format');
 
-test('rejects column name exceeding max length', function () {
+test('validateColumnName rejects name exceeding max length', function () {
     $longName = str_repeat('a', 65);
     IdentifierValidator::validateColumnName($longName);
 })->throws(InvalidArgumentException::class, 'exceeds maximum length');
+
+test('validateColumnName rejects invalid column names', function () {
+    $invalidNames = ['123col', 'col name', 'col;drop', 'col--'];
+
+    foreach ($invalidNames as $name) {
+        expect(fn () => IdentifierValidator::validateColumnName($name))
+            ->toThrow(InvalidArgumentException::class);
+    }
+});
+
+// ==================== validateColumnNames Tests ====================
+
+test('validateColumnNames validates array of column names', function () {
+    $result = IdentifierValidator::validateColumnNames(['id', 'name', 'email']);
+    expect($result)->toBe(['`id`', '`name`', '`email`']);
+});
+
+test('validateColumnNames handles empty array', function () {
+    $result = IdentifierValidator::validateColumnNames([]);
+    expect($result)->toBe([]);
+});
+
+test('validateColumnNames throws on first invalid column', function () {
+    expect(fn () => IdentifierValidator::validateColumnNames(['id', '123invalid', 'email']))
+        ->toThrow(InvalidArgumentException::class);
+});
+
+// ==================== validateTableNameWithAlias Tests ====================
+
+test('validateTableNameWithAlias validates table with alias', function () {
+    $result = IdentifierValidator::validateTableNameWithAlias('users u');
+    expect($result)->toBeString();
+    expect($result)->toContain('`u`');
+});
+
+test('validateTableNameWithAlias validates table without alias', function () {
+    $result = IdentifierValidator::validateTableNameWithAlias('users');
+    expect($result)->toBeString();
+    expect($result)->toContain('`users`');
+});
+
+test('validateTableNameWithAlias rejects empty string', function () {
+    expect(fn () => IdentifierValidator::validateTableNameWithAlias(''))
+        ->toThrow(InvalidArgumentException::class, 'Table name cannot be empty');
+});
+
+test('validateTableNameWithAlias rejects whitespace-only string', function () {
+    expect(fn () => IdentifierValidator::validateTableNameWithAlias('   '))
+        ->toThrow(InvalidArgumentException::class, 'Table name cannot be empty');
+});
+
+test('validateTableNameWithAlias rejects invalid alias', function () {
+    expect(fn () => IdentifierValidator::validateTableNameWithAlias('users 123bad'))
+        ->toThrow(InvalidArgumentException::class);
+});
+
+test('validateTableNameWithAlias rejects invalid table name part', function () {
+    // table name with special chars remains invalid even after prefix
+    expect(fn () => IdentifierValidator::validateTableNameWithAlias('table;drop u'))
+        ->toThrow(InvalidArgumentException::class);
+});
 
 // ==================== escapeIdentifier Tests ====================
 
