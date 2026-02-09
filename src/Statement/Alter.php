@@ -6,6 +6,7 @@ use CodesVault\Howdyqb\Api\AlterInterface;
 use CodesVault\Howdyqb\QueryFactory;
 use CodesVault\Howdyqb\SqlGenerator;
 use CodesVault\Howdyqb\Utilities;
+use CodesVault\Howdyqb\Validation\IdentifierValidator;
 
 class Alter implements AlterInterface
 {
@@ -217,13 +218,13 @@ class Alter implements AlterInterface
 
     protected function start()
     {
-		$table_name = $this->get_table_name();
+		$table_name = $this->getTableName();
         $this->sql['start'] = "ALTER TABLE $table_name";
     }
 
-    private function get_table_name()
+    private function getTableName()
     {
-       return $this->getTablePrefix()->prefix . $this->table_name;
+       return IdentifierValidator::validateTableName($this->getTablePrefix()->prefix . $this->table_name);
     }
 
 	private function getTablePrefix()
@@ -239,12 +240,12 @@ class Alter implements AlterInterface
     {
         $columns = [];
         $driver = $this->db;
-        $table_name = Utilities::get_db_configs()->prefix .$this->table_name;
+        $table_name = $this->getTableName();
 
         if (class_exists('wpdb') && $driver instanceof \wpdb) {
-            $columns = $driver->get_results("DESCRIBE `$table_name`", ARRAY_N);
+            $columns = $driver->get_results("DESCRIBE $table_name", ARRAY_N);
         } else {
-            $columns = $driver->query("DESCRIBE `$table_name`")->fetchAll(\PDO::FETCH_COLUMN);
+            $columns = $driver->query("DESCRIBE $table_name")->fetchAll(\PDO::FETCH_COLUMN);
         }
 
         foreach ($columns as $value) {

@@ -3,6 +3,10 @@
 namespace CodesVault\Howdyqb\Expression;
 
 use CodesVault\Howdyqb\Utilities;
+use CodesVault\Howdyqb\Validation\IdentifierValidator;
+use ParagonIE\Sodium\Core\Util;
+
+use function Avifinfo\read;
 
 trait SqlCore
 {
@@ -27,7 +31,7 @@ trait SqlCore
 				}
 				continue;
 			}
-			$this->sql['columns'] .= $column . ", ";
+			$this->sql['columns'] .= IdentifierValidator::validateColumnName($column) . ", ";
 		}
 
 		$this->sql['columns'] = rtrim($this->sql['columns'], ", ");
@@ -43,7 +47,7 @@ trait SqlCore
 
     public function alias(string $name): self
     {
-        $this->sql['alias'] = 'AS ' . $name;
+        $this->sql['alias'] = 'AS ' . IdentifierValidator::validateColumnName($name);
         return $this;
     }
 
@@ -57,7 +61,18 @@ trait SqlCore
 
     public function from(string $table_name): self
     {
-        $this->sql['table_name'] = 'FROM ' . Utilities::get_db_configs()->prefix . $table_name;
+		$from = explode(' ', $table_name);
+		$tableName = '';
+		$alias = '';
+
+		if (count($from) > 1) {
+			$tableName = IdentifierValidator::validateTableName(Utilities::get_db_configs()->prefix . $from[0]);
+			$alias = IdentifierValidator::validateTableName($from[1]);
+		} else {
+			$tableName = IdentifierValidator::validateTableName(Utilities::get_db_configs()->prefix . $from[0]);
+		}
+
+        $this->sql['table_name'] = trim('FROM ' . $tableName . ' ' . $alias);
         return $this;
     }
 
@@ -82,6 +97,8 @@ trait SqlCore
 			return $this;
 		}
 
+		$column = IdentifierValidator::validateColumnName($column);
+
         $this->sql['where'] = 'WHERE ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
@@ -89,6 +106,7 @@ trait SqlCore
 
     public function andWhere(string $column, ?string $operator = null, $value = null): self
     {
+		$column = IdentifierValidator::validateColumnName($column);
         $this->sql['andWhere'][] = 'AND ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
@@ -96,6 +114,7 @@ trait SqlCore
 
     public function orWhere(string $column, ?string $operator = null, $value = null): self
     {
+		$column = IdentifierValidator::validateColumnName($column);
         $this->sql['orWhere'][] = 'OR ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
@@ -103,6 +122,7 @@ trait SqlCore
 
     public function whereNot(string $column, ?string $operator = null, $value = null): self
     {
+		$column = IdentifierValidator::validateColumnName($column);
         $this->sql['whereNot'][] = 'WHERE NOT ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
@@ -110,6 +130,7 @@ trait SqlCore
 
     public function andNot(string $column, ?string $operator = null, $value = null): self
     {
+		$column = IdentifierValidator::validateColumnName($column);
         $this->sql['andNot'][] = 'AND NOT ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
         $this->params[] = $value;
         return $this;
@@ -117,6 +138,8 @@ trait SqlCore
 
 	public function andIn(string $column, ...$value): self
 	{
+		$column = IdentifierValidator::validateColumnName($column);
+
 		if (is_callable($value)) {
 			$subQueryInstence = new SubQuery($this->db);
 			call_user_func($value, $subQueryInstence);
@@ -143,6 +166,8 @@ trait SqlCore
 
     public function whereIn(string $column, ...$value): self
     {
+		$column = IdentifierValidator::validateColumnName($column);
+
 		if (count($value) === 1 && is_callable($value[0])) {
 			$subQueryInstence = new SubQuery($this->db);
 			call_user_func($value[0], $subQueryInstence);
@@ -166,16 +191,33 @@ trait SqlCore
         return $this;
     }
 
-    public function orderBy($column, string $sort_type): self
+    public function orderBy(array|string $column, string $sort_type = 'ASC'): self
     {
-        $col = is_array( $column ) ? implode( ', ', $column ) : $column;
-        $this->sql['orderBy'] = 'ORDER BY ' . $col . ' ' . $sort_type;
+		if (is_array($column)) {
+			foreach ($column as $col => $shortType) {
+				$this->sql['orderBy'] = $this->sql['orderBy'] ?? '';
+				$this->sql['orderBy'] .= IdentifierValidator::validateColumnName($col) . ' ' . $shortType . ', ';
+			}
+			$this->sql['orderBy'] = 'ORDER BY ' . rtrim($this->sql['orderBy'], ', ');
+			return $this;
+		}
+
+        $this->sql['orderBy'] = 'ORDER BY ' . IdentifierValidator::validateColumnName($column) . ' ' . $sort_type;
         return $this;
     }
 
     public function groupBy($column): self
     {
         $col = is_array( $column ) ? implode( ', ', $column ) : $column;
+		if (is_array($column)) {
+			foreach ($column as $col) {
+				$this->sql['groupBy'] = $this->sql['groupBy'] ?? '';
+				$this->sql['groupBy'] .= IdentifierValidator::validateColumnName($col) . ', ';
+			}
+			$this->sql['groupBy'] = 'GROUP BY ' . rtrim($this->sql['groupBy'], ', ');
+			return $this;
+		}
+
         $this->sql['groupBy'] = 'GROUP BY ' . $col;
         return $this;
     }
@@ -194,6 +236,8 @@ trait SqlCore
 
     public function count(string $column, string $alias = ''): self
     {
+		$column = IdentifierValidator::validateColumnName($column);
+		$alias = IdentifierValidator::validateColumnName($alias);
         $alias = $alias ? ' ' . $alias : '';
         $this->sql['start']['count'] = 'COUNT(' . $column . ')' . $alias;
         return $this;
@@ -204,21 +248,21 @@ trait SqlCore
         $table_names = [];
         if (is_array($table_name)) {
             foreach ($table_name as $table) {
-                $table_names[] = Utilities::get_db_configs()->prefix . $table;
+				$table_names[] = IdentifierValidator::validateTableNameWithAlias($table);
             }
         } else {
-            $table_names[] = Utilities::get_db_configs()->prefix . $table_name;
+			$table_names[] = IdentifierValidator::validateTableNameWithAlias($table_name);
         }
 
-        $table = '';
+		$table = $table_names[0];
         if (count($table_names) > 1) {
             $table = '(' . implode(',', $table_names) . ')';
-        } else {
-            $table = $table_names[0];
         }
 
         $this->sql['join'] = $joinType . ' ' . $table;
         if ($col1 && $col2) {
+			$col1 = IdentifierValidator::validateColumnName($col1);
+			$col2 = IdentifierValidator::validateColumnName($col2);
             $this->sql['join'] .= ' ON ' . $col1 . ' = ' . $col2;
         }
         return $this;

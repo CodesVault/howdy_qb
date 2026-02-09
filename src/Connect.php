@@ -5,6 +5,7 @@ namespace CodesVault\Howdyqb;
 final class Connect
 {
     private static $configs;
+    private static $pdo;
 
     public static function config($configs)
     {
@@ -13,6 +14,10 @@ final class Connect
 
     public static function pdo()
     {
+		if (static::$pdo !== null) {
+			return static::$pdo;
+		}
+
 		$configs = static::$configs ? (object)static::$configs : false;
 		if (! $configs) {
 			global $wpdb;
@@ -29,7 +34,8 @@ final class Connect
         $dns =  "mysql:host=$host;dbname=$dbname";
 
         try {
-            return new \PDO($dns, $user, $password);
+            static::$pdo = new \PDO($dns, $user, $password);
+            return static::$pdo;
         } catch (\PDOException $exception) {
             Utilities::throughException($exception);
         }

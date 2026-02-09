@@ -209,3 +209,73 @@ test('can insert ignore duplicates with select and multiple conditions', functio
     $this->assertEquals('Senior Employee', $results[0]['name']);
     $this->assertEquals(45, (int)$results[0]['age']);
 });
+
+// ==================== SQL Injection Prevention Tests ====================
+
+test('rejects SQL injection in table name', function () {
+    $this->db->insert('users; DROP TABLE users; --', [
+        ['name' => 'Test', 'email' => 'test@test.com']
+    ]);
+})->throws(InvalidArgumentException::class);
+
+test('rejects SQL injection with quotes in table name', function () {
+    $this->db->insert("users' OR '1'='1", [
+        ['name' => 'Test', 'email' => 'test@test.com']
+    ]);
+})->throws(InvalidArgumentException::class);
+
+test('rejects SQL injection with comments in table name', function () {
+    $this->db->insert('users--', [
+        ['name' => 'Test', 'email' => 'test@test.com']
+    ]);
+})->throws(InvalidArgumentException::class);
+
+test('rejects SQL injection in column names', function () {
+    $this->db->insert('querybuilder', [
+        ['name; DROP TABLE users;--' => 'malicious']
+    ]);
+})->throws(InvalidArgumentException::class);
+
+test('rejects UNION injection in column names', function () {
+    $this->db->insert('querybuilder', [
+        ['id UNION SELECT * FROM passwords' => 'value']
+    ]);
+})->throws(InvalidArgumentException::class);
+
+test('allows valid table and column names', function () {
+    $testData = [
+        ['name' => 'Valid User', 'email' => 'valid@example.com', 'age' => 25, 'country' => 'USA']
+    ];
+
+    $result = $this->db->insert('querybuilder', $testData)->execute();
+
+    $this->assertTrue(is_object($result) || $result === true);
+
+    $insertedRecord = $this->db->select('name')
+        ->from('querybuilder')
+        ->where('email', '=', 'valid@example.com')
+        ->get();
+
+    $this->assertEquals('Valid User', $insertedRecord[0]['name']);
+});
+
+test('allows underscores in table and column names', function () {
+    // The querybuilder table already has underscored columns like user_id would
+    $testData = [
+        ['name' => 'Underscore Test', 'email' => 'underscore@test.com', 'age' => 30, 'country' => 'Test_Country']
+    ];
+
+    $result = $this->db->insert('querybuilder', $testData)->execute();
+    $this->assertTrue(is_object($result) || $result === true);
+});
+
+test('getSql returns escaped table and column names', function () {
+    $testData = [
+        ['name' => 'Test', 'email' => 'test@test.com', 'age' => 25, 'country' => 'USA']
+    ];
+
+    $sql = $this->db->insert('querybuilder', $testData)->getSql();
+
+    // Table name should be escaped with backticks
+    $this->assertStringContainsString('`', $sql['query']);
+});

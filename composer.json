@@ -1,11 +1,10 @@
 {
     "name": "codesvault/howdy-qb",
     "description": "Mysql Query Builder for WordPress",
-    "version": "2.1.1",
+    "version": "2.1.2",
     "minimum-stability": "stable",
     "scripts": {
-        "test": "phpunit",
-        "test:pest": "./vendor/bin/pest",
+        "test": "./vendor/bin/pest",
         "test:unit": "./vendor/bin/pest tests/Unit/",
         "test:integration": "./vendor/bin/pest tests/Integration/",
 		"phpcs": "phpcs ",

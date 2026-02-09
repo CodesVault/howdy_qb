@@ -249,7 +249,7 @@ test('can use orderBy clause descending', function () {
 test('can use orderBy with multiple columns', function () {
     $results = $this->db->select('*')
         ->from('qb_user')
-        ->orderBy(['country', 'age'], 'ASC')
+        ->orderBy(['country' => 'ASC', 'age' => 'ASC'])
         ->get();
 
     $this->assertGreaterThan(0, count($results));
