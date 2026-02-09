@@ -11,6 +11,16 @@ class IdentifierValidator
 
     private const MAX_IDENTIFIER_LENGTH = 64;
 
+	private const VALID_OPERATORS = [
+        '=', '!=', '<>', '<', '>', '<=', '>=',
+        'LIKE', 'NOT LIKE',
+        'IN', 'NOT IN',
+        'BETWEEN', 'NOT BETWEEN',
+        'IS', 'IS NOT',
+        'REGEXP', 'NOT REGEXP',
+        'EXISTS', 'NOT EXISTS',
+    ];
+
 	public static function validateTableName(string $tableName): string
     {
         if (strlen($tableName) > self::MAX_IDENTIFIER_LENGTH) {
@@ -144,4 +154,21 @@ class IdentifierValidator
 
 		return self::validateTableName($tableName);
 	}
+
+    public static function validateOperator(string $operator): string
+    {
+        $operator = trim(strtoupper($operator));
+
+        if (empty($operator)) {
+            throw new InvalidArgumentException('Operator cannot be empty.');
+        }
+
+        if (!in_array($operator, self::VALID_OPERATORS, true)) {
+            throw new InvalidArgumentException(
+                sprintf('Invalid operator: "%s".', $operator)
+            );
+        }
+
+        return $operator;
+    }
 }

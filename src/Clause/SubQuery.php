@@ -1,6 +1,6 @@
 <?php
 
-namespace CodesVault\Howdyqb\Expression;
+namespace CodesVault\Howdyqb\Clause;
 
 use CodesVault\Howdyqb\Statement\Select;
 

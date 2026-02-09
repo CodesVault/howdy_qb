@@ -2,15 +2,16 @@
 
 namespace CodesVault\Howdyqb\Statement;
 
-use CodesVault\Howdyqb\Expression\SqlCore;
+use CodesVault\Howdyqb\Clause\SqlCore;
+use CodesVault\Howdyqb\Clause\WhereClause;
 use CodesVault\Howdyqb\SqlGenerator;
 use CodesVault\Howdyqb\Utilities;
 use CodesVault\Howdyqb\Validation\IdentifierValidator;
 
 class Insert
 {
-	// bring all SQL expressions
-	use SqlCore;
+	// bring all SQL Clause
+	use SqlCore, WhereClause;
 
     protected $db;
     protected $data = [];

@@ -2,7 +2,7 @@
 
 namespace CodesVault\Howdyqb\Api;
 
-interface SelectInterface
+interface SelectInterface extends WhereClauseInterface
 {
     public function distinct(): self;
 
@@ -60,18 +60,6 @@ interface SelectInterface
      */
     public function rightJoin($table_name, ?string $col1 = null, ?string $col2 = null): self;
 
-    public function where($column, ?string $operator = null, $value = null): self;
-
-    public function andWhere(string $column, ?string $operator, ?string $value): self;
-
-    public function orWhere(string $column, ?string $operator, ?string $value): self;
-
-    public function whereNot(string $column, ?string $operator, ?string $value): self;
-
-    public function andNot(string $column, ?string $operator, ?string $value): self;
-
-    public function whereIn(string $column, ...$value): self;
-
     public function orderBy(array|string $column, string $sort = 'ASC'): self;
 
     public function groupBy($column): self;
@@ -81,8 +69,6 @@ interface SelectInterface
     public function offset(int $count): self;
 
     public function count(string $column, string $alias = ''): self;
-
-	public function andIn(string $column, ...$value): self;
 
     public function raw(string $sql): self;
 

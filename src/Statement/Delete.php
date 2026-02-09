@@ -3,11 +3,15 @@
 namespace CodesVault\Howdyqb\Statement;
 
 use CodesVault\Howdyqb\Api\DeleteInterface;
+use CodesVault\Howdyqb\Clause\WhereClause;
 use CodesVault\Howdyqb\SqlGenerator;
 use CodesVault\Howdyqb\Utilities;
 
 class Delete implements DeleteInterface
 {
+	// bring all SQL Clause
+	use WhereClause;
+
     protected $db;
     public $sql = [];
     protected $params = [];
@@ -22,31 +26,6 @@ class Delete implements DeleteInterface
     protected function start()
     {
         $this->sql['start'] = 'DELETE FROM ' . $this->table_name;
-    }
-
-    public function where($column, ?string $operator = null, $value = null): self
-    {
-        if ( is_callable( $column ) ) {
-            call_user_func( $column, $this );
-            return $this;
-        }
-        $this->sql['where'] = 'WHERE ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
-        $this->params[] = $value;
-        return $this;
-    }
-
-    public function andWhere(string $column, ?string $operator = null, $value = null): self
-    {
-        $this->sql['andWhere'][] = 'AND ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
-        $this->params[] = $value;
-        return $this;
-    }
-
-    public function orWhere(string $column, ?string $operator = null, $value = null): self
-    {
-        $this->sql['orWhere'][] = 'OR ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
-        $this->params[] = $value;
-        return $this;
     }
 
     public function drop()
