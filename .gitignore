@@ -10,6 +10,7 @@ composer.lock
 
 .DS_Store
 doc/
+Roadmap.md
 
 .phpunit.result.cache
 
