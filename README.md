@@ -6,6 +6,15 @@ WP Query Builder uses <code>PDO</code> for database queries. It has <strong>zero
 
 <br/>
 
+[![Total Downloads](https://img.shields.io/packagist/dt/codesvault/howdy-qb.svg)](https://packagist.org/packages/codesvault/howdy-qb)
+[![Latest Version](https://img.shields.io/packagist/v/codesvault/howdy-qb.svg)](https://packagist.org/packages/codesvault/howdy-qb)
+
+[![PHP Version](https://img.shields.io/packagist/php-v/codesvault/howdy-qb.svg)](https://packagist.org/packages/codesvault/howdy-qb)
+[![Composer](https://img.shields.io/badge/composer-2.0%2B-blue.svg)](https://getcomposer.org/)
+[![License](https://img.shields.io/packagist/l/codesvault/howdy-qb.svg)](LICENSE)
+
+<br/>
+
 # Documentation
 Documentation website [here](https://wpqb.abmsourav.com/).
 
