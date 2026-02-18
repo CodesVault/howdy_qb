@@ -3,12 +3,16 @@
 namespace CodesVault\Howdyqb\Statement;
 
 use CodesVault\Howdyqb\Api\UpdateInterface;
+use CodesVault\Howdyqb\Clause\WhereClause;
 use CodesVault\Howdyqb\QueryFactory;
 use CodesVault\Howdyqb\SqlGenerator;
 use CodesVault\Howdyqb\Utilities;
 
 class Update implements UpdateInterface
 {
+	// Bring all SQL where clause
+	use WhereClause;
+
     protected $db;
     protected $data = [];
     public $sql = [];
@@ -87,30 +91,5 @@ class Update implements UpdateInterface
             $this->params[] = $value;
         }
         return 'SET ' . implode(', ', $columns);
-    }
-
-    public function where($column, ?string $operator = null, $value = null): self
-    {
-        if ( is_callable( $column ) ) {
-            call_user_func( $column, $this );
-            return $this;
-        }
-        $this->sql['where'] = 'WHERE ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
-        $this->params[] = $value;
-        return $this;
-    }
-
-    public function andWhere(string $column, ?string $operator = null, $value = null): self
-    {
-        $this->sql['andWhere'][] = 'AND ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
-        $this->params[] = $value;
-        return $this;
-    }
-
-    public function orWhere(string $column, ?string $operator = null, $value = null): self
-    {
-        $this->sql['orWhere'][] = 'OR ' . $column . ' ' . $operator . ' ' . Utilities::get_placeholder($this->db, $value);
-        $this->params[] = $value;
-        return $this;
     }
 }

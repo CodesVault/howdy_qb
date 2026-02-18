@@ -1,4 +1,5 @@
 # WP Query Builder
+
 <p>
 Relational Database Query builder for WordPress.
 WP Query Builder uses <code>PDO</code> for database queries. It has <strong>zero dependencies</strong> with third-party query builders or any other composer library.
@@ -109,6 +110,15 @@ DB::select('posts.post_title')
     ->raw("WHERE posts.post_type = 'post'")
     ->andWhere('posts.post_status', '=', 'publish')
     ->raw("LIMIT 10")
+    ->get();
+
+DB::select()
+    ->columns('country')
+    ->avg('age', 'avg_age')
+    ->min('age', 'youngest')
+    ->max('age', 'oldest')
+    ->from('users')
+    ->groupBy('country')
     ->get();
 ```
 

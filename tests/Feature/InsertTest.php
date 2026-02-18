@@ -279,3 +279,47 @@ test('getSql returns escaped table and column names', function () {
     // Table name should be escaped with backticks
     $this->assertStringContainsString('`', $sql['query']);
 });
+
+// ==================== INSERT...SELECT with AVG Tests ====================
+
+test('can insert select with avg aggregate', function () {
+    // Create a summary table to hold avg results
+    $this->db->create('qb_summary')
+        ->column('id')->bigInt()->unsigned()->autoIncrement()->primary()
+        ->column('country')->string(50)->required()
+        ->column('avg_age')->double()
+        ->execute();
+
+    // Insert source data
+    $this->db->insert('qb_source', [
+        ['name' => 'User 1', 'email' => 'u1@test.com', 'age' => 20, 'country' => 'USA'],
+        ['name' => 'User 2', 'email' => 'u2@test.com', 'age' => 30, 'country' => 'USA'],
+        ['name' => 'User 3', 'email' => 'u3@test.com', 'age' => 40, 'country' => 'UK'],
+    ])->execute();
+
+    // INSERT...SELECT with AVG
+    $this->db->insert('qb_summary', ['country', 'avg_age'])
+        ->select('country')
+        ->avg('age')
+        ->from('qb_source')
+        ->groupBy('country')
+        ->execute();
+
+    $results = $this->db->select('*')
+        ->from('qb_summary')
+        ->orderBy('country', 'ASC')
+        ->get();
+
+    $this->assertCount(2, $results);
+
+    $avgByCountry = [];
+    foreach ($results as $row) {
+        $avgByCountry[$row['country']] = (float) $row['avg_age'];
+    }
+
+    $this->assertEquals(40.0, $avgByCountry['UK']);
+    $this->assertEquals(25.0, $avgByCountry['USA']);
+
+    // Cleanup
+    $this->db->drop('qb_summary');
+});

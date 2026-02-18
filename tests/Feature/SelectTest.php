@@ -495,3 +495,203 @@ test('can use nested subquery in WHERE clause', function () {
         $this->assertArrayHasKey('user_id', $result);
     }
 });
+
+// ==================== AVG Tests ====================
+
+test('can use avg function', function () {
+    $results = $this->db->select()
+        ->avg('age', 'average_age')
+        ->from('qb_user')
+        ->get();
+
+    // ages: 30, 25, 35, 28 => avg = 29.5
+    $this->assertCount(1, $results);
+    $this->assertArrayHasKey('average_age', $results[0]);
+    $this->assertEquals(29.5, (float) $results[0]['average_age']);
+});
+
+test('can use avg without alias', function () {
+    $results = $this->db->select()
+        ->avg('age')
+        ->from('qb_user')
+        ->get();
+
+    $this->assertCount(1, $results);
+    $firstKey = array_key_first($results[0]);
+    $this->assertEquals(29.5, (float) $results[0][$firstKey]);
+});
+
+test('can use avg with groupBy', function () {
+    $results = $this->db->select('country')
+        ->avg('age', 'avg_age')
+        ->from('qb_user')
+        ->groupBy('country')
+        ->orderBy('country', 'ASC')
+        ->get();
+
+    // Canada: 25, UK: 35, USA: (30+28)/2 = 29
+    $this->assertCount(3, $results);
+
+    $avgByCountry = [];
+    foreach ($results as $row) {
+        $avgByCountry[$row['country']] = (float) $row['avg_age'];
+    }
+
+    $this->assertEquals(25.0, $avgByCountry['Canada']);
+    $this->assertEquals(35.0, $avgByCountry['UK']);
+    $this->assertEquals(29.0, $avgByCountry['USA']);
+});
+
+test('can use avg with where clause', function () {
+    $results = $this->db->select()
+        ->avg('age', 'avg_age')
+        ->from('qb_user')
+        ->where('country', '=', 'USA')
+        ->get();
+
+    // USA ages: 30, 28 => avg = 29
+    $this->assertCount(1, $results);
+    $this->assertEquals(29.0, (float) $results[0]['avg_age']);
+});
+
+test('avg getSql returns correct query', function () {
+    $sql = $this->db->select()
+        ->avg('age', 'avg_age')
+        ->from('qb_user')
+        ->getSql();
+
+    $this->assertStringContainsString('AVG(', $sql['query']);
+    $this->assertStringContainsString('AS', $sql['query']);
+});
+
+test('avg can be combined with other columns', function () {
+    $results = $this->db->select('country')
+        ->avg('age', 'avg_age')
+        ->count('*', 'total')
+        ->from('qb_user')
+        ->groupBy('country')
+        ->get();
+
+    $this->assertCount(3, $results);
+    foreach ($results as $row) {
+        $this->assertArrayHasKey('country', $row);
+        $this->assertArrayHasKey('avg_age', $row);
+        $this->assertArrayHasKey('total', $row);
+    }
+});
+
+// ==================== MIN Tests ====================
+
+test('can use min function', function () {
+    $results = $this->db->select()
+        ->min('age', 'min_age')
+        ->from('qb_user')
+        ->get();
+
+    // ages: 30, 25, 35, 28 => min = 25
+    $this->assertCount(1, $results);
+    $this->assertArrayHasKey('min_age', $results[0]);
+    $this->assertEquals(25, (int) $results[0]['min_age']);
+});
+
+test('can use min without alias', function () {
+    $results = $this->db->select()
+        ->min('age')
+        ->from('qb_user')
+        ->get();
+
+    $this->assertCount(1, $results);
+    $firstKey = array_key_first($results[0]);
+    $this->assertEquals(25, (int) $results[0][$firstKey]);
+});
+
+test('can use min with groupBy', function () {
+    $results = $this->db->select('country')
+        ->min('age', 'min_age')
+        ->from('qb_user')
+        ->groupBy('country')
+        ->orderBy('country', 'ASC')
+        ->get();
+
+    // Canada: 25, UK: 35, USA: min(30,28) = 28
+    $this->assertCount(3, $results);
+
+    $minByCountry = [];
+    foreach ($results as $row) {
+        $minByCountry[$row['country']] = (int) $row['min_age'];
+    }
+
+    $this->assertEquals(25, $minByCountry['Canada']);
+    $this->assertEquals(35, $minByCountry['UK']);
+    $this->assertEquals(28, $minByCountry['USA']);
+});
+
+test('can combine min with other aggregates', function () {
+    $results = $this->db->select('country')
+        ->min('age', 'min_age')
+        ->avg('age', 'avg_age')
+        ->count('*', 'total')
+        ->from('qb_user')
+        ->groupBy('country')
+        ->get();
+
+    $this->assertCount(3, $results);
+    foreach ($results as $row) {
+        $this->assertArrayHasKey('country', $row);
+        $this->assertArrayHasKey('min_age', $row);
+        $this->assertArrayHasKey('avg_age', $row);
+        $this->assertArrayHasKey('total', $row);
+    }
+});
+
+// ==================== MAX Tests ====================
+
+test('can use max function', function () {
+    $results = $this->db->select()
+        ->max('age', 'max_age')
+        ->from('qb_user')
+        ->get();
+
+    // ages: 30, 25, 35, 28 => max = 35
+    $this->assertCount(1, $results);
+    $this->assertArrayHasKey('max_age', $results[0]);
+    $this->assertEquals(35, (int) $results[0]['max_age']);
+});
+
+test('can use max with groupBy', function () {
+    $results = $this->db->select('country')
+        ->max('age', 'max_age')
+        ->from('qb_user')
+        ->groupBy('country')
+        ->orderBy('country', 'ASC')
+        ->get();
+
+    // Canada: 25, UK: 35, USA: max(30,28) = 30
+    $this->assertCount(3, $results);
+
+    $maxByCountry = [];
+    foreach ($results as $row) {
+        $maxByCountry[$row['country']] = (int) $row['max_age'];
+    }
+
+    $this->assertEquals(25, $maxByCountry['Canada']);
+    $this->assertEquals(35, $maxByCountry['UK']);
+    $this->assertEquals(30, $maxByCountry['USA']);
+});
+
+test('can combine max with min and avg', function () {
+    $results = $this->db->select('country')
+        ->max('age', 'max_age')
+        ->min('age', 'min_age')
+        ->avg('age', 'avg_age')
+        ->from('qb_user')
+        ->where('country', '=', 'USA')
+        ->groupBy('country')
+        ->get();
+
+    // USA ages: 30, 28
+    $this->assertCount(1, $results);
+    $this->assertEquals(30, (int) $results[0]['max_age']);
+    $this->assertEquals(28, (int) $results[0]['min_age']);
+    $this->assertEquals(29.0, (float) $results[0]['avg_age']);
+});

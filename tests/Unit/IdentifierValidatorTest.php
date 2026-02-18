@@ -182,6 +182,65 @@ test('escapeIdentifier removes existing backticks', function () {
     expect(IdentifierValidator::escapeIdentifier('`users`'))->toBe('`users`');
 });
 
+// ==================== validateOperator Tests ====================
+
+test('validateOperator accepts valid comparison operators', function () {
+    $operators = ['=', '!=', '<>', '<', '>', '<=', '>='];
+
+    foreach ($operators as $op) {
+        expect(IdentifierValidator::validateOperator($op))->toBe($op);
+    }
+});
+
+test('validateOperator accepts valid keyword operators', function () {
+    $operators = [
+        'LIKE', 'NOT LIKE',
+        'IN', 'NOT IN',
+        'BETWEEN', 'NOT BETWEEN',
+        'IS', 'IS NOT',
+        'REGEXP', 'NOT REGEXP',
+        'EXISTS', 'NOT EXISTS',
+    ];
+
+    foreach ($operators as $op) {
+        expect(IdentifierValidator::validateOperator($op))->toBe($op);
+    }
+});
+
+test('validateOperator is case-insensitive', function () {
+    expect(IdentifierValidator::validateOperator('like'))->toBe('LIKE');
+    expect(IdentifierValidator::validateOperator('Not In'))->toBe('NOT IN');
+    expect(IdentifierValidator::validateOperator('is not'))->toBe('IS NOT');
+});
+
+test('validateOperator trims whitespace', function () {
+    expect(IdentifierValidator::validateOperator('  =  '))->toBe('=');
+    expect(IdentifierValidator::validateOperator(' LIKE '))->toBe('LIKE');
+});
+
+test('validateOperator rejects empty string', function () {
+    expect(fn () => IdentifierValidator::validateOperator(''))
+        ->toThrow(InvalidArgumentException::class, 'Operator cannot be empty');
+});
+
+test('validateOperator rejects invalid operators', function () {
+    $invalidOperators = [
+        'DROP',
+        'SELECT',
+        '==',
+        '===',
+        '||',
+        '&&',
+        '; DROP TABLE',
+        "' OR '1'='1",
+    ];
+
+    foreach ($invalidOperators as $op) {
+        expect(fn () => IdentifierValidator::validateOperator($op))
+            ->toThrow(InvalidArgumentException::class);
+    }
+});
+
 // ==================== SQL Injection Prevention ====================
 
 test('rejects common SQL injection patterns', function () {

@@ -3,14 +3,16 @@
 namespace CodesVault\Howdyqb\Statement;
 
 use CodesVault\Howdyqb\Api\SelectInterface;
-use CodesVault\Howdyqb\Expression\SqlCore;
+use CodesVault\Howdyqb\Clause\JoinClause;
+use CodesVault\Howdyqb\Clause\SqlCore;
+use CodesVault\Howdyqb\Clause\WhereClause;
 use CodesVault\Howdyqb\SqlGenerator;
 use CodesVault\Howdyqb\Utilities;
 
 class Select implements SelectInterface
 {
-	// bring all SQL expressions
-	use SqlCore;
+	// bring all SQL Clause
+	use SqlCore, WhereClause, JoinClause;
 
     protected $db;
     protected $sql = [];
