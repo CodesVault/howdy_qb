@@ -131,6 +131,21 @@ trait SqlCore
         return $this;
     }
 
+	public function avg(string $column, string $alias = ''): self
+	{
+		$columnName = IdentifierValidator::validateColumnName($column);
+		$aliasStr = $alias ? ' AS ' . IdentifierValidator::validateColumnName($alias) : '';
+		$expression = "AVG($columnName)" . $aliasStr;
+
+		if (!empty($this->sql['columns'])) {
+			$this->sql['columns'] .= ', ' . $expression;
+		} else {
+			$this->sql['columns'] = $expression;
+		}
+
+		return $this;
+	}
+
 	protected function setStartExpression()
     {
         $sql = '';

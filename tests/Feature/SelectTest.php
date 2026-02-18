@@ -495,3 +495,87 @@ test('can use nested subquery in WHERE clause', function () {
         $this->assertArrayHasKey('user_id', $result);
     }
 });
+
+// ==================== AVG Tests ====================
+
+test('can use avg function', function () {
+    $results = $this->db->select()
+        ->avg('age', 'average_age')
+        ->from('qb_user')
+        ->get();
+
+    // ages: 30, 25, 35, 28 => avg = 29.5
+    $this->assertCount(1, $results);
+    $this->assertArrayHasKey('average_age', $results[0]);
+    $this->assertEquals(29.5, (float) $results[0]['average_age']);
+});
+
+test('can use avg without alias', function () {
+    $results = $this->db->select()
+        ->avg('age')
+        ->from('qb_user')
+        ->get();
+
+    $this->assertCount(1, $results);
+    $firstKey = array_key_first($results[0]);
+    $this->assertEquals(29.5, (float) $results[0][$firstKey]);
+});
+
+test('can use avg with groupBy', function () {
+    $results = $this->db->select('country')
+        ->avg('age', 'avg_age')
+        ->from('qb_user')
+        ->groupBy('country')
+        ->orderBy('country', 'ASC')
+        ->get();
+
+    // Canada: 25, UK: 35, USA: (30+28)/2 = 29
+    $this->assertCount(3, $results);
+
+    $avgByCountry = [];
+    foreach ($results as $row) {
+        $avgByCountry[$row['country']] = (float) $row['avg_age'];
+    }
+
+    $this->assertEquals(25.0, $avgByCountry['Canada']);
+    $this->assertEquals(35.0, $avgByCountry['UK']);
+    $this->assertEquals(29.0, $avgByCountry['USA']);
+});
+
+test('can use avg with where clause', function () {
+    $results = $this->db->select()
+        ->avg('age', 'avg_age')
+        ->from('qb_user')
+        ->where('country', '=', 'USA')
+        ->get();
+
+    // USA ages: 30, 28 => avg = 29
+    $this->assertCount(1, $results);
+    $this->assertEquals(29.0, (float) $results[0]['avg_age']);
+});
+
+test('avg getSql returns correct query', function () {
+    $sql = $this->db->select()
+        ->avg('age', 'avg_age')
+        ->from('qb_user')
+        ->getSql();
+
+    $this->assertStringContainsString('AVG(', $sql['query']);
+    $this->assertStringContainsString('AS', $sql['query']);
+});
+
+test('avg can be combined with other columns', function () {
+    $results = $this->db->select('country')
+        ->avg('age', 'avg_age')
+        ->count('*', 'total')
+        ->from('qb_user')
+        ->groupBy('country')
+        ->get();
+
+    $this->assertCount(3, $results);
+    foreach ($results as $row) {
+        $this->assertArrayHasKey('country', $row);
+        $this->assertArrayHasKey('avg_age', $row);
+        $this->assertArrayHasKey('total', $row);
+    }
+});
