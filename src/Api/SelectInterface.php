@@ -72,6 +72,10 @@ interface SelectInterface extends WhereClauseInterface
 
     public function avg(string $column, string $alias = ''): self;
 
+    public function min(string $column, string $alias = ''): self;
+
+    public function max(string $column, string $alias = ''): self;
+
     public function raw(string $sql): self;
 
     public function getSql();

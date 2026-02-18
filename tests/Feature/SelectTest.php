@@ -579,3 +579,119 @@ test('avg can be combined with other columns', function () {
         $this->assertArrayHasKey('total', $row);
     }
 });
+
+// ==================== MIN Tests ====================
+
+test('can use min function', function () {
+    $results = $this->db->select()
+        ->min('age', 'min_age')
+        ->from('qb_user')
+        ->get();
+
+    // ages: 30, 25, 35, 28 => min = 25
+    $this->assertCount(1, $results);
+    $this->assertArrayHasKey('min_age', $results[0]);
+    $this->assertEquals(25, (int) $results[0]['min_age']);
+});
+
+test('can use min without alias', function () {
+    $results = $this->db->select()
+        ->min('age')
+        ->from('qb_user')
+        ->get();
+
+    $this->assertCount(1, $results);
+    $firstKey = array_key_first($results[0]);
+    $this->assertEquals(25, (int) $results[0][$firstKey]);
+});
+
+test('can use min with groupBy', function () {
+    $results = $this->db->select('country')
+        ->min('age', 'min_age')
+        ->from('qb_user')
+        ->groupBy('country')
+        ->orderBy('country', 'ASC')
+        ->get();
+
+    // Canada: 25, UK: 35, USA: min(30,28) = 28
+    $this->assertCount(3, $results);
+
+    $minByCountry = [];
+    foreach ($results as $row) {
+        $minByCountry[$row['country']] = (int) $row['min_age'];
+    }
+
+    $this->assertEquals(25, $minByCountry['Canada']);
+    $this->assertEquals(35, $minByCountry['UK']);
+    $this->assertEquals(28, $minByCountry['USA']);
+});
+
+test('can combine min with other aggregates', function () {
+    $results = $this->db->select('country')
+        ->min('age', 'min_age')
+        ->avg('age', 'avg_age')
+        ->count('*', 'total')
+        ->from('qb_user')
+        ->groupBy('country')
+        ->get();
+
+    $this->assertCount(3, $results);
+    foreach ($results as $row) {
+        $this->assertArrayHasKey('country', $row);
+        $this->assertArrayHasKey('min_age', $row);
+        $this->assertArrayHasKey('avg_age', $row);
+        $this->assertArrayHasKey('total', $row);
+    }
+});
+
+// ==================== MAX Tests ====================
+
+test('can use max function', function () {
+    $results = $this->db->select()
+        ->max('age', 'max_age')
+        ->from('qb_user')
+        ->get();
+
+    // ages: 30, 25, 35, 28 => max = 35
+    $this->assertCount(1, $results);
+    $this->assertArrayHasKey('max_age', $results[0]);
+    $this->assertEquals(35, (int) $results[0]['max_age']);
+});
+
+test('can use max with groupBy', function () {
+    $results = $this->db->select('country')
+        ->max('age', 'max_age')
+        ->from('qb_user')
+        ->groupBy('country')
+        ->orderBy('country', 'ASC')
+        ->get();
+
+    // Canada: 25, UK: 35, USA: max(30,28) = 30
+    $this->assertCount(3, $results);
+
+    $maxByCountry = [];
+    foreach ($results as $row) {
+        $maxByCountry[$row['country']] = (int) $row['max_age'];
+    }
+
+    $this->assertEquals(25, $maxByCountry['Canada']);
+    $this->assertEquals(35, $maxByCountry['UK']);
+    $this->assertEquals(30, $maxByCountry['USA']);
+});
+
+test('can combine max with min and avg', function () {
+    $results = $this->db->select('country')
+        ->max('age', 'max_age')
+        ->min('age', 'min_age')
+        ->avg('age', 'avg_age')
+        ->from('qb_user')
+        ->where('country', '=', 'USA')
+        ->groupBy('country')
+        ->get();
+
+    // USA ages: 30, 28
+    $this->assertCount(1, $results);
+    $this->assertEquals(30, (int) $results[0]['max_age']);
+    $this->assertEquals(28, (int) $results[0]['min_age']);
+    $this->assertEquals(29.0, (float) $results[0]['avg_age']);
+});

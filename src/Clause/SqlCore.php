@@ -133,9 +133,24 @@ trait SqlCore
 
 	public function avg(string $column, string $alias = ''): self
 	{
+		return $this->addAggregate('AVG', $column, $alias);
+	}
+
+	public function min(string $column, string $alias = ''): self
+	{
+		return $this->addAggregate('MIN', $column, $alias);
+	}
+
+	public function max(string $column, string $alias = ''): self
+	{
+		return $this->addAggregate('MAX', $column, $alias);
+	}
+
+	protected function addAggregate(string $function, string $column, string $alias): self
+	{
 		$columnName = IdentifierValidator::validateColumnName($column);
 		$aliasStr = $alias ? ' AS ' . IdentifierValidator::validateColumnName($alias) : '';
-		$expression = "AVG($columnName)" . $aliasStr;
+		$expression = "$function($columnName)" . $aliasStr;
 
 		if (!empty($this->sql['columns'])) {
 			$this->sql['columns'] .= ', ' . $expression;
