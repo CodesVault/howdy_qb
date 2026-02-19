@@ -21,6 +21,14 @@ Documentation website [here](https://wpqb.abmsourav.com/).
 
 <br/>
 
+## Roadmap
+
+We have an active roadmap with planned features and improvements. Check out the full discussion and share your feedback:
+
+[View Roadmap Discussion](https://github.com/CodesVault/howdy_qb/discussions/48)
+
+<br>
+
 ### Installation:
 
 ```
@@ -223,7 +231,6 @@ $db::select('posts.post_title')
     ->get();
 ```
 
-<br>
 <br>
 
 ## Dev Envirenment Setup for Contributors
