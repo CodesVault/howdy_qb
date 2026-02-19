@@ -48,7 +48,7 @@ html[class~=dark] .home-intro .version {
 	color: #ededed;
 }
 
-.home-intro a {
+.home-intro a.doc-btn {
 	margin-top: 20px;
 	padding: 10px 25px;
 	border-radius: 5px;
@@ -58,6 +58,20 @@ html[class~=dark] .home-intro .version {
 	text-decoration: none;
 	letter-spacing: 1.2px;
 	box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.4);
+}
+
+@media screen and (max-width: 768px) {
+	.home-intro {
+		justify-content: center;
+		text-align: center;
+		padding: 0 10px;
+	}
+	.home-intro h1 {
+		font-size: 2.3rem;
+	}
+	.home-intro .short-desc {
+		font-size: .8rem;
+	}
 }
 
 div[title="Donation"] {

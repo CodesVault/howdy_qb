@@ -1,13 +1,40 @@
 import Link from 'next/link'
+import { useData } from 'nextra/data'
 
-export function Index({ children }) {
+export async function getStaticProps() {
+	let latestVersion = '1.2.0';
+	try {
+		const res = await fetch('https://api.github.com/repos/CodesVault/howdy_qb/releases/latest');
+		if (res.ok) {
+			const data = await res.json();
+			latestVersion = data.tag_name || latestVersion;
+		}
+	} catch (e) {}
+
+	return { props: { ssg: { latestVersion } }, revalidate: 1800 };
+}
+
+export function Index() {
+	const { latestVersion } = useData();
+
+	const releaseNoteLink = "https://github.com/CodesVault/howdy_qb/releases/tag/" + latestVersion
+
 	return (
 		<>
 			<div className="home-intro">
 				<h1>WP QueryBuilder</h1>
 				<p className="short-desc nx-mt-1">Relational Database Query builder for WordPress.</p>
-				<p className="version nx-mt-1 nx-mb-2">Latest Version: 2.1.1</p>
-				<Link href="documentation/getting-started">
+				<p className="version nx-mt-1 nx-mb-2">
+					Latest Version: {latestVersion} &nbsp;
+					<a
+					href={releaseNoteLink}
+					className='release-note-link'
+					target='__blank'
+					>
+						Release Notes
+					</a>
+				</p>
+				<Link href="documentation/getting-started" className='doc-btn'>
 					Documentation
 				</Link>
 			</div>
