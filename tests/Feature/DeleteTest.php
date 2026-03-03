@@ -79,6 +79,29 @@ test('getSql returns correct delete query structure', function () {
     $this->assertStringContainsString('WHERE', $sql['query']);
 });
 
+test('can delete all records with "wpdb"', function () {
+	$db = $this->getQueryBuilderWithDriver('wpdb');
+	$db->delete('test_delete')
+		->execute();
+
+	$allResults = $db->select('*')
+        ->from('test_delete')
+        ->get();
+
+    $this->assertCount(0, $allResults);
+});
+
+test('can delete all records with "pdo"', function () {
+	 $this->db->delete('test_delete')
+        ->execute();
+
+	$allResults = $this->db->select('*')
+        ->from('test_delete')
+        ->get();
+
+    $this->assertCount(0, $allResults);
+});
+
 test('can delete single record with where clause', function () {
     // Delete a specific user
     $this->db->delete('test_delete')
@@ -95,6 +118,30 @@ test('can delete single record with where clause', function () {
 
     // Verify other records still exist
     $allResults = $this->db->select('*')
+        ->from('test_delete')
+        ->get();
+
+    $this->assertCount(3, $allResults);
+});
+
+test('can delete single record with where clause using "wpdb"', function () {
+	$db = $this->getQueryBuilderWithDriver('wpdb');
+
+    // Delete a specific user
+    $db->delete('test_delete')
+        ->where('email', '=', 'john@example.com')
+        ->execute();
+
+    // Verify the record was deleted
+    $result = $db->select('*')
+        ->from('test_delete')
+        ->where('email', '=', 'john@example.com')
+        ->get();
+
+    $this->assertCount(0, $result);
+
+    // Verify other records still exist
+    $allResults = $db->select('*')
         ->from('test_delete')
         ->get();
 
