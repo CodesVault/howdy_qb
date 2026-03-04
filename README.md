@@ -158,6 +158,9 @@ DB::delete('posts')
 
 // delete all records
 DB::delete('posts')->execute();
+
+// Recommended for deleting all records from a table
+DB::truncate('test_table');
 ```
 
 <br>
