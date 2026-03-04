@@ -6,7 +6,7 @@ use CodesVault\Howdyqb\Api\SelectInterface;
 use CodesVault\Howdyqb\Statement\Alter;
 use CodesVault\Howdyqb\Statement\Create;
 use CodesVault\Howdyqb\Statement\Delete;
-use CodesVault\Howdyqb\Statement\Drop;
+use CodesVault\Howdyqb\Statement\Table;
 use CodesVault\Howdyqb\Statement\Insert;
 use CodesVault\Howdyqb\Statement\Select;
 use CodesVault\Howdyqb\Statement\Update;
@@ -82,9 +82,9 @@ class QueryFactory
         return new Delete($this->db, $table_name);
     }
 
-    protected function dropQuery(string $table_name)
+    protected function tableQuery(string $table_name)
     {
-        return new Drop($this->db, $table_name);
+        return new Table($this->db, $table_name);
     }
 
     public static function getConfig()

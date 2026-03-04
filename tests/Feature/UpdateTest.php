@@ -395,3 +395,32 @@ test('update preserves other column values', function () {
     $this->assertEquals($original[0]['age'], $updated[0]['age']);
     $this->assertEquals($original[0]['country'], $updated[0]['country']);
 });
+
+test('can update all rows without where clause', function () {
+    $this->db->update('test_users', ['status' => 'archived'])
+        ->execute();
+
+    $result = $this->db->select('status')
+        ->from('test_users')
+        ->get();
+
+    $this->assertCount(4, $result);
+    foreach ($result as $row) {
+        $this->assertEquals('archived', $row['status']);
+    }
+});
+
+test('can update all rows without where clause using "wpdb"', function () {
+	$db = $this->getQueryBuilderWithDriver('wpdb');
+    $db->update('test_users', ['status' => 'inactive'])
+        ->execute();
+
+    $result = $db->select('status')
+        ->from('test_users')
+        ->get();
+
+    $this->assertCount(4, $result);
+    foreach ($result as $row) {
+        $this->assertEquals('inactive', $row['status']);
+    }
+});

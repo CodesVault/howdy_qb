@@ -56,14 +56,18 @@ class DB extends QueryFactory
     public static function drop(string $table_name)
     {
         $factory = new self(static::$driver);
-        $drop = $factory->dropQuery($table_name);
-        $drop->drop();
+        $factory->tableQuery($table_name)->drop();
     }
 
     public static function dropIfExists(string $table_name)
     {
         $factory = new self(static::$driver);
-        $drop = $factory->dropQuery($table_name);
-        return $drop->dropIfExists();
+        $factory->tableQuery($table_name)->dropIfExists();
+    }
+
+    public static function truncate(string $table_name)
+    {
+        $factory = new self(static::$driver);
+        $factory->tableQuery($table_name)->truncate();
     }
 }
