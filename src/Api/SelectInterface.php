@@ -60,7 +60,15 @@ interface SelectInterface extends WhereClauseInterface
      */
     public function rightJoin($table_name, ?string $col1 = null, ?string $col2 = null): self;
 
-    public function orderBy(array|string $column, string $sort = 'ASC'): self;
+	/**
+	 * ORDER BY column(s) with sort direction
+	 *
+	 * @param string|array $column
+	 * @param string $sort
+	 *
+	 * @return CodesVault\Howdyqb\Api\SelectInterface
+	 */
+    public function orderBy($column, string $sort = 'ASC'): self;
 
     public function groupBy($column): self;
 

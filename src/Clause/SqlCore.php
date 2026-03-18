@@ -73,7 +73,7 @@ trait SqlCore
         return $this;
     }
 
-    public function orderBy(array|string $column, string $sort_type = 'ASC'): self
+    public function orderBy($column, string $sort_type = 'ASC'): self
     {
 		if (is_array($column)) {
 			foreach ($column as $col => $shortType) {
