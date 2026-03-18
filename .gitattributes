@@ -8,3 +8,5 @@
 /pest.xml export-ignore
 /phpcs.xml export-ignore
 /.editorconfig export-ignore
+/.github export-ignore
+/README.md export-ignore
