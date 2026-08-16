@@ -120,3 +120,35 @@ test('dropIfExists on non-existent table does not throw', function () {
     // If we reach here, the test passes
     $this->assertTrue(true);
 });
+
+// ========== Has Table ==========
+
+test('hasTable returns true for an existing table', function () {
+    $this->assertTrue($this->db->hasTable('test_table'));
+});
+
+test('hasTable returns false for a non-existent table', function () {
+    $this->assertFalse($this->db->hasTable('non_existent_table_xyz'));
+});
+
+test('hasTable returns false after the table is dropped', function () {
+    $this->assertTrue($this->db->hasTable('test_table'));
+
+    $this->db->drop('test_table');
+
+    $this->assertFalse($this->db->hasTable('test_table'));
+});
+
+test('hasTable still returns true after truncate', function () {
+    // Truncate empties the table but keeps the structure
+    $this->db->truncate('test_table');
+
+    $this->assertTrue($this->db->hasTable('test_table'));
+});
+
+test('hasTable rejects table names with wildcard characters', function () {
+    // The identifier validator rejects these before any query runs,
+    // so a LIKE-style pattern never matches a real table
+    $this->expectException(InvalidArgumentException::class);
+    $this->db->hasTable('test_%');
+});

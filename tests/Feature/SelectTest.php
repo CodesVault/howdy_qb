@@ -324,6 +324,33 @@ test('can use count function', function () {
     $this->assertEquals(4, (int)$result[0]['total']);
 });
 
+test('can use sum function', function () {
+    $result = $this->db->select()
+		->sum('age', 'total_age')
+		->from('qb_user')
+		->get();
+
+    $this->assertArrayHasKey('total_age', $result[0]);
+    $this->assertIsNumeric($result[0]['total_age']);
+    $this->assertEquals(118, (int)$result[0]['total_age']);
+});
+
+test('can use sum function with group by', function () {
+    $results = $this->db->select()
+		->columns('country')
+		->sum('age', 'total_age')
+		->from('qb_user')
+		->groupBy('country')
+		->get();
+
+    $this->assertEquals(3, count($results));
+
+	$totals = array_column($results, 'total_age', 'country');
+    $this->assertEquals(58, (int)$totals['USA']);
+    $this->assertEquals(25, (int)$totals['Canada']);
+    $this->assertEquals(35, (int)$totals['UK']);
+});
+
 test('can use table alias', function () {
     $results = $this->db->select('user.name', 'user.email')
         ->from('qb_user')

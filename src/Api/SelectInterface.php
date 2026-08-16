@@ -86,6 +86,8 @@ interface SelectInterface extends WhereClauseInterface
 
     public function raw(string $sql): self;
 
+	public function sum(string $column, string $alias = ''): self;
+
     public function getSql();
 
     public function get();

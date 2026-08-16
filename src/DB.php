@@ -70,4 +70,10 @@ class DB extends QueryFactory
         $factory = new self(static::$driver);
         $factory->tableQuery($table_name)->truncate();
     }
+
+    public static function hasTable(string $table_name): bool
+    {
+        $factory = new self(static::$driver);
+        return $factory->tableQuery($table_name)->hasTable($table_name);
+    }
 }

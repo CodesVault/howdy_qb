@@ -146,6 +146,11 @@ trait SqlCore
 		return $this->addAggregate('MAX', $column, $alias);
 	}
 
+	public function sum(string $column, string $alias = ''): self
+	{
+		return $this->addAggregate('SUM', $column, $alias);
+	}
+
 	protected function addAggregate(string $function, string $column, string $alias): self
 	{
 		$columnName = IdentifierValidator::validateColumnName($column);
