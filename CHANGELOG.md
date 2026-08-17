@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [2.2.3] - 2026-08-16
+
+### Added
+- `SUM()` aggregate function for SELECT queries, with optional alias and `GROUP BY` support
+- `DB::hasTable(<tableName>)` method for checking whether a table exists
+
+### Internal
+- Added `sum()` to `SelectInterface` and `hasTable()` to `TableInterface`
+- `hasTable()` resolves against `information_schema.TABLES` with the database and table name bound as parameters, scoped by `TABLE_SCHEMA` and matched exactly, so prefixes containing `_` cannot produce false positives
+- `hasTable()` supports both the `pdo` and `wpdb` drivers
+- Added feature tests for `SUM` with and without `GROUP BY`, and for `hasTable()` against existing, missing, dropped, truncated, and invalid-wildcard table names
+
 ## [2.2.1] - 2026-03-04
 
 ### Added
